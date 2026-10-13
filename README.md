@@ -21,9 +21,9 @@ Marginly helps restaurants understand menu performance by analyzing dish popular
 
 ## Tech Stack
 
-- **Frontend:** CSS Tailwind, React
+- **Frontend:** CSS Tailwind, React, HTML
 - **Backend:** Python, FastAPI
-- **AI:** Qwen 3.5 9B, LM Studio, OpenAI SDK
+- **AI:** Gemini API
 - **Visualization:** Chart.js
 
 ## Core Metrics
