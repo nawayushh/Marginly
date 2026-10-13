@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add Recipe &amp; Costing - MenuMitra</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed": "#ffddb3",
+            "on-secondary-fixed-variant": "#633f00",
+            "inverse-surface": "#30312f",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-dim": "#dbdad7",
+            "surface-variant": "#e4e2df",
+            "on-background": "#1b1c1a",
+            "on-secondary-fixed": "#291800",
+            "surface-container-high": "#eae8e5",
+            "on-secondary": "#ffffff",
+            "background": "#fbf9f6",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#ffb693",
+            "surface": "#fbf9f6",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f2f0ed",
+            "tertiary-fixed-dim": "#ffb693",
+            "on-primary-fixed": "#002020",
+            "outline": "#6f7978",
+            "on-tertiary-fixed": "#351000",
+            "on-surface-variant": "#3f4948",
+            "secondary-fixed-dim": "#ffb951",
+            "surface-container-low": "#f5f3f0",
+            "primary-fixed": "#aceeee",
+            "surface-tint": "#216868",
+            "surface-container": "#efeeeb",
+            "secondary-container": "#fdab12",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#e4e2df",
+            "surface-bright": "#fbf9f6",
+            "outline-variant": "#bfc8c8",
+            "tertiary-fixed": "#ffdbcc",
+            "tertiary-container": "#7a452a",
+            "on-surface": "#1b1c1a",
+            "primary-container": "#0f5c5c",
+            "on-tertiary-fixed-variant": "#6c391f",
+            "primary": "#004343",
+            "secondary": "#825500",
+            "on-primary-fixed-variant": "#004f50",
+            "inverse-primary": "#90d2d1",
+            "on-error": "#ffffff",
+            "on-secondary-container": "#684300",
+            "on-primary-container": "#90d2d1",
+            "tertiary": "#5e2f16",
+            "primary-fixed-dim": "#90d2d1",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-sm": ["Inter"],
+            "currency-display": ["Inter"],
+            "label-md": ["Inter"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "currency-display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #0f5c5c;
+      box-shadow: 0 2px 6px rgba(15, 92, 92, 0.25);
+      cursor: pointer;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top App Bar (Shared Component Contract) -->
+<header class="bg-surface sticky top-0 z-40 shadow-sm">
+<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm h-16 max-w-7xl mx-auto">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Go back" class="p-space-xs rounded hover:bg-surface-container-high transition-colors active:scale-95 text-on-surface" type="button">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div>
+<h1 class="text-label-lg font-label-lg text-primary font-bold">Add Recipe &amp; Costing</h1>
+<p class="text-label-sm font-label-sm text-on-surface-variant leading-none">Café Doon Brew, Rajpur Rd</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button aria-label="Help &amp; Guidance" class="p-space-xs rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors" type="button">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Atmospheric Helper Prompt Strip -->
+<section class="bg-surface-container-low px-margin-mobile py-space-md">
+<div class="max-w-md mx-auto flex items-start gap-space-sm">
+<span class="material-symbols-outlined text-primary-container text-body-lg mt-0.5" data-icon="info" data-weight="fill" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+        Enter ingredients the way you buy and prep them. MenuMitra calculates your cost per plate.
+      </p>
+</div>
+</section>
+<!-- Main Scrollable Flow -->
+<main class="flex-1 max-w-md w-full mx-auto px-margin-mobile pt-space-md pb-32 space-y-space-lg">
+<!-- STEP 1: Dish Basics -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(15,92,92,0.05),0_1px_3px_0_rgba(0,0,0,0.03)] border border-surface-variant">
+<div class="flex items-center justify-between pb-space-sm border-b border-surface-variant/60 mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-full bg-primary-container text-on-primary text-label-sm font-label-sm flex items-center justify-center">1</span>
+<h2 class="text-label-lg font-label-lg text-primary">Dish Basics</h2>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">Single Serving</span>
+</div>
+<div class="space-y-space-md">
+<!-- Dish Name -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-1" for="dish-name">Dish Name</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-outline-variant/70 rounded-lg px-space-md py-2.5 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-transparent" id="dish-name" type="text" value="Paneer Butter Masala Sandwich"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-outline text-body-lg" data-icon="fastfood">fastfood</span>
+</div>
+</div>
+<!-- Category & Yield 2-col Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-1" for="category">Category</label>
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-outline-variant/70 rounded-lg px-space-md py-2.5 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container appearance-none pr-8" id="category">
+<option selected="">Snacks &amp; Quick Bites</option>
+<option>Hot Beverages &amp; Coffee</option>
+<option>Main Courses</option>
+<option>Desserts</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-3 pointer-events-none text-outline text-body-md" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-1" for="yield">Portion / Batch yield</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/70 rounded-lg px-space-md py-2.5 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container" id="yield" type="text" value="1 Plate (2 Sandwich halves)"/>
+</div>
+</div>
+</div>
+</section>
+<!-- STEP 2: Ingredient Breakdown -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(15,92,92,0.05),0_1px_3px_0_rgba(0,0,0,0.03)] border border-surface-variant">
+<div class="flex items-center justify-between pb-space-sm border-b border-surface-variant/60 mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-full bg-primary-container text-on-primary text-label-sm font-label-sm flex items-center justify-center">2</span>
+<h2 class="text-label-lg font-label-lg text-primary">Ingredient Breakdown</h2>
+</div>
+<span class="text-label-sm font-label-sm text-primary font-semibold">5 Items</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-space-md">Adjust measurements per single plate portion.</p>
+<!-- Ingredient Cards List -->
+<div class="space-y-space-sm">
+<!-- Card 1: Amul Butter -->
+<article class="bg-surface-container-low/70 rounded-lg p-space-sm border border-surface-variant hover:border-outline-variant transition-colors flex items-center justify-between">
+<div class="flex items-start gap-space-sm flex-1 min-w-0 pr-2">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-body-lg" data-icon="kitchen">kitchen</span>
+</div>
+<div class="truncate">
+<div class="flex items-center gap-1.5">
+<h3 class="text-label-md font-label-md text-on-surface font-semibold truncate">Amul Butter</h3>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-normal">25g</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate">Pack cost: ₹56 for 100g</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<div class="text-right">
+<span class="text-label-sm font-label-sm block text-on-surface-variant">Plate Cost</span>
+<span class="text-label-lg font-label-lg text-primary font-bold">₹14.00</span>
+</div>
+<div class="flex items-center gap-0.5 text-outline">
+<button aria-label="Edit Amul Butter" class="p-1 hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="edit">edit</span>
+</button>
+<button aria-label="Delete Amul Butter" class="p-1 hover:text-error transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2: Fresh Paneer -->
+<article class="bg-surface-container-low/70 rounded-lg p-space-sm border border-surface-variant hover:border-outline-variant transition-colors flex items-center justify-between">
+<div class="flex items-start gap-space-sm flex-1 min-w-0 pr-2">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-body-lg" data-icon="egg_alt">egg_alt</span>
+</div>
+<div class="truncate">
+<div class="flex items-center gap-1.5">
+<h3 class="text-label-md font-label-md text-on-surface font-semibold truncate">Fresh Paneer</h3>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-normal">80g</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate">Pack cost: ₹90 for 200g</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<div class="text-right">
+<span class="text-label-sm font-label-sm block text-on-surface-variant">Plate Cost</span>
+<span class="text-label-lg font-label-lg text-primary font-bold">₹36.00</span>
+</div>
+<div class="flex items-center gap-0.5 text-outline">
+<button aria-label="Edit Fresh Paneer" class="p-1 hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="edit">edit</span>
+</button>
+<button aria-label="Delete Fresh Paneer" class="p-1 hover:text-error transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 3: Jumbo Bread -->
+<article class="bg-surface-container-low/70 rounded-lg p-space-sm border border-surface-variant hover:border-outline-variant transition-colors flex items-center justify-between">
+<div class="flex items-start gap-space-sm flex-1 min-w-0 pr-2">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-body-lg" data-icon="bakery_dining">bakery_dining</span>
+</div>
+<div class="truncate">
+<div class="flex items-center gap-1.5">
+<h3 class="text-label-md font-label-md text-on-surface font-semibold truncate">Jumbo Bread</h3>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-normal">2 slices</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate">Loaf cost: ₹45 for 18 slices</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<div class="text-right">
+<span class="text-label-sm font-label-sm block text-on-surface-variant">Plate Cost</span>
+<span class="text-label-lg font-label-lg text-primary font-bold">₹5.00</span>
+</div>
+<div class="flex items-center gap-0.5 text-outline">
+<button aria-label="Edit Jumbo Bread" class="p-1 hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="edit">edit</span>
+</button>
+<button aria-label="Delete Jumbo Bread" class="p-1 hover:text-error transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 4: Makhani Sauce & Spices -->
+<article class="bg-surface-container-low/70 rounded-lg p-space-sm border border-surface-variant hover:border-outline-variant transition-colors flex items-center justify-between">
+<div class="flex items-start gap-space-sm flex-1 min-w-0 pr-2">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-body-lg" data-icon="soup_kitchen">soup_kitchen</span>
+</div>
+<div class="truncate">
+<div class="flex items-center gap-1.5">
+<h3 class="text-label-md font-label-md text-on-surface font-semibold truncate">Makhani Sauce &amp; Spices</h3>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-normal">Pre-batch</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate">In-house batch</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<div class="text-right">
+<span class="text-label-sm font-label-sm block text-on-surface-variant">Plate Cost</span>
+<span class="text-label-lg font-label-lg text-primary font-bold">₹9.50</span>
+</div>
+<div class="flex items-center gap-0.5 text-outline">
+<button aria-label="Edit Makhani Sauce" class="p-1 hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="edit">edit</span>
+</button>
+<button aria-label="Delete Makhani Sauce" class="p-1 hover:text-error transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 5: Packaging / Garnish -->
+<article class="bg-surface-container-low/70 rounded-lg p-space-sm border border-surface-variant hover:border-outline-variant transition-colors flex items-center justify-between">
+<div class="flex items-start gap-space-sm flex-1 min-w-0 pr-2">
+<div class="w-8 h-8 rounded bg-surface-container flex items-center justify-center shrink-0 text-primary">
+<span class="material-symbols-outlined text-body-lg" data-icon="takeout_dining">takeout_dining</span>
+</div>
+<div class="truncate">
+<div class="flex items-center gap-1.5">
+<h3 class="text-label-md font-label-md text-on-surface font-semibold truncate">Packaging / Garnish</h3>
+<span class="text-label-sm font-label-sm px-1.5 py-0.2 rounded bg-surface-container-high text-on-surface-variant font-normal">Per serve</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant truncate">Mint chutney, foil</p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<div class="text-right">
+<span class="text-label-sm font-label-sm block text-on-surface-variant">Plate Cost</span>
+<span class="text-label-lg font-label-lg text-primary font-bold">₹4.50</span>
+</div>
+<div class="flex items-center gap-0.5 text-outline">
+<button aria-label="Edit Packaging" class="p-1 hover:text-primary transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="edit">edit</span>
+</button>
+<button aria-label="Delete Packaging" class="p-1 hover:text-error transition-colors" type="button">
+<span class="material-symbols-outlined text-body-md" data-icon="delete">delete</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+<!-- Add Ingredient Button -->
+<button class="w-full mt-space-md py-3 px-space-md border-2 border-dashed border-outline-variant hover:border-primary-container rounded-lg text-primary font-label-lg text-label-lg flex items-center justify-center gap-2 hover:bg-surface-container transition-all active:scale-95" type="button">
+<span class="material-symbols-outlined text-body-lg" data-icon="add_circle">add_circle</span>
+<span>+ Add Ingredient</span>
+</button>
+</section>
+<!-- STEP 3: Real-Time Cost & Pricing Recommender -->
+<section class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(15,92,92,0.05),0_1px_3px_0_rgba(0,0,0,0.03)] border border-surface-variant">
+<div class="flex items-center justify-between pb-space-sm border-b border-surface-variant/60 mb-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="w-5 h-5 rounded-full bg-primary-container text-on-primary text-label-sm font-label-sm flex items-center justify-center">3</span>
+<h2 class="text-label-lg font-label-lg text-primary">Cost &amp; Pricing Recommender</h2>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Instant Math</span>
+</div>
+<!-- Total Cost per Plate Callout Strip -->
+<div class="rounded-lg bg-surface-container-low p-space-md flex items-center justify-between mb-space-md border border-surface-variant">
+<div>
+<span class="text-label-md font-label-md text-on-surface-variant block">Total Cost per Plate</span>
+<span class="text-body-sm font-body-sm text-outline">Sum of 5 ingredient yields</span>
+</div>
+<div class="text-right">
+<span class="text-currency-display font-currency-display text-primary block leading-tight">₹69.00</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Fixed Raw Cost</span>
+</div>
+</div>
+<!-- Margin Ratio Bar (Visual Feedback) -->
+<div class="space-y-1.5 mb-space-md">
+<div class="flex justify-between items-center text-label-sm font-label-sm">
+<span class="text-primary font-semibold">Recommended Target Margin</span>
+<span class="text-on-surface-variant">65% profit / 35% food cost</span>
+</div>
+<div class="h-2.5 w-full bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-secondary-container h-full w-[35%]" title="Food Cost (35%)"></div>
+<div class="bg-primary-container h-full w-[65%]" title="Gross Profit (65%)"></div>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm text-on-surface-variant pt-0.5">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary-container inline-block"></span> Raw cost 35%</span>
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary-container inline-block"></span> Net margin 65%</span>
+</div>
+</div>
+<!-- Suggested Selling Price Selector -->
+<div class="bg-surface-container-low/50 rounded-lg p-space-md border border-surface-variant space-y-space-md">
+<div>
+<div class="flex items-baseline justify-between mb-1">
+<span class="text-label-md font-label-md text-on-surface">Suggested Selling Price</span>
+<span class="text-headline-md font-headline-md text-primary font-bold" id="selected-price">₹199</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Generates <strong class="text-on-surface font-semibold" id="profit-calc">₹130 Profit</strong> per plate (Classifies as STAR if sold &gt; 200/mo)
+          </p>
+</div>
+<!-- Slider -->
+<div class="space-y-2">
+<input class="w-full h-2 bg-surface-container rounded-lg appearance-none cursor-pointer accent-primary-container" id="price-slider" max="230" min="170" step="1" type="range" value="199"/>
+<!-- Quick Price Segmented Toggles -->
+<div class="grid grid-cols-3 gap-space-xs pt-1">
+<button class="py-1.5 text-label-md font-label-md rounded border border-surface-variant bg-surface-container-lowest text-on-surface hover:border-primary-container transition-all" onclick="setPrice(180)" type="button">
+              ₹180 <span class="block text-label-sm font-normal text-on-surface-variant">62% margin</span>
+</button>
+<button class="py-1.5 text-label-md font-label-md rounded border-2 border-primary-container bg-primary-container/10 text-primary font-bold transition-all shadow-sm" onclick="setPrice(199)" type="button">
+              ₹199 <span class="block text-label-sm font-label-sm text-primary">Best Match</span>
+</button>
+<button class="py-1.5 text-label-md font-label-md rounded border border-surface-variant bg-surface-container-lowest text-on-surface hover:border-primary-container transition-all" onclick="setPrice(220)" type="button">
+              ₹220 <span class="block text-label-sm font-normal text-on-surface-variant">69% margin</span>
+</button>
+</div>
+</div>
+<!-- Live Matrix Anticipation Pill Badge -->
+<div class="pt-space-xs flex items-center justify-between border-t border-surface-variant">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Live Profit Matrix:</span>
+<!-- Pill Badge: Star (#DCFCE7 bg, #15803D border/dot/text) -->
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#DCFCE7] border border-[#15803D]/30 text-[#15803D] text-label-sm font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
+<span>STAR - Keep &amp; promote</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Actions Sticky Deck -->
+<section class="space-y-space-sm pt-space-xs">
+<button class="w-full py-3.5 px-space-md rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg shadow-sm hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-body-lg" data-icon="check_circle">check_circle</span>
+<span>Save Dish &amp; Add to Menu</span>
+</button>
+<button class="w-full py-3 px-space-md rounded-lg border-[1.5px] border-primary-container text-primary font-label-lg text-label-lg hover:bg-surface-container transition-colors active:scale-95" type="button">
+        Save as Draft
+      </button>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Shared Components JSON Anchor) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] md:hidden">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-body-lg" data-icon="dashboard">dashboard</span>
+<span class="text-label-sm font-label-sm">Dashboard</span>
+</a>
+<!-- Dishes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-body-lg" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="text-label-sm font-label-sm">Dishes</span>
+</a>
+<!-- Add (Active Destination for 'Add Recipe' screen) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-body-lg" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="text-label-sm font-label-sm">Add</span>
+</a>
+<!-- Simulator -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-body-lg" data-icon="calculate">calculate</span>
+<span class="text-label-sm font-label-sm">Simulator</span>
+</a>
+<!-- Menu Layout -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-body-lg" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm">Menu Layout</span>
+</a>
+</nav>
+<!-- Interactive Price Slider Script -->
+<script>
+    const slider = document.getElementById('price-slider');
+    const priceDisplay = document.getElementById('selected-price');
+    const profitCalc = document.getElementById('profit-calc');
+    const foodCost = 69.00;
+
+    function updateCalculations(price) {
+      priceDisplay.innerText = '₹' + price;
+      const profit = price - foodCost;
+      profitCalc.innerText = '₹' + Math.round(profit) + ' Profit';
+      slider.value = price;
+    }
+
+    slider.addEventListener('input', (e) => {
+      updateCalculations(e.target.value);
+    });
+
+    window.setPrice = function(val) {
+      updateCalculations(val);
+    };
+  </script>
+</body></html>

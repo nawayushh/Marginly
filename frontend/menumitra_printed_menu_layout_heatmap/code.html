@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background text-on-surface" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Menu Layout &amp; Engineering | MenuMitra PRO</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,600;0,700;1,600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with custom config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed-variant": "#6c391f",
+            "on-surface": "#1b1c1a",
+            "inverse-primary": "#90d2d1",
+            "secondary": "#825500",
+            "inverse-on-surface": "#f2f0ed",
+            "surface-container-high": "#eae8e5",
+            "on-primary-fixed-variant": "#004f50",
+            "tertiary-fixed-dim": "#ffb693",
+            "on-background": "#1b1c1a",
+            "inverse-surface": "#30312f",
+            "on-surface-variant": "#3f4948",
+            "tertiary": "#5e2f16",
+            "on-error-container": "#93000a",
+            "on-error": "#ffffff",
+            "surface-container": "#efeeeb",
+            "on-secondary-fixed-variant": "#633f00",
+            "secondary-fixed": "#ffddb3",
+            "on-tertiary-container": "#ffb693",
+            "background": "#fbf9f6",
+            "surface-container-highest": "#e4e2df",
+            "primary-container": "#0f5c5c",
+            "on-primary-container": "#90d2d1",
+            "on-primary-fixed": "#002020",
+            "surface": "#fbf9f6",
+            "primary-fixed": "#aceeee",
+            "secondary-container": "#fdab12",
+            "tertiary-container": "#7a452a",
+            "surface-container-low": "#f5f3f0",
+            "error-container": "#ffdad6",
+            "surface-bright": "#fbf9f6",
+            "surface-tint": "#216868",
+            "on-secondary-fixed": "#291800",
+            "surface-dim": "#dbdad7",
+            "tertiary-fixed": "#ffdbcc",
+            "on-primary": "#ffffff",
+            "outline": "#6f7978",
+            "on-secondary-container": "#684300",
+            "secondary-fixed-dim": "#ffb951",
+            "outline-variant": "#bfc8c8",
+            "on-tertiary": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#004343",
+            "primary-fixed-dim": "#90d2d1",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed": "#351000",
+            "surface-variant": "#e4e2df"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "gutter-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "currency-display": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "serif": ["'Playfair Display'", "serif"]
+          },
+          "fontSize": {
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "currency-display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #bfc8c8;
+      border-radius: 9999px;
+    }
+    .crease-gradient {
+      background: linear-gradient(90deg, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.18) 48%, rgba(0,0,0,0.24) 50%, rgba(0,0,0,0.12) 53%, rgba(0,0,0,0.02) 100%);
+    }
+    .paper-texture {
+      background-color: #FAF7F2;
+      background-image: radial-gradient(#E8E2D8 0.75px, transparent 0.75px);
+      background-size: 16px 16px;
+    }
+    .table-mat {
+      background: #D8D2C5;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+  </style>
+</head>
+<body class="min-h-full flex flex-col font-body-md text-body-md bg-background antialiased selection:bg-primary selection:text-on-primary">
+<!-- TOP APP BAR -->
+<header class="bg-surface sticky top-0 z-40 shadow-sm border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-margin py-space-sm h-16 max-w-[1600px] mx-auto">
+<!-- Brand & Outlet Selector -->
+<div class="flex items-center gap-space-lg">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="restaurant_menu">restaurant_menu</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-md text-headline-md text-primary tracking-tight font-bold">MenuMitra</span>
+<span class="bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold px-1.5 py-0.5 rounded">PRO</span>
+</div>
+<p class="text-[11px] text-on-surface-variant font-medium leading-tight">Know which dishes make you money</p>
+</div>
+</div>
+<div class="h-6 w-px bg-outline-variant/40 hidden md:block"></div>
+<!-- Outlet Switcher Dropdown -->
+<div class="hidden lg:flex items-center">
+<button class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline-variant/40 transition-colors text-left group">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="storefront">storefront</span>
+<div>
+<span class="block text-label-sm font-label-sm text-on-surface font-semibold group-hover:text-primary">Café Doon Brew, Rajpur Rd</span>
+<span class="block text-[10px] text-on-surface-variant">Dehradun Outlet #1</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] ml-1" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden xl:flex items-center gap-1 text-label-md font-label-md">
+<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Dashboard</a>
+<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Dishes &amp; Recipes</a>
+<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Add Recipe</a>
+<a class="px-3 py-2 rounded-lg bg-primary-container/10 text-primary font-bold border-b-2 border-primary" href="#">Menu Layout</a>
+<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Price Alerts</a>
+<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">What-If Simulator</a>
+<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Reports</a>
+</nav>
+<!-- Right Actions: Language, Notification, Owner Profile -->
+<div class="flex items-center gap-3">
+<!-- Language Toggle -->
+<div class="flex items-center bg-surface-container-low border border-outline-variant/40 rounded-lg p-0.5 text-label-sm font-label-sm">
+<button class="px-2 py-1 rounded bg-surface-container-lowest font-bold text-primary shadow-xs">EN</button>
+<button class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors">हिं</button>
+</div>
+<!-- Notifications -->
+<button aria-label="Notifications" class="relative w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-on-error text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/40"></div>
+<!-- Owner Profile -->
+<div class="flex items-center gap-2.5 pl-1">
+<div class="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm">
+            VA
+          </div>
+<div class="hidden sm:block text-left">
+<span class="block text-label-sm font-label-sm text-on-surface leading-tight">Vikram Anand</span>
+<span class="block text-[10px] text-on-surface-variant leading-tight">Owner &amp; Head Chef</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- SUBHEADER / ACTION BAR -->
+<section class="bg-surface border-b border-outline-variant/30">
+<div class="max-w-[1600px] mx-auto px-margin py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<!-- Breadcrumbs & Title -->
+<div>
+<nav class="flex items-center gap-1.5 text-body-sm font-body-sm text-on-surface-variant mb-1">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Menu Engineering</a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-medium">Printed Menu Layout</span>
+</nav>
+<div class="flex items-center gap-3">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">Menu Layout &amp; Engineering (A4 Bi-Fold Print)</h1>
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+            Estimated +4.2% avg profit per cover (+₹14,800/mo)
+          </span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+          Arrange dishes using visual psychology and eye-tracking science to guide diners toward your high-margin dishes.
+        </p>
+</div>
+<!-- Controls & Download Action -->
+<div class="flex flex-wrap items-center gap-2.5">
+<!-- Heatmap Toggle -->
+<button class="flex items-center gap-2 px-3 py-2 bg-amber-50 hover:bg-amber-100/80 text-amber-900 border border-amber-300 rounded-lg text-label-sm font-label-sm font-bold shadow-xs transition-colors" id="heatmap-toggle">
+<span class="material-symbols-outlined text-[18px] text-amber-600" data-icon="visibility">visibility</span>
+<span>Eye-Tracking Heatmap: <strong class="text-amber-800">ON (Golden Triangle)</strong></span>
+<span class="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+</button>
+<!-- Zoom & View controls -->
+<div class="flex items-center bg-surface-container-low border border-outline-variant/40 rounded-lg p-0.5 text-label-sm font-label-sm">
+<button class="px-2.5 py-1.5 rounded hover:bg-surface-container text-on-surface-variant flex items-center gap-1" title="Zoom Fit">
+<span class="material-symbols-outlined text-[16px]" data-icon="fit_screen">fit_screen</span>
+<span class="hidden sm:inline">Fit (85%)</span>
+</button>
+<div class="h-4 w-px bg-outline-variant/40"></div>
+<button class="px-2.5 py-1.5 rounded bg-surface-container-lowest font-semibold text-primary shadow-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="menu_book">menu_book</span>
+<span>Bi-Fold Spread</span>
+</button>
+</div>
+<!-- Download PDF CTA -->
+<button class="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/95 text-on-primary rounded-lg text-label-md font-label-md font-semibold shadow-sm transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+<span>Download Print Ready PDF (CMYK)</span>
+</button>
+</div>
+</div>
+</section>
+<!-- MAIN TWO-COLUMN WORKSPACE -->
+<main class="flex-1 max-w-[1600px] w-full mx-auto px-margin py-6">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT AREA (62% width ~ col-span-7 or 8): Interactive Printed Menu Mockup -->
+<section class="lg:col-span-7 xl:col-span-8 flex flex-col gap-3">
+<!-- Canvas Status & Neuro Legend Bar -->
+<div class="bg-surface-container-lowest rounded-xl p-3 border border-outline-variant/40 flex flex-wrap items-center justify-between gap-2 shadow-xs">
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="psychology">psychology</span>
+<span><strong>Eye-tracking scanpath:</strong> Diners look <span class="text-rose-700 font-bold">1st Center of Left page</span>, then <span class="text-amber-700 font-bold">2nd Top-Right (Sweet Spot)</span>, then <span class="text-amber-800 font-bold">3rd Top-Left</span>.</span>
+</div>
+<div class="flex items-center gap-2 text-[11px] font-medium text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Star</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Plowhorse</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Puzzle</span>
+<span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Dog</span>
+</div>
+</div>
+<!-- Café Table Backdrop with Physical Menu Mockup -->
+<div class="table-mat p-5 sm:p-7 rounded-2xl shadow-inner border border-outline-variant/50 relative overflow-hidden">
+<!-- Subtle table surface decor -->
+<div class="absolute top-3 right-4 text-[11px] text-stone-500 font-serif italic tracking-wide select-none">
+            A4 Landscape Bi-Fold (300 DPI CMYK Print Simulation)
+          </div>
+<!-- The Bi-Fold Physical Menu Spread -->
+<div class="relative bg-[#FAF7F2] rounded-xl shadow-[0_20px_40px_-15px_rgba(30,30,30,0.35),0_0_0_1px_rgba(0,0,0,0.08)] border border-stone-300 overflow-hidden">
+<!-- Central Fold Shadow Spine Overlay -->
+<div class="absolute inset-y-0 left-1/2 -translate-x-1/2 w-8 pointer-events-none z-30 crease-gradient"></div>
+<!-- Grid for Left Page (Page 1) and Right Page (Page 2) -->
+<div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-stone-300/80 min-h-[660px]">
+<!-- ================= PAGE 1 (LEFT PAGE) ================= -->
+<div class="p-6 relative flex flex-col justify-between paper-texture">
+<!-- Page Top Header -->
+<div class="border-b-2 border-stone-800 pb-2 mb-4 text-center">
+<span class="text-[10px] tracking-[0.25em] uppercase text-stone-500 font-semibold block">Café Doon Brew • Dehradun</span>
+<h2 class="font-serif text-2xl font-bold text-stone-900 tracking-tight">Artisan Café &amp; Bakery</h2>
+<span class="text-[10px] italic text-stone-600">Fresh Mountain Bakes &amp; Specialty Roasts</span>
+</div>
+<!-- ZONE 1: Top-Left (3rd Eye Stop: First look section) -->
+<div class="relative rounded-lg p-3 bg-amber-500/10 border-2 border-dashed border-amber-400 mb-4 transition-all">
+<!-- Golden Triangle Heatmap Pill Tag -->
+<div class="absolute -top-3 left-3 bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm flex items-center gap-1 z-20">
+<span>👀 3rd Eye Stop: First look section</span>
+</div>
+<div class="flex items-center justify-between border-b border-stone-300 pb-1 mb-2.5">
+<h3 class="font-serif text-sm font-bold tracking-wider uppercase text-stone-800">Beverages (Cold &amp; Hot)</h3>
+<span class="text-[10px] text-stone-500">100% Arabica Beans</span>
+</div>
+<!-- Dishes in Zone 1 -->
+<div class="space-y-2">
+<!-- Cold Coffee -->
+<div class="bg-white/90 p-2 rounded border border-amber-200 shadow-xs hover:border-amber-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px] cursor-grab" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Cold Coffee</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-800 border border-amber-300">PLOWHORSE</span>
+</div>
+<p class="text-[10px] text-stone-500">Chilled espresso blend with creamy whole milk</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹140</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹44 profit</span>
+</div>
+</div>
+<!-- Mango Smoothie -->
+<div class="bg-white/90 p-2 rounded border border-amber-200 shadow-xs hover:border-amber-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Mango Smoothie</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-amber-100 text-amber-800 border border-amber-300">PLOWHORSE</span>
+</div>
+<p class="text-[10px] text-stone-500">Alphonso pulp, Greek yogurt, mint sprig</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹150</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹32 profit</span>
+</div>
+</div>
+<!-- Masala Chai -->
+<div class="bg-white/90 p-2 rounded border border-emerald-300 shadow-xs hover:border-emerald-500 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Masala Chai</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">STAR</span>
+</div>
+<p class="text-[10px] text-stone-500">Hand-crushed ginger, cardamom, hill tea</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹50</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹38 profit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ZONE 2: Page Center (1st Natural Eye Fixation / Diner Sweet Spot) -->
+<div class="relative rounded-xl p-3.5 bg-rose-500/10 border-2 border-rose-500 shadow-sm transition-all mb-2">
+<!-- Golden Triangle Heatmap Pill Tag -->
+<div class="absolute -top-3.5 left-3 bg-rose-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded shadow-sm flex items-center gap-1 z-20">
+<span>🎯 1st Eye Fixation (Diner Sweet Spot)</span>
+</div>
+<div class="flex items-center justify-between border-b border-rose-200 pb-1 mb-2">
+<h3 class="font-serif text-sm font-bold tracking-wider uppercase text-stone-900">Snacks &amp; Starters</h3>
+<span class="text-[10px] text-rose-700 font-semibold">Highest Dwell Time</span>
+</div>
+<div class="space-y-2">
+<!-- Chicken Momos (STAR with boxed highlight) -->
+<div class="bg-white p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/30 shadow-sm relative group cursor-grab">
+<span class="absolute -top-2 right-2 bg-emerald-700 text-white text-[8px] font-bold px-1.5 py-0.2 rounded uppercase tracking-wider">Boxed Highlight applied</span>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-xs text-stone-900">Chicken Momos (6 pcs)</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">STAR</span>
+</div>
+<p class="text-[10px] text-stone-600">Steamed Himalayan dumplings with fiery red chili dip</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹160</span>
+<span class="block text-[9px] text-emerald-700 font-bold">₹102 profit</span>
+</div>
+</div>
+</div>
+<!-- Cheese Garlic Bread -->
+<div class="bg-white/90 p-2 rounded border border-blue-200 shadow-xs hover:border-blue-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Cheese Garlic Bread</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-blue-100 text-blue-800 border border-blue-300">PUZZLE</span>
+</div>
+<p class="text-[10px] text-stone-500">Warm baguette, roasted garlic herb butter, cheddar</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹180</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹109 profit</span>
+</div>
+</div>
+<!-- Masala Maggi -->
+<div class="bg-white/90 p-2 rounded border border-emerald-200 shadow-xs hover:border-emerald-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Masala Maggi</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">STAR</span>
+</div>
+<p class="text-[10px] text-stone-500">Butter-tossed noodles with chopped valley peppers</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹90</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹62 profit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Page 1 Bottom Footer -->
+<div class="text-center pt-2 border-t border-stone-200 text-[10px] text-stone-400">
+                  Page 1 • All prices subject to 5% GST
+                </div>
+</div>
+<!-- ================= PAGE 2 (RIGHT PAGE) ================= -->
+<div class="p-6 relative flex flex-col justify-between paper-texture">
+<!-- Page Top Header -->
+<div class="border-b-2 border-stone-800 pb-2 mb-4 text-center">
+<span class="text-[10px] tracking-[0.25em] uppercase text-stone-500 font-semibold block">Chef's Gourmet Selection</span>
+<h2 class="font-serif text-2xl font-bold text-stone-900 tracking-tight">Main Hearth &amp; Oven</h2>
+<span class="text-[10px] italic text-stone-600">Clay Oven Roasts, Biryanis &amp; Sweet Endings</span>
+</div>
+<!-- ZONE 3: Top-Right (2nd Eye Stop: Highest Margin Zone - Prime Real Estate) -->
+<div class="relative rounded-xl p-3.5 bg-amber-500/10 border-2 border-amber-500 shadow-sm transition-all mb-4">
+<!-- Golden Triangle Heatmap Pill Tag -->
+<div class="absolute -top-3.5 left-3 bg-amber-600 text-white text-[10px] font-bold px-2.5 py-0.5 rounded shadow-sm flex items-center gap-1 z-20">
+<span>👑 2nd Eye Stop (Highest Margin Zone - Place Puzzles here!)</span>
+</div>
+<div class="flex items-center justify-between border-b border-amber-200 pb-1 mb-2.5">
+<h3 class="font-serif text-sm font-bold tracking-wider uppercase text-stone-900">Mains &amp; Oven Bakes</h3>
+<span class="text-[10px] text-amber-800 font-semibold">Prime Revenue Area</span>
+</div>
+<div class="space-y-2">
+<!-- PROMOTED DISH: Paneer Tikka Pizza -->
+<div class="bg-white p-2.5 rounded-lg border-2 border-blue-500 bg-blue-50/20 shadow-sm relative group cursor-grab">
+<span class="absolute -top-2 right-2 bg-blue-700 text-white text-[8px] font-bold px-1.5 py-0.2 rounded uppercase tracking-wider">Promoted from bottom of Page 2!</span>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-xs text-stone-900">Paneer Tikka Pizza (10")</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-blue-100 text-blue-800 border border-blue-300">PUZZLE</span>
+</div>
+<p class="text-[10px] text-stone-600">Smoky tandoori paneer, creamy mozzarella, hand-stretched wood-fired crust</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹260</span>
+<span class="block text-[9px] text-emerald-700 font-bold">₹168 profit</span>
+</div>
+</div>
+</div>
+<!-- Butter Chicken Bowl -->
+<div class="bg-white/90 p-2 rounded border border-emerald-200 shadow-xs hover:border-emerald-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Butter Chicken Bowl</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">STAR</span>
+</div>
+<p class="text-[10px] text-stone-500">Rich tomato makhani, tender tikka strips, jeera rice</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹320</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹180 profit</span>
+</div>
+</div>
+<!-- Dal Makhani Platter -->
+<div class="bg-white/90 p-2 rounded border border-emerald-200 shadow-xs hover:border-emerald-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Dal Makhani Platter</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">STAR</span>
+</div>
+<p class="text-[10px] text-stone-500">Slow cooked for 16 hours on charcoal, chur-chur naan</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹240</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹145 profit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Page 2 Lower Area: Traditional Specialties & Desserts -->
+<div class="relative rounded-lg p-3 bg-stone-100/80 border border-stone-300 mb-2">
+<div class="flex items-center justify-between border-b border-stone-300 pb-1 mb-2">
+<h3 class="font-serif text-sm font-bold tracking-wider uppercase text-stone-800">Specialties &amp; Desserts</h3>
+<span class="text-[10px] text-stone-500">Sweet Endings</span>
+</div>
+<div class="space-y-2">
+<!-- Signature Himalayan Thali (DOG with unaligned price) -->
+<div class="bg-white/90 p-2 rounded border border-rose-200 shadow-xs hover:border-rose-300 transition-colors group cursor-grab">
+<div class="flex items-start justify-between">
+<div class="flex items-start gap-1.5 flex-1">
+<span class="material-symbols-outlined text-stone-400 text-[14px] mt-0.5" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Signature Himalayan Thali</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-rose-100 text-rose-800 border border-rose-300">DOG</span>
+</div>
+<p class="text-[10px] text-stone-600 leading-relaxed">
+                              Pahadi kaphli, jakhiya aloo, mandua roti, local red rice &amp; hemp chutney <strong class="text-stone-900 font-bold ml-1">₹420</strong>
+</p>
+<span class="text-[9px] text-amber-700 font-medium">⚡ Price embedded in description (de-emphasized)</span>
+</div>
+</div>
+<div class="text-right pl-2">
+<span class="block text-[9px] text-emerald-700 font-medium">₹155 profit</span>
+</div>
+</div>
+</div>
+<!-- Chocolate Brownie with Ice Cream -->
+<div class="bg-white/90 p-2 rounded border border-blue-200 shadow-xs hover:border-blue-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Chocolate Brownie with Ice Cream</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-blue-100 text-blue-800 border border-blue-300">PUZZLE</span>
+</div>
+<p class="text-[10px] text-stone-500">Warm Belgian fudge brownie, Tahitian vanilla scoop</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹180</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹115 profit</span>
+</div>
+</div>
+<!-- Fruit Tart -->
+<div class="bg-white/90 p-2 rounded border border-rose-200 shadow-xs hover:border-rose-400 transition-colors flex items-center justify-between group cursor-grab">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-stone-400 text-[14px]" data-icon="drag_indicator">drag_indicator</span>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-semibold text-xs text-stone-900">Seasonal Fruit Tart</span>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[9px] font-bold bg-rose-100 text-rose-800 border border-rose-300">DOG</span>
+</div>
+<p class="text-[10px] text-stone-500">Shortcrust pastry with vanilla pastry cream</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-bold text-xs text-stone-900">₹120</span>
+<span class="block text-[9px] text-emerald-700 font-medium">₹18 profit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Page 2 Bottom Footer -->
+<div class="text-center pt-2 border-t border-stone-200 text-[10px] text-stone-400">
+                  Page 2 • Café Doon Brew • Rajpur Road, Dehradun
+                </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Drag affordance bar -->
+<div class="flex items-center justify-center gap-2 py-2 text-label-sm font-label-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-base" data-icon="drag_pan">drag_pan</span>
+<span>Drag any dish tile to reposition on physical menu • Visual layout automatically balances spacing</span>
+</div>
+</section>
+<!-- RIGHT PANEL (38% width ~ col-span-5 or 4): AI Psychology Layout Optimizer & Description Writer -->
+<section class="lg:col-span-5 xl:col-span-4 flex flex-col gap-5">
+<!-- CARD 1: AI Layout Suggestions (Neuro-Menu Engineering) -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30 mb-4">
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="auto_awesome">auto_awesome</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight">AI Layout Suggestions</h2>
+<p class="text-[11px] text-on-surface-variant font-medium">Neuro-Menu Engineering rules applied</p>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300">
+              3 Science-Backed
+            </span>
+</div>
+<!-- Suggestions List -->
+<div class="space-y-3.5">
+<!-- Suggestion 1 -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50 hover:border-primary/40 transition-colors">
+<div class="flex items-start justify-between gap-2 mb-1.5">
+<div class="flex-1">
+<h3 class="text-label-lg font-label-lg text-on-surface font-bold leading-snug">
+                    Move Paneer Tikka Pizza to Top-Right Sweet Spot
+                  </h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-300">PUZZLE 🔵</span>
+<span class="text-[11px] font-bold text-emerald-700">₹168 profit per plate</span>
+</div>
+</div>
+<!-- Toggle switch -->
+<button class="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold shadow-xs">
+<span>Applied</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+</button>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+                It earns ₹168 profit (your 2nd highest margin) but was buried on the lower fold. Moving it to the 2nd eye stop boosts orders by up to 28% without discounting.
+              </p>
+</div>
+<!-- Suggestion 2 -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50 hover:border-primary/40 transition-colors">
+<div class="flex items-start justify-between gap-2 mb-1.5">
+<div class="flex-1">
+<h3 class="text-label-lg font-label-lg text-on-surface font-bold leading-snug">
+                    Remove Price Column Alignment for Dogs
+                  </h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-300">DOG 🔴</span>
+<span class="text-[11px] text-on-surface-variant">Signature Himalayan Thali</span>
+</div>
+</div>
+<!-- Toggle switch -->
+<button class="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold shadow-xs">
+<span>Applied</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+</button>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+                Right-aligned dotted price columns encourage diners to price-shop cheapest to highest. Tucking ₹420 right after the description prevents sticker shock.
+              </p>
+</div>
+<!-- Suggestion 3 -->
+<div class="p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/50 hover:border-primary/40 transition-colors">
+<div class="flex items-start justify-between gap-2 mb-1.5">
+<div class="flex-1">
+<h3 class="text-label-lg font-label-lg text-on-surface font-bold leading-snug">
+                    Highlight Chicken Momos with an Eye-Magnet Box
+                  </h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">STAR 🟢</span>
+<span class="text-[11px] font-bold text-emerald-700">₹102 profit per plate</span>
+</div>
+</div>
+<!-- Toggle switch -->
+<button class="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-[11px] font-bold shadow-xs">
+<span>Applied</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+</button>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+                Drawn boxes increase visual dwell time by 3.4x. Boxing your highest volume Star captures maximum diner appetite and anchors perception.
+              </p>
+</div>
+</div>
+</div>
+<!-- CARD 2: AI Sensory Menu Description Writer -->
+<div class="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/40 shadow-sm">
+<div class="pb-3 border-b border-outline-variant/30 mb-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit_note">edit_note</span>
+</span>
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">AI Sensory Description Writer</h2>
+<p class="text-[11px] text-on-surface-variant font-medium">Bilingual appetite copywriting engine</p>
+</div>
+</div>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Sensory, appetite-inducing descriptions increase dish order frequency by up to 18%.
+            </p>
+</div>
+<!-- Dish dropdown selector -->
+<div class="mb-4">
+<label class="block text-label-sm font-label-sm text-on-surface-variant mb-1 font-semibold">Select Dish to Optimize:</label>
+<div class="relative">
+<select class="w-full bg-surface-container-low border border-outline-variant/50 rounded-lg px-3 py-2 text-label-md font-label-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary pr-8 appearance-none cursor-pointer">
+<option selected="">Paneer Tikka Pizza (Puzzle • ₹168 profit)</option>
+<option>Chicken Momos (Star • ₹102 profit)</option>
+<option>Signature Himalayan Thali (Dog • ₹155 profit)</option>
+<option>Cheese Garlic Bread (Puzzle • ₹109 profit)</option>
+</select>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant absolute right-2.5 top-2.5 pointer-events-none" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+<!-- Rewrite Button -->
+<button class="w-full mb-4 flex items-center justify-center gap-2 px-4 py-2.5 bg-secondary-container/20 hover:bg-secondary-container/30 text-secondary border border-secondary-container rounded-lg font-label-md text-label-md font-bold transition-all shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+<span>✨ Rewrite Description (Sensory &amp; Emotional)</span>
+</button>
+<!-- Output Card with Dual English & Hindi tabs -->
+<div class="bg-surface-container-low rounded-xl p-3.5 border border-outline-variant/50">
+<!-- Language Tab Headers -->
+<div class="flex items-center justify-between border-b border-outline-variant/30 pb-2 mb-2.5">
+<div class="flex items-center gap-2">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-primary font-bold text-label-sm shadow-xs border border-outline-variant/40">
+                  English
+                </button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-semibold text-label-sm">
+                  हिन्दी (Hindi)
+                </button>
+</div>
+<span class="text-[10px] text-emerald-800 font-bold bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded-full">
+                Appetite score: 94/100
+              </span>
+</div>
+<!-- English text block -->
+<div class="mb-3">
+<p class="text-body-sm font-body-sm text-on-surface font-medium italic leading-relaxed bg-surface-container-lowest p-2.5 rounded-lg border border-outline-variant/30">
+                “Smoky char-grilled tandoori paneer, creamy mozzarella, hand-stretched crust fresh from our wood-fired clay oven.”
+              </p>
+</div>
+<!-- Hindi preview translation snippet -->
+<div class="mb-3 p-2 rounded-lg bg-surface-container-lowest/60 border border-outline-variant/20 text-xs text-on-surface-variant font-normal">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant/70 block mb-0.5">Hindi Menu Translation:</span>
+              “तंदूर में भुना हुआ स्मोकी पनीर, मेल्टेड मोज़ेरेला और ताज़ा हैंड-स्ट्रेच्ड क्रस्ट।”
+            </div>
+<!-- Readability & Appetite Stats -->
+<div class="flex items-center justify-between text-[11px] text-on-surface-variant mb-3 px-1">
+<span>Readability: <strong>Grade 6 (Accessible)</strong></span>
+<span>Sensory words: <strong>5 (Smoky, Char-grilled...)</strong></span>
+</div>
+<!-- Insert Button -->
+<button class="w-full py-2 bg-primary hover:bg-primary/95 text-on-primary rounded-lg text-label-sm font-label-sm font-bold flex items-center justify-center gap-1.5 transition-transform active:scale-95 shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="playlist_add_check">playlist_add_check</span>
+<span>Insert into Menu Layout</span>
+</button>
+</div>
+</div>
+<!-- FOOTER ACTION BAR / SUMMARY CARD -->
+<div class="bg-surface-container-low rounded-2xl p-4 border border-outline-variant/40 flex flex-col gap-3 shadow-xs">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="flex items-center gap-1.5 text-emerald-800 font-semibold">
+<span class="material-symbols-outlined text-emerald-700 text-[18px]" data-icon="sync">sync</span>
+              Changes auto-sync with POS QR Digital Menu
+            </span>
+<button class="text-on-surface-variant hover:text-error text-xs font-semibold underline underline-offset-2 transition-colors">
+              Reset to Original Menu
+            </button>
+</div>
+<div class="flex items-center justify-between gap-3 pt-2 border-t border-outline-variant/30">
+<div class="text-[11px] text-on-surface-variant">
+<span>Print specs:</span>
+<strong class="text-on-surface"> ~2.4 MB CMYK Print Ready PDF</strong>
+</div>
+<button class="px-4 py-2 bg-primary hover:bg-primary/95 text-on-primary rounded-lg text-label-sm font-label-sm font-bold flex items-center gap-1.5 shadow-sm transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[16px]" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span>Download Menu Preview</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Interactive script for Heatmap Toggle & Tabs -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const heatmapBtn = document.getElementById('heatmap-toggle');
+      let heatmapActive = true;
+
+      heatmapBtn?.addEventListener('click', () => {
+        heatmapActive = !heatmapActive;
+        const zones = document.querySelectorAll('.bg-amber-500\\/10, .bg-rose-500\\/10');
+        const tags = document.querySelectorAll('.z-20');
+        
+        if (heatmapActive) {
+          heatmapBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[18px] text-amber-600" data-icon="visibility">visibility</span>
+            <span>Eye-Tracking Heatmap: <strong class="text-amber-800">ON (Golden Triangle)</strong></span>
+            <span class="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></span>
+          `;
+          zones.forEach(z => z.style.opacity = '1');
+          tags.forEach(t => t.style.display = 'flex');
+        } else {
+          heatmapBtn.innerHTML = `
+            <span class="material-symbols-outlined text-[18px] text-stone-500" data-icon="visibility_off">visibility_off</span>
+            <span>Eye-Tracking Heatmap: <strong class="text-stone-700">OFF (Clean View)</strong></span>
+            <span class="w-2 h-2 rounded-full bg-stone-400"></span>
+          `;
+          zones.forEach(z => z.style.opacity = '0.3');
+          tags.forEach(t => t.style.display = 'none');
+        }
+      });
+    });
+  </script>
+</body></html>

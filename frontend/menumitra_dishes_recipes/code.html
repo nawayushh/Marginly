@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background text-on-background" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Dishes &amp; Recipes | MenuMitra</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Font Family -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed": "#ffddb3",
+            "on-secondary-fixed-variant": "#633f00",
+            "inverse-surface": "#30312f",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-dim": "#dbdad7",
+            "surface-variant": "#e4e2df",
+            "on-background": "#1b1c1a",
+            "on-secondary-fixed": "#291800",
+            "surface-container-high": "#eae8e5",
+            "on-secondary": "#ffffff",
+            "background": "#fbf9f6",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#ffb693",
+            "surface": "#fbf9f6",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f2f0ed",
+            "tertiary-fixed-dim": "#ffb693",
+            "on-primary-fixed": "#002020",
+            "outline": "#6f7978",
+            "on-tertiary-fixed": "#351000",
+            "on-surface-variant": "#3f4948",
+            "secondary-fixed-dim": "#ffb951",
+            "surface-container-low": "#f5f3f0",
+            "primary-fixed": "#aceeee",
+            "surface-tint": "#216868",
+            "surface-container": "#efeeeb",
+            "secondary-container": "#fdab12",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#e4e2df",
+            "surface-bright": "#fbf9f6",
+            "outline-variant": "#bfc8c8",
+            "tertiary-fixed": "#ffdbcc",
+            "tertiary-container": "#7a452a",
+            "on-surface": "#1b1c1a",
+            "primary-container": "#0f5c5c",
+            "on-tertiary-fixed-variant": "#6c391f",
+            "primary": "#004343",
+            "secondary": "#825500",
+            "on-primary-fixed-variant": "#004f50",
+            "inverse-primary": "#90d2d1",
+            "on-error": "#ffffff",
+            "on-secondary-container": "#684300",
+            "on-primary-container": "#90d2d1",
+            "tertiary": "#5e2f16",
+            "primary-fixed-dim": "#90d2d1",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-sm": ["Inter"],
+            "currency-display": ["Inter"],
+            "label-md": ["Inter"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "currency-display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Material symbol font configuration */
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll-hidden::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll-hidden {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-full bg-background text-on-background antialiased flex flex-col pb-28">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<header class="sticky top-0 z-40 bg-surface shadow-sm">
+<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm h-16 max-w-7xl mx-auto">
+<!-- Leading: Avatar + Outlet Selector -->
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 ring-1 ring-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="Warm natural portrait of an Indian café owner wearing casual attire in a warmly lit modern artisan coffee shop with wooden counters and espresso machine in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwH-Z8_DlhML-7EgsJ0K70ZwrmThu_7dp2__h-DqoPT-CMecx_NHzcluCmZ0uxflvGRcesJM6u3F9ioOiSO_5Y3sGhbf2GNwzMvL4TpyfEF6FB7W-1VbZc0492HuMO3iuMG5CVO2H0ZBDcU484cfRE8xiBi96jqe7ZNCyBV1rqSfCoLeYt2hiWFrfjVw9QL6T9TwPAADGLqMvxIdLr7alt3gYIa7PLO3Cyb9CZA4l5st8IECsiIbA"/>
+</div>
+<div class="flex items-center gap-1 min-w-0">
+<span class="text-label-lg font-label-lg text-primary font-bold truncate">Café Doon Brew, Rajpur Rd</span>
+<span class="material-symbols-outlined text-primary text-[18px] flex-shrink-0">arrow_drop_down</span>
+</div>
+</div>
+<!-- Trailing: Language Switcher + Notification Bell -->
+<div class="flex items-center gap-2 flex-shrink-0">
+<!-- Hindi/English Toggle -->
+<button class="flex items-center text-label-sm font-label-sm px-2 py-1 rounded bg-surface-container text-on-surface-variant hover:bg-surface-container-high active:scale-95 transition-all" type="button">
+<span class="text-primary font-bold">EN</span>
+<span class="mx-1 text-outline-variant">|</span>
+<span class="text-on-surface-variant font-medium">हिं</span>
+</button>
+<!-- Notification Icon -->
+<button aria-label="Notifications" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-surface-container-high text-on-surface-variant active:scale-95 transition-transform relative" type="button">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-secondary-container"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT CONTAINER -->
+<main class="w-full max-w-lg mx-auto px-margin-mobile pt-space-md flex flex-col gap-space-md">
+<!-- PAGE TITLE & OPERATIONAL HELPER -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<h1 class="text-headline-md font-headline-md text-primary font-bold">Dishes &amp; Recipes</h1>
+<span class="text-label-sm font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-semibold">48 Items</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+        Track selling price, food cost, and profit per plate across 48 items.
+      </p>
+</div>
+<!-- SEARCH & DISH LOOKUP -->
+<div class="relative w-full">
+<div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full pl-10 pr-9 py-2.5 bg-surface-container-lowest text-body-md font-body-md rounded-lg border border-outline-variant/60 focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all placeholder:text-on-surface-variant/60" placeholder="Search dishes, e.g. Cold Coffee, Momos..." type="text"/>
+<button aria-label="Clear or filter options" class="absolute inset-y-0 right-3 flex items-center text-outline-variant hover:text-outline">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+</div>
+<!-- CATEGORY PILLS (Horizontal Scroll) -->
+<div class="flex items-center gap-2 overflow-x-auto custom-scroll-hidden -mx-margin-mobile px-margin-mobile pb-1">
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-primary-container text-on-primary font-semibold shadow-sm transition-transform active:scale-95">
+        All (48)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container transition-all active:scale-95">
+        Beverages (12)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container transition-all active:scale-95">
+        Snacks &amp; Quick Bites (16)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container transition-all active:scale-95">
+        Mains (14)
+      </button>
+<button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container transition-all active:scale-95">
+        Desserts (6)
+      </button>
+</div>
+<!-- MENU MATRIX QUADRANT FILTER CHIPS -->
+<div class="flex flex-col gap-1.5 bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/30">
+<div class="flex items-center justify-between px-1">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Profitability Matrix</span>
+<span class="text-body-sm font-body-sm text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">info</span>
+          Simple guide
+        </span>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto custom-scroll-hidden py-1">
+<!-- All -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-label-sm font-label-sm whitespace-nowrap bg-surface-container-lowest border-2 border-primary text-primary font-bold shadow-sm">
+<span>All (48)</span>
+</button>
+<!-- Stars -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-label-sm font-label-sm whitespace-nowrap bg-[#DCFCE7] border border-[#15803D] text-[#15803D] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
+<span>★ Stars (14)</span>
+</button>
+<!-- Plowhorses -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-label-sm font-label-sm whitespace-nowrap bg-[#FEF3C7] border border-[#D97706] text-[#D97706] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>
+<span>♞ Plowhorses (18)</span>
+</button>
+<!-- Puzzles -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-label-sm font-label-sm whitespace-nowrap bg-[#DBEAFE] border border-[#2563EB] text-[#2563EB] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2563EB]"></span>
+<span>🧩 Puzzles (9)</span>
+</button>
+<!-- Dogs -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-label-sm font-label-sm whitespace-nowrap bg-[#FEE2E2] border border-[#DC2626] text-[#DC2626] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-[#DC2626]"></span>
+<span>⚠ Dogs (7)</span>
+</button>
+</div>
+</div>
+<!-- RICH DISH CARDS LIST -->
+<div class="flex flex-col gap-space-md">
+<!-- CARD 1: Masala Maggi (STAR) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Masala Maggi</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Snacks &amp; Quick Bites • 620 sold/mo</span>
+</div>
+<!-- Star Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#DCFCE7] border border-[#15803D]/30 text-[#15803D] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
+<span>STAR</span>
+</div>
+</div>
+<!-- Strategy Advice -->
+<div class="flex items-center gap-1.5 text-body-sm font-body-sm text-[#15803D] font-medium">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Keep &amp; promote: High profit, high volume customer favourite</span>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹90</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-on-surface font-semibold">₹28 <span class="text-label-sm font-normal text-on-surface-variant">(31%)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-[#15803D] font-bold">₹62</div>
+</div>
+</div>
+<!-- Summary Strip & Action -->
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹38,440/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- CARD 2: Cold Coffee (PLOWHORSE) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Cold Coffee</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Beverages • 410 sold/mo</span>
+</div>
+<!-- Plowhorse Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FEF3C7] border border-[#D97706]/40 text-[#D97706] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>
+<span>PLOWHORSE</span>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-[#D97706] font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">trending_down</span>
+<span>Popular but thin margin</span>
+</div>
+<!-- Urgent Alert Callout -->
+<div class="bg-error-container/40 border-l-4 border-error p-2.5 rounded-r-lg flex items-start gap-2">
+<span class="material-symbols-outlined text-error text-[18px] flex-shrink-0 mt-0.5">warning</span>
+<div class="text-body-sm font-body-sm text-on-error-container leading-tight">
+<strong>Milk cost increased by 12%.</strong> Increase price to ₹155 to recover margin.
+          </div>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹140</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-error font-semibold">₹96 <span class="text-label-sm text-error font-medium">(68.5%)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹44</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹18,040/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- CARD 3: Paneer Tikka Pizza (PUZZLE) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Paneer Tikka Pizza</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Mains • 85 sold/mo</span>
+</div>
+<!-- Puzzle Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#DBEAFE] border border-[#2563EB]/40 text-[#2563EB] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2563EB]"></span>
+<span>PUZZLE</span>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-[#2563EB] font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">lightbulb</span>
+<span>Profitable but hidden: Great margin, needs higher volume</span>
+</div>
+<!-- Recommendation Tag -->
+<div class="bg-surface-container p-2 rounded-lg flex items-center gap-2 border border-outline-variant/30">
+<span class="material-symbols-outlined text-secondary text-[18px]">recommend</span>
+<span class="text-body-sm font-body-sm text-on-surface font-medium">Action: Move to Top 3 on Menu / Add photo</span>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹260</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-on-surface font-semibold">₹92 <span class="text-label-sm text-on-surface-variant">(35%)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-[#15803D] font-bold">₹168</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹14,280/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- CARD 4: Signature Himalayan Thali (DOG) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Signature Himalayan Thali</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Mains • 38 sold/mo</span>
+</div>
+<!-- Dog Badge -->
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FEE2E2] border border-[#DC2626]/40 text-[#DC2626] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#DC2626]"></span>
+<span>DOG</span>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-[#DC2626] font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span>Losing space on your menu</span>
+</div>
+<!-- Callout Alert -->
+<div class="bg-surface-container p-2.5 rounded-lg border border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant flex items-start gap-2">
+<span class="material-symbols-outlined text-outline text-[18px] flex-shrink-0">report_problem</span>
+<span>High prep time &amp; ingredient spoilage. Consider replacing.</span>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹420</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-error font-semibold">₹265 <span class="text-label-sm text-error font-medium">(63%)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹155</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹5,890/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- CARD 5: Chicken Momos (STAR) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Chicken Momos</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Snacks &amp; Quick Bites • 540 sold/mo</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#DCFCE7] border border-[#15803D]/30 text-[#15803D] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
+<span>STAR</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 text-body-sm font-body-sm text-[#15803D] font-medium">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>Keep &amp; promote: High customer retention</span>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹160</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-on-surface font-semibold">₹58 <span class="text-label-sm font-normal text-on-surface-variant">(36%)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-[#15803D] font-bold">₹102</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹55,080/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- CARD 6: Cheese Garlic Bread (PUZZLE) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Cheese Garlic Bread</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Snacks &amp; Quick Bites • 120 sold/mo</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#DBEAFE] border border-[#2563EB]/40 text-[#2563EB] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2563EB]"></span>
+<span>PUZZLE</span>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-[#2563EB] font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">lightbulb</span>
+<span>Profitable but hidden: Bundle with beverages for discovery</span>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹180</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-on-surface font-semibold">₹71 <span class="text-label-sm font-normal text-on-surface-variant">(39%)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-[#15803D] font-bold">₹109</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹13,080/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+<!-- CARD 7: Mango Smoothie (PLOWHORSE) -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<h2 class="text-body-lg font-headline-md text-on-surface font-bold leading-tight">Mango Smoothie</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Beverages • 300 sold/mo</span>
+</div>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FEF3C7] border border-[#D97706]/40 text-[#D97706] text-label-sm font-label-sm font-bold tracking-wide">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>
+<span>PLOWHORSE</span>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-[#D97706] font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">trending_down</span>
+<span>Popular but thin margin</span>
+</div>
+<!-- Warning Callout -->
+<div class="bg-surface-container p-2.5 rounded-lg border border-outline-variant/30 text-body-sm font-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">inventory_2</span>
+<span>Fruit puree wholesale cost rose recently. Review portion sizes.</span>
+</div>
+<!-- Financial Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low/70 p-2.5 rounded-lg border border-outline-variant/20">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Selling Price</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹150</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Food Cost</div>
+<div class="text-label-lg font-label-lg text-error font-semibold">₹118 <span class="text-label-sm text-error font-medium">(78% - Very thin!)</span></div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Profit / Plate</div>
+<div class="text-label-lg font-label-lg text-on-surface font-bold">₹32</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+<div class="text-body-sm font-body-sm text-on-surface">
+            Total Profit: <span class="font-bold text-primary">₹9,600/mo</span>
+</div>
+<button class="text-label-md font-label-md text-primary-container font-semibold hover:underline flex items-center gap-1">
+<span>View Recipe Costing</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</article>
+</div>
+</main>
+<!-- FLOATING ACTION BUTTON (Primary Task) -->
+<aside class="fixed bottom-20 right-4 z-40 max-w-lg mx-auto">
+<button class="flex items-center gap-2 px-4 py-3 rounded-full bg-primary-container text-on-primary shadow-lg hover:brightness-110 active:scale-95 transition-all text-label-lg font-label-lg">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Add New Dish &amp; Recipe Cost</span>
+</button>
+</aside>
+<!-- FIXED BOTTOM NAVIGATION BAR (Shared Component Anchor) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] md:hidden">
+<!-- Item 1: Dashboard -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">dashboard</span>
+<span class="text-label-sm font-label-sm mt-0.5">Dashboard</span>
+</a>
+<!-- Item 2: Dishes (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">restaurant_menu</span>
+<span class="text-label-sm font-label-sm mt-0.5">Dishes</span>
+</a>
+<!-- Item 3: Add -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]">add_circle</span>
+<span class="text-label-sm font-label-sm mt-0.5">Add</span>
+</a>
+<!-- Item 4: Simulator -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">calculate</span>
+<span class="text-label-sm font-label-sm mt-0.5">Simulator</span>
+</a>
+<!-- Item 5: Menu Layout -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">tune</span>
+<span class="text-label-sm font-label-sm mt-0.5">Menu Layout</span>
+</a>
+</nav>
+</body></html>

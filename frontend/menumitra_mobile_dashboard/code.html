@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-background text-on-background" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MenuMitra - Mobile Dashboard</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Google Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config as per provided Source of Truth -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-fixed": "#ffddb3",
+            "on-secondary-fixed-variant": "#633f00",
+            "inverse-surface": "#30312f",
+            "on-primary": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-dim": "#dbdad7",
+            "surface-variant": "#e4e2df",
+            "on-background": "#1b1c1a",
+            "on-secondary-fixed": "#291800",
+            "surface-container-high": "#eae8e5",
+            "on-secondary": "#ffffff",
+            "background": "#fbf9f6",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#ffb693",
+            "surface": "#fbf9f6",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f2f0ed",
+            "tertiary-fixed-dim": "#ffb693",
+            "on-primary-fixed": "#002020",
+            "outline": "#6f7978",
+            "on-tertiary-fixed": "#351000",
+            "on-surface-variant": "#3f4948",
+            "secondary-fixed-dim": "#ffb951",
+            "surface-container-low": "#f5f3f0",
+            "primary-fixed": "#aceeee",
+            "surface-tint": "#216868",
+            "surface-container": "#efeeeb",
+            "secondary-container": "#fdab12",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#e4e2df",
+            "surface-bright": "#fbf9f6",
+            "outline-variant": "#bfc8c8",
+            "tertiary-fixed": "#ffdbcc",
+            "tertiary-container": "#7a452a",
+            "on-surface": "#1b1c1a",
+            "primary-container": "#0f5c5c",
+            "on-tertiary-fixed-variant": "#6c391f",
+            "primary": "#004343",
+            "secondary": "#825500",
+            "on-primary-fixed-variant": "#004f50",
+            "inverse-primary": "#90d2d1",
+            "on-error": "#ffffff",
+            "on-secondary-container": "#684300",
+            "on-primary-container": "#90d2d1",
+            "tertiary": "#5e2f16",
+            "primary-fixed-dim": "#90d2d1",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-mobile": "1rem",
+            "gutter": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-xl": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-sm": ["Inter"],
+            "currency-display": ["Inter"],
+            "label-md": ["Inter"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "currency-display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom Tactile Modernist subtle touches */
+    .tactile-card {
+      box-shadow: 0 2px 8px -2px rgba(15, 92, 92, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+    }
+    .tactile-hover:active {
+      transform: scale(0.985);
+      transition: transform 0.15s ease-out;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="h-full bg-background text-on-surface antialiased flex flex-col font-body-md text-body-md select-none pb-24">
+<!-- TOP BRAND & OUTLET APP BAR (Shared Components JSON execution) -->
+<header class="sticky top-0 z-40 bg-surface shadow-sm">
+<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm h-16 max-w-7xl mx-auto">
+<!-- Left: Logo & Tagline / Outlet -->
+<div class="flex items-center gap-space-sm">
+<div class="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/20 shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of an authentic Indian café owner in Dehradun wearing a warm linen apron with a confident friendly smile inside a bright modern rustic coffee shop. The lighting is soft morning daylight reflecting stone and warm teak finishes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjtipQF_7HRdxnHzVeYCGg-K9Nl5SHcrAGZxlv7qcKin8rdYyEqvkyHW1-evgZtygwWKf2K9S3lcBnqN2SHqYc_L8ErbMuMl5Fdeyek2DshFL638dxMgWKFP1xYl__B_Vl264Dp9gXA7uu0_f9c53aiWgww9oTFVmK20edfsgbycgLZce_t9UAl6novm5_iqJ6KLPdDjqQd1-PPmNwwt3xL4xs1qVyl4am2jLEZ66suzW1LburEc4"/>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1 cursor-pointer active:opacity-80">
+<span class="text-label-lg font-label-lg text-primary truncate max-w-[170px]">Café Doon Brew, Rajpur Rd</span>
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="expand_more">expand_more</span>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant font-medium">Know which dishes make you money</span>
+</div>
+</div>
+<!-- Right: Language Toggle & Notification Alert -->
+<div class="flex items-center gap-space-xs">
+<button aria-label="Toggle Language" class="px-2 py-1 bg-surface-container-high rounded text-label-sm font-label-sm text-primary active:scale-95 transition-transform">
+          EN | हिं
+        </button>
+<button aria-label="Alerts" class="relative p-2 rounded-full hover:bg-surface-container-high active:scale-95 transition-all text-on-surface">
+<span class="material-symbols-outlined text-[22px]" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-error text-[9px] font-bold text-on-error">3</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT CANVAS -->
+<main class="flex-1 w-full max-w-lg mx-auto px-margin-mobile pt-space-md space-y-space-lg">
+<!-- HERO METRICS: Operational glanceability for non-accountants -->
+<section aria-labelledby="overview-heading">
+<div class="flex justify-between items-baseline mb-space-xs">
+<h2 class="text-label-lg font-label-lg text-primary tracking-tight" id="overview-heading">This Month's Profit Health</h2>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Last 30 Days</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Metric 1: Monthly Net Food Profit (Key Highlight) -->
+<div class="tactile-card bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Take-Home Profit</span>
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="payments">payments</span>
+</div>
+<div class="mt-2">
+<div class="text-currency-display font-currency-display text-primary flex items-baseline gap-0.5">
+<span>₹2,48,600</span>
+</div>
+<div class="flex items-center gap-1 mt-1 text-[11px] font-semibold text-[#15803D]">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+<span>+14% vs last month</span>
+</div>
+</div>
+</div>
+<!-- Metric 2: Average Profit per Plate -->
+<div class="tactile-card bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Avg. Profit / Plate</span>
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="dinner_dining">dinner_dining</span>
+</div>
+<div class="mt-2">
+<div class="text-currency-display font-currency-display text-on-surface">
+              ₹78.50
+            </div>
+<p class="text-[11px] text-on-surface-variant mt-1 font-medium">Clear margin in pocket</p>
+</div>
+</div>
+<!-- Metric 3: Total Dishes Analyzed -->
+<div class="tactile-card bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Menu Breadth</span>
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="restaurant">restaurant</span>
+</div>
+<div class="mt-2">
+<div class="text-headline-md font-headline-md text-on-surface">
+              48 dishes
+            </div>
+<p class="text-[11px] text-on-surface-variant mt-1 font-medium">100% recipes costed</p>
+</div>
+</div>
+<!-- Metric 4: Food Cost Ratio (Threshold check) -->
+<div class="tactile-card bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Food Cost Ratio</span>
+<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="pie_chart">pie_chart</span>
+</div>
+<div class="mt-2">
+<div class="text-headline-md font-headline-md text-[#D97706]">
+              36.2%
+            </div>
+<div class="flex items-center gap-1 mt-1 text-[11px] text-[#D97706] font-semibold">
+<span class="material-symbols-outlined text-[13px]" data-icon="warning">warning</span>
+<span>Target &lt; 32% (Over by 4%)</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- URGENT MONEY-SAVING RECOMMENDATIONS (High priority action banner) -->
+<section class="rounded-xl p-space-md bg-secondary-fixed/30 border border-secondary-container/40 relative overflow-hidden tactile-card">
+<div class="flex items-start justify-between gap-2">
+<div class="flex items-center gap-2">
+<div class="p-1.5 rounded-lg bg-secondary-container text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<h3 class="text-label-lg font-label-lg text-primary">3 Quick Actions to boost profit</h3>
+<p class="text-label-sm font-label-sm text-[#825500]">Potential +₹18,400 pocket money this month</p>
+</div>
+</div>
+</div>
+<div class="mt-space-sm space-y-2">
+<!-- Rec 1 -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg border border-outline-variant/30 flex items-start gap-space-sm tactile-hover">
+<span class="w-6 h-6 rounded-full bg-[#FEF3C7] text-[#D97706] flex items-center justify-center font-bold text-[12px] shrink-0 mt-0.5">1</span>
+<div class="flex-1">
+<div class="flex justify-between items-baseline">
+<h4 class="text-label-md font-label-md text-on-surface">Increase Cold Coffee by ₹15</h4>
+<span class="text-label-sm font-label-sm text-[#15803D] bg-[#DCFCE7] px-1.5 py-0.5 rounded font-bold">+₹6,150/mo</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+              Selling 410 cups/month. Guests order regardless of mild bump; protects your dairy spike.
+            </p>
+</div>
+</div>
+<!-- Rec 2 -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg border border-outline-variant/30 flex items-start gap-space-sm tactile-hover">
+<span class="w-6 h-6 rounded-full bg-[#DBEAFE] text-[#2563EB] flex items-center justify-center font-bold text-[12px] shrink-0 mt-0.5">2</span>
+<div class="flex-1">
+<div class="flex justify-between items-baseline">
+<h4 class="text-label-md font-label-md text-on-surface">Promote Paneer Tikka Pizza</h4>
+<span class="text-label-sm font-label-sm text-[#15803D] bg-[#DCFCE7] px-1.5 py-0.5 rounded font-bold">+₹8,400/mo</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+              Massive ₹168 profit/plate, but hidden at the bottom page. Add a "Chef Special" sticker.
+            </p>
+</div>
+</div>
+<!-- Rec 3 -->
+<div class="bg-surface-container-lowest p-space-sm rounded-lg border border-outline-variant/30 flex items-start gap-space-sm tactile-hover">
+<span class="w-6 h-6 rounded-full bg-[#FEE2E2] text-[#DC2626] flex items-center justify-center font-bold text-[12px] shrink-0 mt-0.5">3</span>
+<div class="flex-1">
+<div class="flex justify-between items-baseline">
+<h4 class="text-label-md font-label-md text-on-surface">Review or Prune Himalayan Thali</h4>
+<span class="text-label-sm font-label-sm text-[#DC2626] bg-[#FEE2E2] px-1.5 py-0.5 rounded font-bold">Cut Waste</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+              Only 38 ordered all month with 6 perishable gravies. High wastage eats into kitchen margins.
+            </p>
+</div>
+</div>
+</div>
+</section>
+<!-- THE 4-QUADRANT MENU MATRIX BREAKDOWN (Visual & Plain English for busy restaurateurs) -->
+<section>
+<div class="flex justify-between items-end mb-space-xs">
+<div>
+<h2 class="text-headline-md font-headline-md text-primary">Dish Profit Matrix</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Categorized by what actually sells vs makes profit</p>
+</div>
+<button class="text-label-sm font-label-sm text-primary flex items-center gap-0.5">
+<span>How to read</span>
+<span class="material-symbols-outlined text-[14px]" data-icon="help">help</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-space-sm mt-space-sm">
+<!-- 1. STARS (Emerald) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm border-2 border-[#15803D]/25 bg-gradient-to-b from-[#DCFCE7]/20 to-surface-container-lowest tactile-card tactile-hover">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-[#DCFCE7] text-[#15803D] border border-[#15803D]/30">
+<span class="w-1.5 h-1.5 rounded-full bg-[#15803D]"></span>
+              STAR
+            </span>
+<span class="material-symbols-outlined text-[#15803D] text-[20px]" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="mt-space-sm">
+<div class="text-headline-lg font-headline-lg text-[#15803D] leading-none">14</div>
+<div class="text-label-sm font-label-sm text-on-surface mt-1 font-bold">Keep &amp; Promote</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] mt-0.5 leading-snug">High demand &amp; high profit</p>
+</div>
+<!-- Highlight item -->
+<div class="mt-3 pt-2 border-t border-[#15803D]/15">
+<div class="text-[12px] font-semibold text-on-surface truncate">Masala Maggi</div>
+<div class="flex justify-between text-[11px] text-[#15803D] font-medium mt-0.5">
+<span>₹62 profit/plate</span>
+<span>620 sold</span>
+</div>
+</div>
+</div>
+<!-- 2. PLOWHORSE (Amber) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm border-2 border-[#D97706]/25 bg-gradient-to-b from-[#FEF3C7]/20 to-surface-container-lowest tactile-card tactile-hover">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/30">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>
+              PLOWHORSE
+            </span>
+<span class="material-symbols-outlined text-[#D97706] text-[20px]" data-icon="bolt">bolt</span>
+</div>
+<div class="mt-space-sm">
+<div class="text-headline-lg font-headline-lg text-[#D97706] leading-none">18</div>
+<div class="text-label-sm font-label-sm text-on-surface mt-1 font-bold">Tweak Recipe / Price</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] mt-0.5 leading-snug">Very popular, thin margins</p>
+</div>
+<!-- Highlight item -->
+<div class="mt-3 pt-2 border-t border-[#D97706]/15">
+<div class="text-[12px] font-semibold text-on-surface truncate">Cold Coffee</div>
+<div class="flex justify-between text-[11px] text-[#D97706] font-medium mt-0.5">
+<span>₹44 profit/plate</span>
+<span>410 sold</span>
+</div>
+</div>
+</div>
+<!-- 3. PUZZLE (Blue) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm border-2 border-[#2563EB]/25 bg-gradient-to-b from-[#DBEAFE]/20 to-surface-container-lowest tactile-card tactile-hover">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-[#DBEAFE] text-[#2563EB] border border-[#2563EB]/30">
+<span class="w-1.5 h-1.5 rounded-full bg-[#2563EB]"></span>
+              PUZZLE
+            </span>
+<span class="material-symbols-outlined text-[#2563EB] text-[20px]" data-icon="extension">extension</span>
+</div>
+<div class="mt-space-sm">
+<div class="text-headline-lg font-headline-lg text-[#2563EB] leading-none">9</div>
+<div class="text-label-sm font-label-sm text-on-surface mt-1 font-bold">Change Menu Spot</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] mt-0.5 leading-snug">High margin, low orders</p>
+</div>
+<!-- Highlight item -->
+<div class="mt-3 pt-2 border-t border-[#2563EB]/15">
+<div class="text-[12px] font-semibold text-on-surface truncate">Paneer Tikka Pizza</div>
+<div class="flex justify-between text-[11px] text-[#2563EB] font-medium mt-0.5">
+<span>₹168 profit/plate</span>
+<span>85 sold</span>
+</div>
+</div>
+</div>
+<!-- 4. DOG (Crimson) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-sm border-2 border-[#DC2626]/25 bg-gradient-to-b from-[#FEE2E2]/20 to-surface-container-lowest tactile-card tactile-hover">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FEE2E2] text-[#DC2626] border border-[#DC2626]/30">
+<span class="w-1.5 h-1.5 rounded-full bg-[#DC2626]"></span>
+              DOG
+            </span>
+<span class="material-symbols-outlined text-[#DC2626] text-[20px]" data-icon="delete_outline">delete_outline</span>
+</div>
+<div class="mt-space-sm">
+<div class="text-headline-lg font-headline-lg text-[#DC2626] leading-none">7</div>
+<div class="text-label-sm font-label-sm text-on-surface mt-1 font-bold">Remove or Replace</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant text-[11px] mt-0.5 leading-snug">Low margin, rarely ordered</p>
+</div>
+<!-- Highlight item -->
+<div class="mt-3 pt-2 border-t border-[#DC2626]/15">
+<div class="text-[12px] font-semibold text-on-surface truncate">Himalayan Thali</div>
+<div class="flex justify-between text-[11px] text-[#DC2626] font-medium mt-0.5">
+<span>₹155 profit/plate</span>
+<span>38 sold</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- RECENT DISH ACTIVITY / PERFORMANCE SPOTLIGHT -->
+<section>
+<div class="flex justify-between items-center mb-space-sm">
+<div>
+<h2 class="text-headline-md font-headline-md text-primary">Performance Spotlight</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Real numbers behind this week's sales</p>
+</div>
+<a class="text-label-md font-label-md text-primary-container flex items-center" href="#view-all">
+          View All 48
+          <span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+</a>
+</div>
+<!-- Item Cards Breakdown with Unit Economics -->
+<div class="space-y-space-sm">
+<!-- Dish 1: Masala Maggi (STAR) -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl border border-outline-variant/30 flex items-center justify-between tactile-card tactile-hover">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Appetizing steaming bowl of Indian street style Masala Maggi noodles garnished with fresh coriander green chillies and butter on a warm ceramic plate in a cozy café setting. Soft lighting with high contrast and natural restaurant aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Bd4SX96O0uTffakDMPXm9Mjwxz6h-JoIDItsiJH-B6TAQYMqBc992_vN4hwossQvDtT8STulGG6fNXxfYZ8fuyVkIQgoZQOvTxlRc_9RDfVCR84AnrFVrZnzc18YQDoSLUf9qZ9zBc-81c3-hUIOT_xrLDatp1fxrjxSvfY-BHFM-G_Wd-9YGFu7N_iPEyh--CprGLWGHaN0xLLkzHw10FAYnb5bc1e_esJOSscBX-84IqJfn1U"/>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-label-lg font-label-lg text-on-surface">Masala Maggi</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#DCFCE7] text-[#15803D]">STAR</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                Price: <span class="text-on-surface font-medium">₹90</span> • Cost: <span class="text-on-surface font-medium">₹28</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-label-lg font-label-lg text-[#15803D] font-bold">+₹62.00</div>
+<span class="text-[11px] text-on-surface-variant font-medium">620 plates/mo</span>
+</div>
+</div>
+<!-- Dish 2: Cold Coffee (PLOWHORSE) -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl border border-outline-variant/30 flex items-center justify-between tactile-card tactile-hover">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Tall clear glass of cold coffee with a rich frothy top and chocolate drizzle served on a tactile stone café counter next to roasted coffee beans. Warm sunlit cafe interior styling with natural beige and teal accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWvH9Sr-hYlRdLNvxlQoJB-jL0DdbytDIRpWGMfJq_Mu7rU7LQIdLSVZQ7OT4fhvwCKFCNNgWxhLBNLbBGJw-3ACEpFWLvaKsU9ojysVFk0NvZbDq38PouolPm8phkyLti7J6ces_idg2LlouByJNN0fe1mb0eA46JXkuHjaYEnq2_c0CybZqDmOS2R78NPGtfnz0CVaP1jHxOlT114yFtcwk1UOqxVf2sSdKTpjFcQvJoZQcvzxc"/>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-label-lg font-label-lg text-on-surface">Cold Coffee</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#FEF3C7] text-[#D97706]">PLOWHORSE</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                Price: <span class="text-on-surface font-medium">₹120</span> • Cost: <span class="text-on-surface font-medium">₹76</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-label-lg font-label-lg text-[#D97706] font-bold">+₹44.00</div>
+<span class="text-[11px] text-on-surface-variant font-medium">410 cups/mo</span>
+</div>
+</div>
+<!-- Dish 3: Paneer Tikka Pizza (PUZZLE) -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl border border-outline-variant/30 flex items-center justify-between tactile-card tactile-hover">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Artisanal personal crust Paneer Tikka Pizza topped with charred tandoori cottage cheese cubes green capsicum and melted mozzarella cheese on a rustic wooden board. Warm cozy café background with crisp focal point." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9avDUJuXrAnAkXIIJhWXgxjoyyqHyCMHJy2XmzAV11Y1FV5CoC2c3HsXZ33MIZneDSltYvjTTb5xgEpvnezrkzv-_5dMVV7p45BUA3JsO8wKpHjFNt93QkvtRIhBbbxtnAmYnb_MCr0TD1BTfPkq3c3jc5VaXBpLOGyo0x4v8hXl8MD4F9dr3sdAmj51PDP97Du7wbO8xPpc5lUvO2XBRpCcUJs5LphDjxtKo-7X7hJR8bH419E4"/>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-label-lg font-label-lg text-on-surface">Paneer Tikka Pizza</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#DBEAFE] text-[#2563EB]">PUZZLE</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                Price: <span class="text-on-surface font-medium">₹320</span> • Cost: <span class="text-on-surface font-medium">₹152</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-label-lg font-label-lg text-[#2563EB] font-bold">+₹168.00</div>
+<span class="text-[11px] text-on-surface-variant font-medium">85 orders/mo</span>
+</div>
+</div>
+<!-- Dish 4: Himalayan Thali (DOG) -->
+<div class="bg-surface-container-lowest p-space-sm rounded-xl border border-outline-variant/30 flex items-center justify-between tactile-card tactile-hover">
+<div class="flex items-center gap-space-sm">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Traditional Kumaoni and Garhwali Himalayan Thali with multiple brass katoris featuring local pahadi lentils mandua rotis and seasonal chutneys in an Indian mountain café. Earthy linen tabletop background with soft warm diffused natural light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5aYPp9hBXkRfZbIpxIBod85U5U2QFuJ0tXpqe2wTfOVuf_TljXPAJ6tF4xygNNtccuQ2vqPImh-bMW_D7D06anw7YCpdFYvFMN2F42aFHUsk5Gr8zchDjCyQ2Yce-aOuNO_hd7PGIdqoVPljrmzm_ibfZB1uQr-qEBFijBXEEJXh4aGU-EcFOMkQHVBx341Aj6fYz1kpvxcmYHYI83aTFnhuSCCN7HnGHrfbgj3QVpibeIOD259w"/>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-label-lg font-label-lg text-on-surface">Himalayan Thali</span>
+<span class="px-1.5 py-0.2 rounded-full text-[10px] font-bold bg-[#FEE2E2] text-[#DC2626]">DOG</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">
+                Price: <span class="text-on-surface font-medium">₹380</span> • Cost: <span class="text-on-surface font-medium">₹225</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-label-lg font-label-lg text-[#DC2626] font-bold">+₹155.00</div>
+<span class="text-[11px] text-[#DC2626] font-medium font-bold">Only 38 sold</span>
+</div>
+</div>
+</div>
+</section>
+<!-- QUICK CALLOUT BANNER / SIMULATOR TEASER -->
+<section class="bg-surface-container-low p-space-md rounded-xl border border-outline-variant/30 tactile-card flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-white flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="tune">tune</span>
+</div>
+<div>
+<div class="text-label-lg font-label-lg text-primary">Run "What-If" Price Test</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">See how a ₹10 change impacts your net bank balance</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-label-sm font-label-sm active:scale-95 transition-transform shrink-0">
+        Simulate
+      </button>
+</section>
+</main>
+<!-- FLOATING CONTEXTUAL FAB (Recipe Costing / Add Dish) -->
+<aside class="fixed right-4 bottom-20 z-40">
+<button aria-label="Cost New Dish" class="flex items-center gap-2 bg-[#F4A300] text-[#1C2626] font-bold px-4 py-3 rounded-full shadow-lg hover:brightness-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[22px]" data-icon="add">add</span>
+<span class="text-label-lg font-label-lg">Cost Dish</span>
+</button>
+</aside>
+<!-- FIXED BOTTOM NAVIGATION BAR (Strict mapping of Shared Components JSON) -->
+<!-- Active Destination: "Dashboard" is highlighted, using style_active_navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] border-t border-outline-variant/20">
+<!-- Item 1: Dashboard (ACTIVE MATCH) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-transform duration-150 flex-1 py-1" href="#dashboard">
+<span class="material-symbols-outlined text-[24px]" data-icon="dashboard" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-label-sm font-label-sm mt-0.5">Dashboard</span>
+</a>
+<!-- Item 2: Dishes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#dishes">
+<span class="material-symbols-outlined text-[24px]" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="text-label-sm font-label-sm mt-0.5">Dishes</span>
+</a>
+<!-- Item 3: Add -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#add">
+<span class="material-symbols-outlined text-[24px]" data-icon="add_circle">add_circle</span>
+<span class="text-label-sm font-label-sm mt-0.5">Add</span>
+</a>
+<!-- Item 4: Simulator -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#simulator">
+<span class="material-symbols-outlined text-[24px]" data-icon="calculate">calculate</span>
+<span class="text-label-sm font-label-sm mt-0.5">Simulator</span>
+</a>
+<!-- Item 5: Menu Layout -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#menu-layout">
+<span class="material-symbols-outlined text-[24px]" data-icon="tune">tune</span>
+<span class="text-label-sm font-label-sm mt-0.5">Menu Layout</span>
+</a>
+</nav>
+</body></html>
