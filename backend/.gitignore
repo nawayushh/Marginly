@@ -1,13 +1,12 @@
-# Secrets and local settings
-.env
-
-# Python
 __pycache__/
 *.pyc
-.pytest_cache/
+*.pyo
+*.pyd
+.Python
+env/
 venv/
 .venv/
-
-# Local database (created automatically)
-*.db
-*.db-journal
+marginly.db
+*.sqlite3
+.pytest_cache/
+.coverage

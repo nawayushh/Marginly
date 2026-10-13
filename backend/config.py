@@ -21,11 +21,11 @@ class Settings(BaseModel):
 
     DATABASE_PATH: str = os.getenv("DATABASE_PATH", str(Path(__file__).parent / "marginly.db"))
 
-    # Local AI (Qwen in LM Studio)
+    # Local AI (Qwen in LM Studio via OpenAI-compatible API)
     LM_STUDIO_BASE_URL: str = os.getenv("LM_STUDIO_BASE_URL", "http://127.0.0.1:1234/v1")
     LM_STUDIO_API_KEY: str = os.getenv("LM_STUDIO_API_KEY", "lm-studio")
     LM_STUDIO_MODEL: str = os.getenv("LM_STUDIO_MODEL", "qwen2.5-7b-instruct")
-    LM_STUDIO_TIMEOUT_SECONDS: float = float(os.getenv("LM_STUDIO_TIMEOUT_SECONDS", "30.0"))
+    LM_STUDIO_TIMEOUT_SECONDS: float = float(os.getenv("LM_STUDIO_TIMEOUT_SECONDS", "45.0"))
 
     # Calculation thresholds
     POPULARITY_FACTOR: float = float(os.getenv("POPULARITY_FACTOR", "1.0"))
