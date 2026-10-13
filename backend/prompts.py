@@ -74,3 +74,61 @@ def build_menu_recommendations_prompt(analysis_summary_dict: dict, currency_symb
 Currency: {currency_symbol}
 
 Provide practical, high-impact menu recommendations formatted strictly according to the requested JSON schema:"""
+
+MARKET_INSIGHTS_SYSTEM_PROMPT = """You are an Indian F&B culinary economics expert and agricultural mandi price analyst.
+Given a restaurant's city location, cuisine type, and operational format, provide:
+1. Real-time typical mandi wholesale ingredient prices in that region (e.g. Dairy, Vegetables, Oils, Grains, Meats/Paneer, Spices).
+2. 5 curated starter menu items standard for that cuisine with optimal portion costing and recommended selling prices.
+3. Market volatility advice and food cost benchmark for that region.
+
+Return valid JSON with:
+{
+  "location": "string",
+  "cuisine_type": "string",
+  "market_summary": "string",
+  "typical_food_cost_target": "string",
+  "ingredients": [
+    {
+      "name": "string",
+      "base_unit": "kg" | "l" | "each" | "g" | "ml",
+      "market_price": number,
+      "category": "string",
+      "is_homegrown_possible": boolean
+    }
+  ],
+  "starter_dishes": [
+    {
+      "name": "string",
+      "category": "string",
+      "estimated_plate_cost": number,
+      "suggested_selling_price": number,
+      "margin_percent": number,
+      "description": "string"
+    }
+  ]
+}
+"""
+
+def build_market_insights_prompt(location: str, cuisine_type: str, restaurant_type: str) -> str:
+    return f"""Generate a real-time local mandi wholesale pricing report and starter menu engineering baseline for:
+Location / City: {location or 'General Urban India'}
+Cuisine: {cuisine_type or 'Multi-Cuisine'}
+Provide realistic market prices in INR (₹) and authentic popular dishes with plate costs."""
+
+REALTIME_MANDI_ALERT_SYSTEM_PROMPT = """You are a real-time agricultural mandi commodity market analyst for Indian restaurants.
+Return recent notable wholesale commodity price shifts (e.g. Tomatoes, Onions, Cooking Oil, Dairy/Paneer, LPG/Gas) in the requested city.
+Keep token usage ultra-minimal (under 150 words). Return ONLY a JSON array with max 3-4 items.
+
+SCHEMA:
+[
+  {
+    "commodity": "string",
+    "market_price": number,
+    "unit": "kg" | "L" | "cylinder",
+    "change_percent": number,
+    "direction": "SPIKE" | "DROP",
+    "severity": "critical" | "warning" | "info",
+    "impact_reason": "string (brief 1-sentence cause)"
+  }
+]
+"""

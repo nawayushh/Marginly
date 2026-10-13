@@ -469,9 +469,15 @@
     (function checkAuth() {
       try {
         const token = localStorage.getItem('marginly_token');
-        if (token) {
+        const user = localStorage.getItem('marginly_user');
+        const loggedOut = localStorage.getItem('marginly_logged_out');
+        if (token && user && !loggedOut) {
           // User already logged in, redirect to dashboard immediately
           window.location.href = '/index.html';
+        } else {
+          // Clean stale session tokens to prevent infinite redirect loops
+          localStorage.removeItem('marginly_token');
+          localStorage.removeItem('marginly_user');
         }
       } catch (err) {
         console.warn('LocalStorage error on auth check:', err);
@@ -555,19 +561,40 @@
 
       setLoading(true);
 
-      try {
-        const response = await fetch('http://127.0.0.1:8000/api/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            username: username,
-            password: password
-          })
-        });
+      const hosts = ['http://127.0.0.1:8000', 'http://localhost:8000'];
+      let response = null;
+      let networkErr = null;
 
+      for (const host of hosts) {
+        try {
+          response = await fetch(`${host}/api/login`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              username: username,
+              password: password
+            })
+          });
+          if (response) break;
+        } catch (err) {
+          networkErr = err;
+        }
+      }
+
+      if (!response) {
+        console.error('Network / Fetch Error:', networkErr);
+        showError(
+          'Could not connect to the Marginly backend at http://127.0.0.1:8000. Please ensure the backend server is running.',
+          'Connection Error'
+        );
+        setLoading(false);
+        return;
+      }
+
+      try {
         let data = {};
         try {
           data = await response.json();
@@ -576,7 +603,7 @@
         }
 
         if (!response.ok) {
-          const detailMessage = data.detail || data.message || `Login failed with status ${response.status}. Please check your credentials.`;
+          const detailMessage = typeof data.detail === 'string' ? data.detail : (data.message || `Login failed. Please verify your credentials.`);
           showError(detailMessage, 'Login Failed');
           setLoading(false);
           return;
@@ -586,6 +613,7 @@
         const token = data.token || data.access_token;
         if (token) {
           // Store token and user
+          localStorage.removeItem('marginly_logged_out');
           localStorage.setItem('marginly_token', token);
           const userPayload = data.user || { username: username };
           localStorage.setItem('marginly_user', JSON.stringify(userPayload));
@@ -601,18 +629,15 @@
           // Redirect to main app
           setTimeout(() => {
             window.location.href = '/index.html';
-          }, 400);
+          }, 300);
         } else {
           showError('Unexpected server response: No authentication token was received.', 'Authentication Error');
           setLoading(false);
         }
 
-      } catch (networkError) {
-        console.error('Network / Fetch Error:', networkError);
-        showError(
-          'Could not connect to the Marginly backend at http://127.0.0.1:8000. Please ensure the backend server is running.',
-          'Connection Error'
-        );
+      } catch (err) {
+        console.error('Processing error:', err);
+        showError('An error occurred during sign-in. Please try again.', 'Error');
         setLoading(false);
       }
     });

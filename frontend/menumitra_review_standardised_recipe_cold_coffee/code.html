@@ -192,16 +192,16 @@
 <!-- BREADCRUMB & HEADER SECTION -->
 <div class="mb-space-lg">
 <nav class="flex items-center gap-2 text-label-sm font-label-sm text-outline mb-2">
-<a class="hover:text-primary transition-colors" href="#">Recipes</a>
+<a class="hover:text-primary transition-colors" href="/menumitra_dishes_recipes/code.html">Recipes</a>
 <span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
-<a class="hover:text-primary transition-colors" href="#">Add Recipe</a>
+<a class="hover:text-primary transition-colors" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">Add Recipe</a>
 <span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
 <span class="text-on-surface font-semibold">Review &amp; Standardise</span>
 </nav>
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
 <div>
 <div class="flex flex-wrap items-center gap-2.5 mb-1">
-<h1 class="text-headline-lg font-headline-lg text-on-background tracking-tight">Review &amp; Standardise Recipe: Café Cold Coffee</h1>
+<h1 id="page-recipe-heading" class="text-headline-lg font-headline-lg text-on-background tracking-tight">Review &amp; Standardise Recipe: Café Cold Coffee</h1>
 <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-fixed/30 text-primary border border-primary-fixed">
 <span class="material-symbols-outlined text-[14px] text-primary" data-icon="mic">mic</span>
               Converted from Hindi Voice Note
@@ -217,7 +217,7 @@
 </div>
 <!-- Quick actions -->
 <div class="flex items-center gap-2 shrink-0">
-<button class="px-3 py-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1.5">
+<button id="reset-transcript-btn" type="button" class="px-3 py-1.5 rounded-lg border border-outline-variant/60 bg-surface-container-lowest text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1.5">
 <span class="material-symbols-outlined text-[16px]" data-icon="history">history</span>
             Reset to Transcript
           </button>
@@ -229,19 +229,19 @@
 <!-- Dish Name -->
 <div>
 <span class="text-label-sm font-label-sm text-outline block mb-0.5">Dish Name</span>
-<span class="text-label-lg font-label-lg text-on-surface font-semibold">Cold Coffee (Signature Blend)</span>
+<span id="dish-name-display" class="text-label-lg font-label-lg text-on-surface font-semibold">Cold Coffee (Signature Blend)</span>
 </div>
 <div class="h-8 w-px bg-outline-variant/30 hidden sm:block"></div>
 <!-- Yield -->
 <div>
 <span class="text-label-sm font-label-sm text-outline block mb-0.5">Yield</span>
-<span class="text-label-lg font-label-lg text-on-surface font-semibold">1 serving</span>
+<span id="dish-yield-display" class="text-label-lg font-label-lg text-on-surface font-semibold">1 serving</span>
 </div>
 <div class="h-8 w-px bg-outline-variant/30 hidden sm:block"></div>
 <!-- Portion size -->
 <div>
 <span class="text-label-sm font-label-sm text-outline block mb-0.5">Portion Size</span>
-<span class="text-label-lg font-label-lg text-on-surface font-semibold">300 ml café tumbler</span>
+<span id="dish-portion-display" class="text-label-lg font-label-lg text-on-surface font-semibold">300 ml café tumbler</span>
 </div>
 </div>
 <!-- Selling Price editable input -->
@@ -252,9 +252,21 @@
 </div>
 <div class="relative w-36">
 <span class="absolute inset-y-0 left-3 flex items-center text-label-lg font-label-lg text-outline font-bold">₹</span>
-<input class="w-full pl-7 pr-3 py-1.5 text-label-lg font-label-lg font-bold text-on-surface bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg text-right tracking-wide transition-all" type="text" value="140"/>
+<input id="selling-price-input" class="w-full pl-7 pr-3 py-1.5 text-label-lg font-label-lg font-bold text-on-surface bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg text-right tracking-wide transition-all" type="number" step="any" value="140"/>
 </div>
+  </div>
 </div>
+
+<!-- EDITABLE RECIPE DESCRIPTION & CHEF METHOD NOTES -->
+<div class="mt-3 p-4 bg-surface-container-lowest border border-outline-variant/30 rounded-2xl custom-shadow-card space-y-2">
+  <div class="flex items-center justify-between">
+    <label for="recipe-description-input" class="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
+      <span class="material-symbols-outlined text-sm">description</span>
+      <span>Menu Description &amp; Kitchen Prep Notes</span>
+    </label>
+    <span class="text-[10px] text-on-surface-variant font-medium">Printed on digital menus &amp; staff recipes</span>
+  </div>
+  <textarea id="recipe-description-input" rows="2" class="w-full px-3 py-2 text-sm bg-surface-container-low border border-outline-variant/60 rounded-xl text-on-surface font-medium focus:outline-none focus:ring-2 focus:ring-primary transition resize-y" placeholder="e.g. Signature café cold coffee blended with fresh whole milk, rich espresso, and dark chocolate drizzle. Served chilled over crushed ice.">Signature café cold coffee blended with fresh whole milk, rich espresso, and dark chocolate drizzle. Served chilled over crushed ice.</textarea>
 </div>
 </div>
 <!-- TWO-COLUMN MAIN CONTENT GRID -->
@@ -308,7 +320,7 @@
 <!-- Transcript Quote Block -->
 <div class="mb-space-md">
 <span class="text-label-sm font-label-sm text-outline uppercase tracking-wider block mb-1">Verbatim Transcript</span>
-<div class="bg-surface-container-high/40 p-space-sm rounded-xl border-l-4 border-primary text-body-md font-body-md text-on-surface italic leading-relaxed">
+<div id="verbatim-transcript-box" class="bg-surface-container-high/40 p-space-sm rounded-xl border-l-4 border-primary text-body-md font-body-md text-on-surface italic leading-relaxed">
               “ek glass doodh, do chammach cheeni, thoda coffee, barf bhar ke, upar se thoda chocolate syrup...”
             </div>
 </div>
@@ -316,12 +328,12 @@
 <div>
 <div class="flex items-center justify-between mb-2">
 <span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">AI Standardisation Map</span>
-<span class="text-[11px] text-primary font-semibold flex items-center gap-0.5">
+<span id="ai-map-count-badge" class="text-[11px] text-primary font-semibold flex items-center gap-0.5">
 <span class="material-symbols-outlined text-[13px]" data-icon="auto_awesome">auto_awesome</span>
                 5 entities matched
               </span>
 </div>
-<div class="space-y-2">
+<div id="ai-map-container" class="space-y-2">
 <div class="p-2 rounded-lg bg-surface-container-low border border-outline-variant/30 flex items-center justify-between text-body-sm font-body-sm">
 <div class="text-on-surface-variant font-medium">‘ek glass doodh’</div>
 <div class="flex items-center gap-1.5 text-on-surface font-semibold">
@@ -387,7 +399,7 @@
                 Live market wholesale prices sourced from local Dehradun suppliers.
               </p>
 </div>
-<span class="text-label-sm font-label-sm px-2.5 py-1 rounded-full bg-surface-container text-outline font-medium self-start sm:self-center">
+<span id="ingredients-count-badge" class="text-label-sm font-label-sm px-2.5 py-1 rounded-full bg-surface-container text-outline font-medium self-start sm:self-center">
               7 ingredients listed
             </span>
 </div>
@@ -404,7 +416,7 @@
 <th class="py-2.5 px-3 text-center">AI Status / Action</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-outline-variant/20 text-body-md font-body-md text-on-surface">
+<tbody id="ingredients-table-body" class="divide-y divide-outline-variant/20 text-body-md font-body-md text-on-surface">
 <!-- Row 1: Milk -->
 <tr class="hover:bg-surface-container-low/50 transition-colors">
 <td class="py-2.5 px-3 font-medium">Milk (Full Cream)</td>
@@ -532,7 +544,7 @@
 </table>
 </div>
 <!-- Add another ingredient action button -->
-<button class="mt-space-sm w-full py-2.5 border-2 border-dashed border-outline-variant hover:border-primary hover:bg-surface-container-low rounded-xl text-label-md font-label-md text-primary font-semibold flex items-center justify-center gap-2 transition-all">
+<button id="add-recipe-ingredient-btn" type="button" class="mt-space-sm w-full py-2.5 border-2 border-dashed border-outline-variant hover:border-primary hover:bg-surface-container-low rounded-xl text-label-md font-label-md text-primary font-semibold flex items-center justify-center gap-2 transition-all">
 <span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
             + Add another ingredient
           </button>
@@ -697,14 +709,300 @@
 </div>
 <!-- Action CTA Buttons -->
 <div class="flex items-center justify-end gap-3 w-full xl:w-auto shrink-0 border-t xl:border-t-0 pt-2 xl:pt-0 border-outline-variant/30">
-<button class="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-surface-container font-label-lg font-semibold text-sm transition-colors active:scale-95 duration-150">
-          Add another dish
-        </button>
-<button class="px-5 py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg font-semibold text-sm flex items-center gap-1.5 shadow-sm active:scale-95 duration-150">
+<a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" class="px-4 py-2 rounded-lg border border-primary text-primary hover:bg-surface-container font-label-lg font-semibold text-sm transition-colors active:scale-95 duration-150">
+  Add another dish
+</a>
+<button id="save-recipe-btn" class="px-5 py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg font-semibold text-sm flex items-center gap-1.5 shadow-sm active:scale-95 duration-150">
 <span>Save Recipe &amp; Add to Menu</span>
 <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
 </button>
 </div>
 </div>
 </footer>
+
+<script>
+  const API_BASE = 'http://127.0.0.1:8000';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const saveBtn = document.getElementById('save-recipe-btn');
+    const descInput = document.getElementById('recipe-description-input');
+    const priceInput = document.getElementById('selling-price-input') || document.querySelector('.relative.w-36 input');
+    const dishTitleEl = document.getElementById('dish-name-display') || document.querySelector('.text-label-lg.font-label-lg.text-on-surface.font-semibold');
+    const pageHeadingEl = document.getElementById('page-recipe-heading');
+    const tbody = document.getElementById('ingredients-table-body');
+    const countBadge = document.getElementById('ingredients-count-badge');
+    const addIngBtn = document.getElementById('add-recipe-ingredient-btn');
+
+    // Bottom dock metric elements
+    const totalCostPlateEl = document.querySelector('footer .text-currency-display');
+    const profitPlateEl = document.querySelectorAll('footer .text-currency-display')[1];
+    const marginBadgeEl = document.querySelector('footer span.text-label-lg');
+    const foodCostBadgeEl = document.querySelector('footer div.text-error, footer div[class*="Food Cost"]');
+    const matrixChipEl = document.querySelector('footer .inline-flex.items-center.gap-1\\.5.px-2\\.5');
+
+    // Default ingredients fallback
+    let currentIngredients = [
+      { name: 'Milk (Full Cream)', quantity: 200, unit: 'ml', unit_price: 65.0, is_self_grown: false },
+      { name: 'Sugar (White Granulated)', quantity: 20, unit: 'g', unit_price: 45.0, is_self_grown: false },
+      { name: 'Coffee powder (Instant Blend)', quantity: 6, unit: 'g', unit_price: 900.0, is_self_grown: false },
+      { name: 'Ice (commercial crushed)', quantity: 120, unit: 'g', unit_price: 20.0, is_self_grown: false },
+      { name: "Chocolate syrup (Hershey's)", quantity: 15, unit: 'ml', unit_price: 400.0, is_self_grown: false },
+      { name: 'Whipped cream topping', quantity: 20, unit: 'g', unit_price: 450.0, is_self_grown: false },
+      { name: 'Cup + lid + straw', quantity: 1, unit: 'pcs', unit_price: 12.0, is_self_grown: false }
+    ];
+
+    let dishName = 'Café Cold Coffee';
+    let dishCategory = 'Beverage';
+    let sellingPrice = 140.0;
+
+    // 1. Populate from active draft if available
+    try {
+      const savedDraft = localStorage.getItem('marginly_active_recipe');
+      if (savedDraft) {
+        const d = JSON.parse(savedDraft);
+        if (d.name) {
+          dishName = d.name;
+          if (dishTitleEl) dishTitleEl.textContent = dishName;
+          if (pageHeadingEl) pageHeadingEl.textContent = `Review & Standardise Recipe: ${dishName}`;
+        }
+        if (d.category) dishCategory = d.category;
+        if (d.selling_price && priceInput) {
+          sellingPrice = parseFloat(d.selling_price) || 140.0;
+          priceInput.value = sellingPrice;
+        }
+        if (d.description && descInput) {
+          descInput.value = d.description;
+        } else if (descInput && (!descInput.value || descInput.value.includes('Cold Coffee'))) {
+          descInput.value = `Standardized ${dishName} recipe crafted with quality ingredients. Prepared to order.`;
+        }
+
+        if (Array.isArray(d.ingredients) && d.ingredients.length > 0) {
+          currentIngredients = d.ingredients.map(ing => ({
+            name: ing.name || 'Ingredient',
+            quantity: parseFloat(ing.quantity) || 1,
+            unit: ing.unit || 'g',
+            unit_price: parseFloat(ing.unit_price) || 50.0,
+            is_self_grown: Boolean(ing.is_self_grown)
+          }));
+        }
+      }
+    } catch (e) {
+      console.warn('Draft load note:', e);
+    }
+
+    // 2. Render ingredients table
+    function renderTable() {
+      if (!tbody) return;
+
+      tbody.innerHTML = currentIngredients.map((item, idx) => {
+        const factor = (item.unit === 'g' || item.unit === 'ml') ? 1000 : 1;
+        const lineCost = item.is_self_grown ? 0.0 : ((item.quantity * item.unit_price) / factor);
+        const unitLabel = item.unit === 'g' ? 'kg' : item.unit === 'ml' ? 'L' : item.unit;
+
+        return `
+          <tr class="hover:bg-surface-container-low/50 transition-colors">
+            <td class="py-2.5 px-3 font-medium">
+              <input type="text" class="w-full bg-transparent font-medium text-on-surface border-0 focus:ring-1 focus:ring-primary rounded px-1 text-sm" value="${item.name}" onchange="window.updateReviewIng(${idx}, 'name', this.value)" />
+            </td>
+            <td class="py-2.5 px-3 text-right font-mono">
+              <input class="w-16 py-0.5 px-1.5 text-right font-medium text-on-surface bg-surface-container-lowest border border-outline-variant/50 rounded focus:border-primary focus:ring-0 text-sm" type="number" step="any" value="${item.quantity}" onchange="window.updateReviewIng(${idx}, 'quantity', this.value)" />
+            </td>
+            <td class="py-2.5 px-2 text-outline text-body-sm font-body-sm">
+              <select class="bg-transparent border-0 text-xs text-outline p-0 focus:ring-0" onchange="window.updateReviewIng(${idx}, 'unit', this.value)">
+                <option value="g" ${item.unit === 'g' ? 'selected' : ''}>g</option>
+                <option value="ml" ${item.unit === 'ml' ? 'selected' : ''}>ml</option>
+                <option value="kg" ${item.unit === 'kg' ? 'selected' : ''}>kg</option>
+                <option value="L" ${item.unit === 'L' ? 'selected' : ''}>L</option>
+                <option value="pcs" ${item.unit === 'pcs' ? 'selected' : ''}>pcs</option>
+                <option value="set" ${item.unit === 'set' ? 'selected' : ''}>set</option>
+              </select>
+            </td>
+            <td class="py-2.5 px-3 text-right text-on-surface-variant font-mono text-xs">
+              ${item.is_self_grown ? '<span class="text-emerald-700 font-bold">₹0 (Self)</span>' : `₹${item.unit_price} / ${unitLabel}`}
+            </td>
+            <td class="py-2.5 px-3 text-right font-semibold font-mono text-on-surface">
+              ₹${lineCost.toFixed(2)}
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button type="button" onclick="window.toggleReviewSelfGrown(${idx})" class="text-[10px] px-1.5 py-0.5 rounded font-bold ${item.is_self_grown ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-surface-container text-outline hover:text-emerald-700'}" title="Toggle ₹0 Self-Grown">
+                  ${item.is_self_grown ? '✓ ₹0 Home' : '₹0 Self'}
+                </button>
+                <button type="button" onclick="window.removeReviewIng(${idx})" class="text-error hover:text-red-700 p-0.5" title="Remove ingredient">
+                  <span class="material-symbols-outlined text-[16px]">close</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      if (countBadge) {
+        countBadge.textContent = `${currentIngredients.length} ingredients listed`;
+      }
+
+      recalculateMetrics();
+    }
+
+    // Window helpers for row actions
+    window.updateReviewIng = (idx, field, val) => {
+      const itm = currentIngredients[idx];
+      if (!itm) return;
+      if (field === 'quantity') itm.quantity = parseFloat(val) || 0;
+      else if (field === 'unit_price') itm.unit_price = parseFloat(val) || 0;
+      else if (field === 'name') itm.name = val;
+      else if (field === 'unit') itm.unit = val;
+      renderTable();
+    };
+
+    window.toggleReviewSelfGrown = (idx) => {
+      const itm = currentIngredients[idx];
+      if (!itm) return;
+      itm.is_self_grown = !itm.is_self_grown;
+      renderTable();
+    };
+
+    window.removeReviewIng = (idx) => {
+      if (currentIngredients.length <= 1) {
+        alert('A recipe needs at least one ingredient.');
+        return;
+      }
+      currentIngredients.splice(idx, 1);
+      renderTable();
+    };
+
+    // 3. Recalculate financial metrics
+    function recalculateMetrics() {
+      let rawFoodCost = 0;
+      currentIngredients.forEach(item => {
+        const factor = (item.unit === 'g' || item.unit === 'ml') ? 1000 : 1;
+        const c = item.is_self_grown ? 0.0 : ((item.quantity * item.unit_price) / factor);
+        rawFoodCost += c;
+      });
+
+      // Sum overhead inputs if present
+      let overheadCost = 0;
+      document.querySelectorAll('.space-y-space-sm input[type="text"]').forEach(inp => {
+        const val = parseFloat(inp.value) || 0;
+        overheadCost += val;
+      });
+      if (overheadCost === 0) overheadCost = 17.50; // default baseline
+
+      const totalPlateCost = rawFoodCost + overheadCost;
+      const currentSellingPrice = priceInput ? (parseFloat(priceInput.value) || 140.0) : 140.0;
+      const profitPerPlate = currentSellingPrice - totalPlateCost;
+      const marginPct = currentSellingPrice > 0 ? ((profitPerPlate / currentSellingPrice) * 100).toFixed(1) : 0;
+      const foodCostPct = currentSellingPrice > 0 ? ((totalPlateCost / currentSellingPrice) * 100).toFixed(1) : 0;
+
+      // Update Subtotal Raw in table
+      const subtotalRawEl = document.querySelector('.bg-primary-container\\/5 .text-currency-display');
+      if (subtotalRawEl) subtotalRawEl.textContent = `₹${rawFoodCost.toFixed(2)}`;
+
+      // Update Bottom Dock Metrics
+      if (totalCostPlateEl) totalCostPlateEl.textContent = `₹${totalPlateCost.toFixed(2)}`;
+      if (profitPlateEl) profitPlateEl.textContent = `₹${profitPerPlate.toFixed(2)}`;
+      if (marginBadgeEl) marginBadgeEl.textContent = `Margin ${marginPct}%`;
+      if (foodCostBadgeEl) {
+        foodCostBadgeEl.textContent = `Food Cost: ${foodCostPct}% (${foodCostPct > 40 ? 'High' : 'Healthy'})`;
+        foodCostBadgeEl.className = `text-[11px] font-semibold ${foodCostPct > 40 ? 'text-error' : 'text-[#15803D]'}`;
+      }
+
+      if (matrixChipEl) {
+        const isStar = marginPct > 65;
+        matrixChipEl.className = `inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm font-bold ${isStar ? 'bg-[#DCFCE7] text-[#15803D] border border-[#15803D]/40' : 'bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/40'}`;
+        matrixChipEl.innerHTML = `
+          <span class="w-1.5 h-1.5 rounded-full ${isStar ? 'bg-[#15803D]' : 'bg-[#D97706]'}"></span>
+          <span>${isStar ? '★ STAR' : '♞ PLOWHORSE'}</span>
+        `;
+      }
+    }
+
+    // 4. Wire "+ Add another ingredient"
+    if (addIngBtn) {
+      addIngBtn.onclick = () => {
+        const name = prompt('Enter Ingredient Name:', 'Vanilla Flavor / Garnish');
+        if (!name) return;
+        const qty = parseFloat(prompt('Enter Quantity (in g or ml):', '10')) || 10;
+        const unit = prompt('Enter Unit (g, ml, kg, L, pcs):', 'g') || 'g';
+        const price = parseFloat(prompt('Enter Market Price per unit (e.g. ₹500/kg):', '300')) || 300;
+        
+        currentIngredients.push({
+          name: name.trim(),
+          quantity: qty,
+          unit: unit.trim().toLowerCase(),
+          unit_price: price,
+          is_self_grown: false
+        });
+        renderTable();
+      };
+    }
+
+    // 5. Price input change recalculation
+    if (priceInput) {
+      priceInput.addEventListener('input', recalculateMetrics);
+    }
+
+    // 6. Overhead inputs recalculation
+    document.querySelectorAll('.space-y-space-sm input[type="text"]').forEach(inp => {
+      inp.addEventListener('input', recalculateMetrics);
+    });
+
+    // 7. Save Recipe CTA Handler
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async () => {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = `<span>Saving Recipe to Menu...</span>`;
+
+        const nameToSave = dishTitleEl ? dishTitleEl.textContent.trim() : dishName;
+        const descToSave = descInput ? descInput.value.trim() : `Standardized ${nameToSave} recipe created via Marginly.`;
+        const priceToSave = priceInput ? (parseFloat(priceInput.value) || 140.0) : 140.0;
+
+        // Persist locally
+        const recipeObj = {
+          name: nameToSave,
+          category: dishCategory,
+          selling_price: priceToSave,
+          description: descToSave,
+          ingredients: currentIngredients
+        };
+        localStorage.setItem('marginly_active_recipe', JSON.stringify(recipeObj));
+
+        try {
+          const res = await fetch(`${API_BASE}/api/recipes`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: nameToSave,
+              category: dishCategory,
+              selling_price: priceToSave,
+              description: descToSave,
+              ingredients: currentIngredients.map(i => ({
+                name: i.name,
+                quantity: i.quantity,
+                unit: i.unit,
+                unit_price: i.unit_price,
+                is_self_grown: i.is_self_grown
+              }))
+            })
+          });
+
+          if (res.ok) {
+            alert(`🎉 ${nameToSave} standardized and added to your menu!`);
+            window.location.href = '/menumitra_dishes_recipes/code.html';
+          } else {
+            alert(`Recipe saved locally! Navigating to Dishes & Recipes...`);
+            window.location.href = '/menumitra_dishes_recipes/code.html';
+          }
+        } catch (err) {
+          console.warn('Save recipe note:', err);
+          window.location.href = '/menumitra_dishes_recipes/code.html';
+        }
+      });
+    }
+
+    // Initial render
+    renderTable();
+  });
+</script>
+<script src="/marginly-core.js"></script>
 </body></html>

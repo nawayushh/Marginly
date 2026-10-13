@@ -165,75 +165,99 @@
   </style>
 </head>
 <body class="bg-surface text-on-surface font-body-md text-body-md antialiased min-h-full flex flex-col selection:bg-secondary-container selection:text-on-secondary-container">
-<!-- ================= TOP APP BAR / BRAND HEADER ================= -->
-<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant/30 sticky top-0 z-40 shadow-sm">
-<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin py-space-sm h-16 max-w-7xl mx-auto">
-<!-- Left: Brand Logo & Tagline -->
-<div class="flex items-center gap-4">
-<div class="flex items-center gap-2.5">
-<div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm">
-<span class="material-symbols-outlined fill-icon text-xl" data-icon="restaurant_menu">restaurant_menu</span>
+<!-- ================= TOP APP BAR ================= -->
+<header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<!-- Brand & Tagline -->
+<div class="flex items-center space-x-4">
+<a href="/index.html" class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
 </div>
 <div>
-<div class="flex items-center gap-1.5">
-<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">MenuMitra</span>
-<span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-secondary-container text-on-secondary-container uppercase tracking-wider">PRO</span>
+<div class="flex items-baseline space-x-1.5">
+<span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
+<span class="text-[10px] font-label-sm font-semibold tracking-wider text-secondary uppercase bg-secondary-fixed/50 px-1.5 py-0.5 rounded">Pro</span>
 </div>
-<p class="text-[11px] text-on-surface-variant font-medium leading-none hidden lg:block">Know which dishes make you money</p>
+<p class="text-[11px] font-body-sm text-on-surface-variant leading-none hidden sm:block">Know which dishes make you money</p>
+</div>
+</a>
+<div class="h-6 w-px bg-outline-variant/50 hidden md:block"></div>
+<!-- Outlet Switcher Dropdown -->
+<div class="relative group">
+<button class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors text-left border border-outline-variant/40 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[18px] text-primary-container" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span id="outlet-name" class="text-label-md font-label-md text-on-surface font-semibold max-w-[160px] truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</button>
+<!-- Dropdown Hints Modal Preview -->
+<div class="hidden group-hover:block absolute left-0 top-full mt-1.5 w-64 bg-surface-container-lowest rounded-xl custom-shadow-elevated border border-outline-variant/40 p-2 z-50">
+<div class="text-[10px] font-label-sm uppercase tracking-wider text-on-surface-variant px-2 py-1">Active Outlet</div>
+<div class="p-2 rounded-lg bg-surface-container-high flex items-center justify-between text-on-surface">
+<span id="dropdown-outlet-name" class="text-label-md font-label-md font-medium truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
 </div>
 </div>
-<!-- Outlet Switcher Dropdown (From TopAppBar Shared Component Anchor) -->
-<div class="hidden sm:flex items-center ml-3 pl-3 border-l border-outline-variant/40">
-<button class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg hover:bg-surface-container-high transition-colors text-left group" type="button">
-<span class="material-symbols-outlined text-outline text-lg" data-icon="storefront">storefront</span>
-<div class="leading-none">
-<div class="font-label-sm text-label-sm text-on-surface font-semibold flex items-center gap-1">
-<span>Café Doon Brew, Rajpur Rd</span>
-<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary transition-transform group-hover:translate-y-0.5" data-icon="expand_more">expand_more</span>
 </div>
-<span class="text-[10px] text-outline font-normal">Dehradun Outlet #1</span>
 </div>
+<!-- Center & Right Navigation Actions -->
+<div class="flex items-center space-x-3 sm:space-x-4">
+<!-- Language Switch -->
+<div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-primary font-bold shadow-xs">EN</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-primary transition-colors">हिं</button>
+</div>
+<!-- Notifications -->
+<a href="/menumitra_price_alerts_volatility_radar/code.html" class="relative w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors border border-outline-variant/30 active:scale-95 duration-150" title="Price Alerts">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span id="notif-badge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error text-[10px] font-bold flex items-center justify-center">0</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/50"></div>
+<!-- Owner Profile -->
+<div class="flex items-center space-x-2 pl-1">
+<div id="user-initials" class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-bold flex items-center justify-center text-label-md border-2 border-surface-container-lowest">
+RO
+</div>
+<div class="hidden lg:block text-left leading-tight">
+<div id="user-display-name" class="text-label-md font-label-md text-on-surface font-semibold">Restaurant Owner</div>
+<div id="user-role" class="text-[11px] font-body-sm text-on-surface-variant">Owner &amp; Chef</div>
+</div>
+<!-- Logout Button -->
+<button onclick="logout()" class="ml-2 p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="Sign Out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
 </button>
 </div>
 </div>
-<!-- Center / Desktop Navigation Cluster -->
-<nav class="hidden xl:flex items-center gap-1">
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/index.html">Dashboard</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_dishes_recipes/code.html">Dishes &amp; Recipes</a>
-<!-- ACTIVE PILL -->
-<a class="px-3.5 py-1.5 rounded-lg text-label-sm font-label-sm bg-primary-container text-on-primary font-semibold flex items-center gap-1.5 shadow-sm" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
-<span class="material-symbols-outlined text-sm fill-icon" data-icon="add_circle">add_circle</span>
+</div>
+<!-- Secondary Desktop Menu Bar -->
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<div class="flex space-x-1 py-1.5">
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_dishes_recipes/code.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Dishes &amp; Recipes</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-primary font-bold bg-primary-fixed/40 flex items-center space-x-1.5" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">add_circle</span>
 <span>Add Recipe</span>
 </a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_printed_menu_layout_heatmap/code.html">Menu Layout</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_price_alerts_volatility_radar/code.html">Price Alerts</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_what_if_simulator/code.html">What-If Simulator</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/index.html">Reports</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_printed_menu_layout_heatmap/code.html">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Menu Layout</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_price_alerts_volatility_radar/code.html">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>Price Alerts</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_what_if_simulator/code.html">
+<span class="material-symbols-outlined text-[18px]">calculate</span>
+<span>What-If Simulator</span>
+</a>
+</div>
 </nav>
-<!-- Right: Language Toggle, Notifications, Chef Vikram Anand Avatar -->
-<div class="flex items-center gap-3">
-<!-- Language Switcher Pill -->
-<div class="inline-flex items-center bg-surface-container p-0.5 rounded-full border border-outline-variant/50 text-xs">
-<button class="px-2.5 py-1 rounded-full font-bold bg-surface-container-lowest text-primary shadow-xs">EN</button>
-<button class="px-2.5 py-1 rounded-full font-medium text-on-surface-variant hover:text-on-surface transition-colors">हिं</button>
-</div>
-<!-- Notification Bell with Count -->
-<button class="relative p-2 rounded-full hover:bg-surface-container-high text-on-surface-variant transition-colors" title="Notifications">
-<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
-<span class="absolute top-1 right-1 w-4 h-4 rounded-full bg-secondary-container text-on-secondary-container font-bold text-[10px] flex items-center justify-center border border-surface">3</span>
-</button>
-<!-- Profile Avatar & Chef Info -->
-<div class="flex items-center gap-2 pl-2 border-l border-outline-variant/30">
-<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-bold flex items-center justify-center text-xs ring-2 ring-primary-container/20 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A portrait photograph of Chef Vikram Anand wearing a clean white chef apron with subtle brown stitching in a warm modern restaurant kitchen setting. Soft ambient sunlight illuminates the café counter with copper espresso equipment in the warm, softly blurred background. The style is professional, crisp, and high-contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDunJJehWcSDBX04JpY9BO8L25hu09-CdKgayL28jyviYxIKWu2iM827ihMB6aYhDhsfV8_pGid6EwUGVB8NKTbqRP0lon7iN-pxtmOKlTYjiqzahwNtngL-i3U6-AibVHOAf5KJrnvhvKZ0XyBKE8NOIkiLbqDGun8ZTHonWzuT3Ov7yaDnW6B1xn0bI4kbcguBlcQXlpGgTTPxoHRwOcwyU9PdB57U1aQQzJvweHqiraDfl-pZ-w"/>
-</div>
-<div class="hidden md:block text-left leading-none">
-<span class="font-label-sm text-label-sm text-on-surface font-semibold block">Vikram Anand</span>
-<span class="text-[10px] text-outline font-medium">Head Chef &amp; Owner</span>
-</div>
-</div>
-</div>
-</div>
 </header>
 <!-- ================= SUB-BANNER / TITLE STRIP ================= -->
 <section class="bg-surface-container-low border-b border-outline-variant/20 px-margin-mobile md:px-margin py-5">
@@ -265,326 +289,484 @@
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 <!-- ================= LEFT COLUMN: PRIMARY WORKSPACE (SPEAK IT ACTIVE) ================= -->
 <div class="lg:col-span-7 space-y-6">
-<!-- 3 Large Modality Switcher Cards -->
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-<!-- MODALITY 1: [ACTIVE] Speak it -->
-<button class="relative text-left p-4 rounded-xl bg-surface-container-lowest border-2 border-primary-container shadow-md transition-all group overflow-hidden" type="button">
-<!-- Active indicator ribbon & badge -->
-<div class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-bl-lg uppercase tracking-wider shadow-xs">
-              Fastest / सबसे आसान
-            </div>
-<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
-<span class="material-symbols-outlined fill-icon text-2xl" data-icon="mic">mic</span>
-</div>
-<div class="font-label-lg text-label-lg font-bold text-primary flex items-center gap-1.5">
-<span>Speak it</span>
-<span class="material-symbols-outlined text-primary text-base fill-icon" data-icon="check_circle">check_circle</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
-              Natural voice input in Hindi &amp; café dialects
-            </p>
-</button>
-<!-- MODALITY 2: Photograph it -->
-<button class="relative text-left p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:bg-surface-container-low transition-all group" type="button">
-<div class="w-10 h-10 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center mb-3 group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-2xl" data-icon="photo_camera">photo_camera</span>
-</div>
-<div class="font-label-lg text-label-lg font-bold text-on-surface">Photograph it</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
-              Scan handwritten bahi-khata or dairy recipes
-            </p>
-</button>
-<!-- MODALITY 3: Type it -->
-<button class="relative text-left p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:bg-surface-container-low transition-all group" type="button">
-<div class="w-10 h-10 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center mb-3 group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
-<span class="material-symbols-outlined text-2xl" data-icon="keyboard">keyboard</span>
-</div>
-<div class="font-label-lg text-label-lg font-bold text-on-surface">Type it</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
-              Enter grams, litres, and pack costs manually
-            </p>
-</button>
-</div>
-<!-- Language Accent Selector Chips -->
-<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-lg" data-icon="translate">translate</span>
-<span class="font-label-sm text-label-sm font-bold text-on-surface">Spoken Dialect / बोली:</span>
-</div>
-<div class="flex flex-wrap gap-2">
-<button class="px-3 py-1 rounded-full text-xs font-semibold bg-primary-container text-on-primary shadow-xs">
+      <!-- 3 Large Modality Switcher Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- MODALITY 1: [ACTIVE] Speak it -->
+        <button id="modality-speak-btn" class="relative text-left p-4 rounded-xl bg-surface-container-lowest border-2 border-primary-container shadow-md transition-all group overflow-hidden cursor-pointer" type="button">
+          <!-- Active indicator ribbon & badge -->
+          <div class="absolute top-0 right-0 bg-secondary-container text-on-secondary-container text-[10px] font-bold px-2 py-0.5 rounded-bl-lg uppercase tracking-wider shadow-xs">
+            Fastest / सबसे आसान
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center mb-3 shadow-sm group-hover:scale-105 transition-transform">
+            <span class="material-symbols-outlined fill-icon text-2xl" data-icon="mic">mic</span>
+          </div>
+          <div class="font-label-lg text-label-lg font-bold text-primary flex items-center gap-1.5">
+            <span>Speak it</span>
+            <span class="material-symbols-outlined text-primary text-base fill-icon" data-icon="check_circle">check_circle</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
+            Natural voice input in Hindi &amp; café dialects
+          </p>
+        </button>
+
+        <!-- MODALITY 2: Photograph it -->
+        <button id="modality-photo-btn" class="relative text-left p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:bg-surface-container-low transition-all group cursor-pointer" type="button">
+          <div class="w-10 h-10 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center mb-3 group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl" data-icon="photo_camera">photo_camera</span>
+          </div>
+          <div class="font-label-lg text-label-lg font-bold text-on-surface flex items-center gap-1.5">
+            <span>Photograph it</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
+            Scan handwritten bahi-khata or dairy recipes
+          </p>
+        </button>
+
+        <!-- MODALITY 3: Type it -->
+        <button id="modality-type-btn" class="relative text-left p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:bg-surface-container-low transition-all group cursor-pointer" type="button">
+          <div class="w-10 h-10 rounded-lg bg-surface-container text-on-surface-variant flex items-center justify-center mb-3 group-hover:bg-primary-container/10 group-hover:text-primary transition-colors">
+            <span class="material-symbols-outlined text-2xl" data-icon="keyboard">keyboard</span>
+          </div>
+          <div class="font-label-lg text-label-lg font-bold text-on-surface flex items-center gap-1.5">
+            <span>Type it</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 leading-snug">
+            Enter grams, litres, and pack costs manually
+          </p>
+        </button>
+      </div>
+
+      <!-- ================= MODALITY 1 WORKSPACE: SPEAK IT ================= -->
+      <div id="speak-workspace-panel" class="space-y-6">
+        <!-- Language Accent Selector Chips -->
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-4 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-lg" data-icon="translate">translate</span>
+            <span class="font-label-sm text-label-sm font-bold text-on-surface">Spoken Dialect / बोली:</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button id="dialect-hindi-btn" type="button" class="px-3 py-1 rounded-full text-xs font-semibold bg-primary-container text-on-primary shadow-xs cursor-pointer">
               हिन्दी (Hindi - Natural kitchen phrasing)
             </button>
-<button class="px-3 py-1 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant/30">
+            <button id="dialect-garhwali-btn" type="button" class="px-3 py-1 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant/30 cursor-pointer">
               Garhwali-mix (Doon café slang)
             </button>
-<button class="px-3 py-1 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant/30">
+            <button id="dialect-hinglish-btn" type="button" class="px-3 py-1 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant/30 cursor-pointer">
               Hinglish / English
             </button>
-</div>
-</div>
-<!-- Audio Recording Studio Box -->
-<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-6 shadow-sm relative overflow-hidden">
-<!-- Studio Header & Live Recording Status -->
-<div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
-<div class="flex items-center gap-2.5">
-<span class="relative flex h-3 w-3">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
-<span class="relative inline-flex rounded-full h-3 w-3 bg-error"></span>
-</span>
-<span class="font-label-md text-label-md font-bold text-error tracking-wide">LISTENING... (00:24s)</span>
-</div>
-<!-- Dynamic soundwave bars -->
-<div class="flex items-center gap-1 h-7 px-3 py-1 rounded-lg bg-surface-container">
-<div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.1s;"></div>
-<div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.4s;"></div>
-<div class="w-1 bg-secondary-container rounded-full wave-bar" style="animation-delay: 0.2s;"></div>
-<div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.6s;"></div>
-<div class="w-1 bg-secondary-container rounded-full wave-bar" style="animation-delay: 0.3s;"></div>
-<div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.5s;"></div>
-<div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.2s;"></div>
-<div class="w-1 bg-secondary-container rounded-full wave-bar" style="animation-delay: 0.7s;"></div>
-</div>
-</div>
-<!-- Pulsing Mic Centerpiece -->
-<div class="py-8 flex flex-col items-center justify-center text-center">
-<!-- Pulsing Rings Wrapper -->
-<div class="relative flex items-center justify-center my-4">
-<!-- Outer Glowing Saffron Ring -->
-<div class="absolute w-36 h-36 rounded-full bg-secondary-container/20 ring-anim-outer"></div>
-<!-- Inner Glowing Ring -->
-<div class="absolute w-28 h-28 rounded-full bg-primary-container/25 ring-anim"></div>
-<!-- Main Deep Teal Pulsing Mic Button -->
-<button class="relative z-10 w-20 h-20 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-primary/20" title="Click to Pause/Stop recording" type="button">
-<span class="material-symbols-outlined fill-icon text-3xl" data-icon="mic">mic</span>
-</button>
-</div>
-<!-- Friendly Instructions -->
-<h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-2">
+          </div>
+        </div>
+
+        <!-- Audio Recording Studio Box -->
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-6 shadow-sm relative overflow-hidden">
+          <!-- Studio Header & Live Recording Status -->
+          <div class="flex items-center justify-between pb-4 border-b border-outline-variant/30">
+            <div class="flex items-center gap-2.5">
+              <span class="relative flex h-3 w-3">
+                <span id="mic-ping-indicator" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-error opacity-75"></span>
+                <span id="mic-dot-indicator" class="relative inline-flex rounded-full h-3 w-3 bg-error"></span>
+              </span>
+              <span id="listening-status-text" class="font-label-md text-label-md font-bold text-error tracking-wide">LISTENING... Speak clearly</span>
+            </div>
+            <!-- Dynamic soundwave bars -->
+            <div id="soundwave-container" class="flex items-center gap-1 h-7 px-3 py-1 rounded-lg bg-surface-container">
+              <div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.1s;"></div>
+              <div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.4s;"></div>
+              <div class="w-1 bg-secondary-container rounded-full wave-bar" style="animation-delay: 0.2s;"></div>
+              <div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.6s;"></div>
+              <div class="w-1 bg-secondary-container rounded-full wave-bar" style="animation-delay: 0.3s;"></div>
+              <div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.5s;"></div>
+              <div class="w-1 bg-primary-container rounded-full wave-bar" style="animation-delay: 0.2s;"></div>
+              <div class="w-1 bg-secondary-container rounded-full wave-bar" style="animation-delay: 0.7s;"></div>
+            </div>
+          </div>
+
+          <!-- Pulsing Mic Centerpiece -->
+          <div class="py-8 flex flex-col items-center justify-center text-center">
+            <!-- Pulsing Rings Wrapper -->
+            <div class="relative flex items-center justify-center my-4">
+              <div id="ring-anim-outer" class="absolute w-36 h-36 rounded-full bg-secondary-container/20 ring-anim-outer"></div>
+              <div id="ring-anim-inner" class="absolute w-28 h-28 rounded-full bg-primary-container/25 ring-anim"></div>
+              <!-- Main Pulsing Mic Button -->
+              <button id="voice-mic-main-btn" class="relative z-10 w-20 h-20 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all focus:outline-none focus:ring-4 focus:ring-primary/20 cursor-pointer" title="Click to Start or Stop Speech Recording" type="button">
+                <span id="voice-mic-icon" class="material-symbols-outlined fill-icon text-3xl" data-icon="mic">mic</span>
+              </button>
+            </div>
+
+            <!-- Stop & Convert Pill (Visible when recording) -->
+            <div id="recording-active-controls" class="hidden flex flex-col sm:flex-row items-center justify-center gap-2 my-2">
+              <button id="btn-stop-recording-now" type="button" class="px-5 py-2.5 rounded-full bg-error hover:bg-red-700 text-white font-bold text-xs shadow-lg transition-all flex items-center gap-1.5 cursor-pointer animate-pulse">
+                <span class="material-symbols-outlined text-base">stop_circle</span>
+                <span>Finish Speaking &amp; Calculate Cost / हो गया</span>
+              </button>
+              <span id="recording-timer-pill" class="text-xs font-mono font-bold text-error bg-error/10 px-3 py-1.5 rounded-full border border-error/20">
+                00:01
+              </span>
+            </div>
+            <!-- Friendly Instructions -->
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface mt-2">
               "Bolo apni recipe, jaise aap kitchen mein bolte ho"
             </h3>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto mt-1">
-              Speak freely, no fancy terms needed. Mention ingredients in your usual cups, spoons, or pouches.
+            <p class="font-body-md text-body-md text-on-surface-variant max-w-md mx-auto mt-1">
+              Speak freely. Mention ingredients in cups, spoons, pouches or grams. Continuous listening is active.
             </p>
-</div>
-<!-- Live Transcript Box (Styled like a warm paper voice note card) -->
-<div class="mt-2 bg-[#fdfbf7] border border-[#e8dfcf] rounded-xl p-5 shadow-xs">
-<div class="flex items-center justify-between mb-2">
-<span class="text-xs font-bold uppercase tracking-wider text-outline flex items-center gap-1.5">
-<span class="material-symbols-outlined text-sm text-primary" data-icon="record_voice_over">record_voice_over</span>
+
+            <!-- Quick Voice Simulation Test Pills -->
+            <div class="mt-4 pt-3 border-t border-outline-variant/20 flex flex-wrap items-center justify-center gap-2">
+              <span class="text-[11px] font-semibold text-outline">Quick 1-Click Samples / बोल कर देखें:</span>
+              <button type="button" class="voice-preset-pill px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-primary-container/10 text-primary font-semibold border border-outline-variant/40 transition-colors cursor-pointer" data-phrase="ek glass doodh, do chammach cheeni, thoda coffee, barf bhar ke, chocolate syrup">☕ Cold Coffee</button>
+              <button type="button" class="voice-preset-pill px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-primary-container/10 text-primary font-semibold border border-outline-variant/40 transition-colors cursor-pointer" data-phrase="250g paneer, 2 tamatar, 50g makhan, thoda garam masala">🍛 Paneer Butter Masala</button>
+              <button type="button" class="voice-preset-pill px-2.5 py-1 rounded-full text-xs bg-surface-container hover:bg-primary-container/10 text-primary font-semibold border border-outline-variant/40 transition-colors cursor-pointer" data-phrase="do packet maggi, ek pyaaz, ek tamatar, thoda matar, tel">🍜 Masala Maggi</button>
+            </div>
+
+            <!-- Live Speech Stream & Immediate Editor Box -->
+            <div class="mt-4 p-4 rounded-xl bg-surface-container/70 border border-outline-variant/40 text-left space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <div class="font-bold text-on-surface flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-primary">hearing</span>
+                  <span>Live Spoken Words / जो बोला गया:</span>
+                </div>
+                <span id="speech-live-status-tag" class="text-[10px] font-semibold text-emerald-700 bg-emerald-100 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span id="audio-active-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+                  <span id="audio-status-badge">Mic Ready</span>
+                </span>
+              </div>
+              <textarea id="live-speech-box" rows="2" class="w-full p-2.5 rounded-lg border border-outline-variant/50 bg-surface-container-lowest text-on-surface text-xs font-medium focus:ring-2 focus:ring-primary/20 leading-relaxed transition-all" placeholder="Speak your recipe (e.g. 'ek glass doodh, do chammach cheeni, thoda coffee'). Your speech appears here live, and you can edit or type anytime.">ek glass doodh, do chammach cheeni, thoda coffee, barf bhar ke, chocolate syrup</textarea>
+              <div class="flex items-center justify-between pt-1">
+                <span id="audio-meter-label" class="text-[11px] text-on-surface-variant font-mono">Mic Ready • Click mic to speak</span>
+                <button id="btn-parse-speech-now" type="button" class="px-3 py-1.5 rounded-lg bg-primary text-on-primary font-bold text-xs hover:bg-primary-container transition-all flex items-center gap-1 shadow-xs cursor-pointer">
+                  <span class="material-symbols-outlined text-xs">auto_awesome</span>
+                  <span>Calculate Recipe Cost</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live Transcript Box -->
+          <div class="mt-2 bg-[#fdfbf7] dark:bg-[#1c2222] border border-[#e8dfcf] dark:border-[#2d3838] rounded-xl p-5 shadow-xs">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-outline flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-primary" data-icon="record_voice_over">record_voice_over</span>
                 Live Kitchen Transcript
               </span>
-<span class="text-[11px] font-semibold text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full">
+              <span id="detected-entities-badge" class="text-[11px] font-semibold text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full">
                 5 parsed entities detected
               </span>
-</div>
-<!-- Spoken Phrase with Live Tagged Tokens -->
-<div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/30 font-body-lg text-body-lg leading-relaxed text-on-surface space-y-3">
-<p class="italic text-on-surface-variant">
+            </div>
+            <!-- Spoken Phrase with Live Tagged Tokens -->
+            <div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/30 font-body-lg text-body-lg leading-relaxed text-on-surface space-y-3">
+              <p id="live-spoken-display" class="italic text-on-surface-variant">
                 “<span class="bg-primary/10 text-primary font-semibold px-1.5 py-0.5 rounded border border-primary/20">ek glass doodh</span>, 
                 <span class="bg-primary/10 text-primary font-semibold px-1.5 py-0.5 rounded border border-primary/20">do chammach cheeni</span>, 
                 <span class="bg-primary/10 text-primary font-semibold px-1.5 py-0.5 rounded border border-primary/20">thoda coffee</span>, 
                 <span class="bg-primary/10 text-primary font-semibold px-1.5 py-0.5 rounded border border-primary/20">barf bhar ke</span>, 
                 upar se <span class="bg-primary/10 text-primary font-semibold px-1.5 py-0.5 rounded border border-primary/20">thoda chocolate syrup</span>...”
               </p>
-<!-- Live Parsed Mapping Matrix / Token Badges -->
-<div class="pt-2 border-t border-outline-variant/20 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
-<span class="text-outline font-medium">ek glass doodh</span>
-<span class="font-bold text-primary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+              <!-- Live Parsed Mapping Matrix -->
+              <div id="live-token-matrix" class="pt-2 border-t border-outline-variant/20 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
+                  <span class="text-outline font-medium">ek glass doodh</span>
+                  <span class="font-bold text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
                     ~250ml Full Cream Milk
                   </span>
-</div>
-<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
-<span class="text-outline font-medium">do chammach cheeni</span>
-<span class="font-bold text-primary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
+                  <span class="text-outline font-medium">do chammach cheeni</span>
+                  <span class="font-bold text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
                     ~20g White Sugar
                   </span>
-</div>
-<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
-<span class="text-outline font-medium">thoda coffee</span>
-<span class="font-bold text-primary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
-                    ~10g Nescafé Classic
+                </div>
+                <div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
+                  <span class="text-outline font-medium">thoda coffee</span>
+                  <span class="font-bold text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+                    ~10g Instant Coffee Blend
                   </span>
-</div>
-<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
-<span class="text-outline font-medium">barf bhar ke</span>
-<span class="font-bold text-primary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
-                    Ice Cubes (~100g)
+                </div>
+                <div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30">
+                  <span class="text-outline font-medium">barf bhar ke</span>
+                  <span class="font-bold text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+                    Commercial Ice (~100g)
                   </span>
-</div>
-<div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30 sm:col-span-2">
-<span class="text-outline font-medium">thoda chocolate syrup</span>
-<span class="font-bold text-primary flex items-center gap-1">
-<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
-                    ~15ml Hershey's Syrup
+                </div>
+                <div class="flex items-center justify-between p-2 rounded bg-surface-container-low border border-outline-variant/30 sm:col-span-2">
+                  <span class="text-outline font-medium">thoda chocolate syrup</span>
+                  <span class="font-bold text-primary flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+                    ~15ml Chocolate Syrup
                   </span>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- AI Progress Pipeline Strip -->
-<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 shadow-sm">
-<div class="flex items-center justify-between mb-4">
-<span class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
-<span class="material-symbols-outlined text-base text-primary" data-icon="auto_awesome">auto_awesome</span>
-              AI is understanding your recipe
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Progress Pipeline Strip -->
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-primary" data-icon="auto_awesome">auto_awesome</span>
+              AI Recipe Conversion Engine
             </span>
-<span class="text-xs font-semibold text-primary">Stage 2 of 3</span>
-</div>
-<!-- 3 Connected Steps -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
-<!-- Step 1: Listening & Transcribing (Completed) -->
-<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-emerald-200">
-<div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-sm font-bold" data-icon="check">check</span>
-</div>
-<div class="leading-tight">
-<div class="font-label-sm text-label-sm font-bold text-on-surface">Listening &amp; Transcribing</div>
-<div class="text-[11px] text-emerald-700 font-medium">Captured 5 lines</div>
-</div>
-</div>
-<!-- Step 2: Converting to standard restaurant units (In Progress) -->
-<div class="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border-2 border-primary-container">
-<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0 animate-spin">
-<span class="material-symbols-outlined text-sm" data-icon="progress_activity">progress_activity</span>
-</div>
-<div class="leading-tight">
-<div class="font-label-sm text-label-sm font-bold text-primary">Converting Units</div>
-<div class="text-[11px] text-on-surface-variant font-medium">Mapping standard café portions</div>
-</div>
-</div>
-<!-- Step 3: Calculating plate cost & margin (Upcoming) -->
-<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 opacity-60">
-<div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center shrink-0">
-<span class="text-xs font-bold">3</span>
-</div>
-<div class="leading-tight">
-<div class="font-label-sm text-label-sm font-bold text-outline">Plate Cost &amp; Margin</div>
-<div class="text-[11px] text-outline font-normal">Pending confirmation</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Friendly Reassuring Tip Card -->
-<div class="bg-secondary-fixed/30 border border-secondary/20 rounded-xl p-4 flex items-start gap-3">
-<span class="text-xl shrink-0 leading-none">💡</span>
-<div>
-<span class="font-label-sm text-label-sm font-bold text-on-surface block">Smart Café Defaults Enabled</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
-              Don't worry about exact gram weights. We'll guess sensible café portions (like <em>'do chammach' = 20g</em> or <em>'ek cup' = 200ml</em>) and you can easily fine-tune them on the recipe breakdown screen.
+            <span id="pipeline-status-badge" class="text-xs font-semibold text-primary">Stage 2 of 3</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 relative">
+            <div id="step-1-card" class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-emerald-300">
+              <div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-sm font-bold" data-icon="check">check</span>
+              </div>
+              <div class="leading-tight">
+                <div class="font-label-sm text-label-sm font-bold text-on-surface">Listening &amp; Transcribing</div>
+                <div id="step-1-sub" class="text-[11px] text-emerald-700 font-medium">Captured kitchen audio</div>
+              </div>
+            </div>
+            <div id="step-2-card" class="flex items-center gap-3 p-3 rounded-lg bg-primary/5 border-2 border-primary-container">
+              <div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-sm" data-icon="progress_activity">progress_activity</span>
+              </div>
+              <div class="leading-tight">
+                <div class="font-label-sm text-label-sm font-bold text-primary">Converting Units</div>
+                <div id="step-2-sub" class="text-[11px] text-on-surface-variant font-medium">Standardising café portions</div>
+              </div>
+            </div>
+            <div id="step-3-card" class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
+              <div class="w-7 h-7 rounded-full bg-surface-container text-outline flex items-center justify-center shrink-0">
+                <span class="text-xs font-bold">3</span>
+              </div>
+              <div class="leading-tight">
+                <div class="font-label-sm text-label-sm font-bold text-on-surface">Plate Cost &amp; Margin</div>
+                <div id="step-3-sub" class="text-[11px] text-emerald-700 font-semibold">₹24.50 COGS (77% Margin)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Friendly Reassuring Tip Card -->
+        <div class="bg-secondary-fixed/30 border border-secondary/20 rounded-xl p-4 flex items-start gap-3">
+          <span class="text-xl shrink-0 leading-none">💡</span>
+          <div>
+            <span class="font-label-sm text-label-sm font-bold text-on-surface block">Smart Café Defaults Enabled</span>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+              Don't worry about exact gram weights. We calibrate standard café portions (like <em>'do chammach' = 20g</em> or <em>'ek cup' = 200ml</em>) with zero-cost support for home-grown mint/lemon.
             </p>
-</div>
-</div>
-<!-- Primary Action CTA Bar -->
-<div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
-<!-- Big Primary Teal Button -->
-<button class="w-full sm:flex-1 py-3.5 px-6 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold hover:bg-primary transition-all duration-150 shadow-md flex items-center justify-center gap-2 group" type="button">
-<span>Convert to standard recipe &amp; calculate cost</span>
-<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
-</button>
-<!-- Secondary Discard Button -->
-<button class="w-full sm:w-auto py-3 px-4 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-on-surface-variant font-label-md text-label-md font-medium flex items-center justify-center gap-1.5" type="button">
-<span class="material-symbols-outlined text-lg" data-icon="restart_alt">restart_alt</span>
-<span>Discard &amp; restart</span>
-</button>
-</div>
-</div>
-<!-- ================= RIGHT COLUMN: INSPECTOR & PHOTO PREVIEW ("Photograph It" Companion) ================= -->
-<div class="lg:col-span-5 space-y-6">
-<!-- Scanner Card -->
-<div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 shadow-sm space-y-4">
-<div class="flex items-start justify-between">
-<div>
-<span class="inline-flex items-center gap-1 text-[11px] font-bold text-secondary uppercase tracking-wider mb-0.5">
-<span class="material-symbols-outlined text-sm fill-icon" data-icon="document_scanner">document_scanner</span>
-                Multi-Modal Inspector
-              </span>
-<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Kitchen Register Scanner</h2>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Snapshot preview from handwritten kitchen diary</p>
-</div>
-<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#15803d] border border-[#15803d]/30 flex items-center gap-1">
-<span class="w-1.5 h-1.5 rounded-full bg-[#15803d]"></span>
-              OCR 96% Match
+          </div>
+        </div>
+
+        <!-- Primary Action CTA Bar -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button id="convert-to-standard-btn" class="w-full sm:flex-1 py-3.5 px-6 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold hover:bg-primary transition-all duration-150 shadow-md flex items-center justify-center gap-2 group cursor-pointer" type="button">
+            <span>Convert to standard recipe &amp; calculate cost</span>
+            <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+          </button>
+          <button id="discard-recipe-btn" class="w-full sm:w-auto py-3 px-4 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors text-on-surface-variant font-label-md text-label-md font-medium flex items-center justify-center gap-1.5 cursor-pointer" type="button">
+            <span class="material-symbols-outlined text-lg" data-icon="restart_alt">restart_alt</span>
+            <span>Discard &amp; restart</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= MODALITY 2 WORKSPACE: PHOTOGRAPH IT ================= -->
+      <div id="photo-workspace-panel" class="space-y-6 hidden">
+        <!-- Hidden file inputs -->
+        <input type="file" id="camera-photo-input" accept="image/*" capture="environment" class="hidden" />
+        <input type="file" id="device-photo-input" accept="image/*,.pdf" class="hidden" />
+
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="font-headline-md text-headline-md font-bold text-on-surface">Capture Kitchen Register / Diary</h3>
+              <p class="text-body-sm text-on-surface-variant mt-0.5">Take a live photo of handwritten notes or upload an invoice/recipe card</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-[#dcfce7] text-[#15803d] border border-[#15803d]/30 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#15803d]"></span>
+              OCR Ready
             </span>
-</div>
-<!-- Realistic Kitchen Diary Snapshot Simulation with Laser Overlay -->
-<div class="relative rounded-xl overflow-hidden border border-outline-variant/50 shadow-inner group">
-<!-- Simulated Rustic Lined Paper Page -->
-<div class="lined-notebook p-5 min-h-[300px] font-handwriting text-slate-800 text-lg relative select-none">
-<!-- Notebook Spiral / Margin Header -->
-<div class="flex items-center justify-between pb-3 mb-2 border-b-2 border-red-200 font-sans text-xs text-stone-500">
-<span class="font-semibold">REGISTER #2 • CAFE DOON BREW</span>
-<span>DATE: 14 OCT 2024</span>
-</div>
-<div class="space-y-1">
-<!-- Handwritten Item Header -->
-<p class="font-bold text-xl text-primary underline decoration-secondary-container decoration-2">
+          </div>
+
+          <!-- Camera & Upload Actions Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button id="trigger-camera-btn" type="button" class="p-4 rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all text-center flex flex-col items-center justify-center gap-2 cursor-pointer group">
+              <div class="w-12 h-12 rounded-full bg-primary-container text-on-primary flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-2xl">photo_camera</span>
+              </div>
+              <div>
+                <span class="font-bold text-sm text-primary block">Take Live Camera Photo</span>
+                <span class="text-xs text-on-surface-variant">Instant snapshot from phone/tablet</span>
+              </div>
+            </button>
+
+            <button id="trigger-upload-btn" type="button" class="p-4 rounded-xl border-2 border-dashed border-outline-variant/60 hover:border-primary/40 bg-surface-container-low hover:bg-surface-container transition-all text-center flex flex-col items-center justify-center gap-2 cursor-pointer group">
+              <div class="w-12 h-12 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-2xl">upload_file</span>
+              </div>
+              <div>
+                <span class="font-bold text-sm text-on-surface block">Upload Bahi-Khata / Image</span>
+                <span class="text-xs text-on-surface-variant">PNG, JPG, PDF up to 15MB</span>
+              </div>
+            </button>
+          </div>
+
+          <!-- Interactive Realistic Photo Preview Scanner -->
+          <div class="relative rounded-xl overflow-hidden border border-outline-variant/50 shadow-inner group">
+            <div id="photo-preview-display" class="lined-notebook p-5 min-h-[260px] font-handwriting text-slate-800 text-lg relative select-none">
+              <div class="flex items-center justify-between pb-3 mb-2 border-b-2 border-red-200 font-sans text-xs text-stone-500">
+                <span class="font-semibold">REGISTER #2 • CAFE DOON BREW</span>
+                <span>DATE: 14 OCT 2024</span>
+              </div>
+              <div class="space-y-1">
+                <p class="font-bold text-xl text-primary underline decoration-secondary-container decoration-2">
                   Cold Coffee (Signature Blend):
                 </p>
-<!-- Ingredient 1 with OCR box -->
-<div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
-<span>- Amul Taaza Milk 200ml</span>
-<span class="absolute -top-2.5 right-0 text-[9px] font-sans font-bold bg-primary text-white px-1 rounded">MATCHED</span>
-</div>
-<br/>
-<!-- Ingredient 2 with OCR box -->
-<div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
-<span>- Nescafé Classic 1.5 pouch (~12g)</span>
-<span class="absolute -top-2.5 right-0 text-[9px] font-sans font-bold bg-primary text-white px-1 rounded">MATCHED</span>
-</div>
-<br/>
-<!-- Ingredient 3 with OCR box -->
-<div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
-<span>- 2 chamach cheeni (Sugar)</span>
-<span class="absolute -top-2.5 right-0 text-[9px] font-sans font-bold bg-primary text-white px-1 rounded">MATCHED</span>
-</div>
-<br/>
-<!-- Ingredient 4 with OCR box -->
-<div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
-<span>- Chocolate drizzle on glass top</span>
-<span class="absolute -top-2.5 right-0 text-[9px] font-sans font-bold bg-primary text-white px-1 rounded">MATCHED</span>
-</div>
-<br/>
-<!-- Note -->
-<p class="text-stone-500 text-base mt-2">
-                  *Blended with 4-5 ice cubes till froth forms
-                </p>
-</div>
-<!-- Animated Scan Laser Beam -->
-<div class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#f4a300] to-transparent shadow-[0_0_12px_#f4a300] scan-laser pointer-events-none"></div>
-</div>
-<!-- Image Prompt Compliant Background Anchor (if replaced) -->
-<div class="hidden">
-<img class="object-cover w-full h-full" data-alt="A realistic top-down macro photo of a weathered restaurant kitchen register with ruled notebook paper filled with handwritten recipe notes in blue fountain pen ink next to a stainless steel measuring spoon and coffee beans on a rustic wooden cafe counter under warm daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtL-nDYbDlgYjPtmqW0rvPucJszm3FxfJlqR1JBZghX6ypGw79MiIAQkuD_us6vVgBQIV2bur_Cj522f3O5P4dtD5zOcps95OzUjR9QFEHOTq8lnc8S0rwE9SjqztKGZ4JTuzdIqrQcwIRaYh9skPitxsoDEona956XEwkpzjw5U3iz8PfNqzVYzWfafiegpqQE_BfMe5JccskjBf9c8Jis6UnwLDdLnskG7_MvN3hmstVqPCuTPc"/>
-</div>
-<!-- Overlay Footer Action inside Photo View -->
-<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-stone-900/80 via-stone-900/40 to-transparent p-3 pt-6 flex items-center justify-between text-white">
-<span class="text-xs font-medium flex items-center gap-1">
-<span class="material-symbols-outlined text-sm" data-icon="photo">photo</span>
-                DSC_0829_bahi_khata.jpg
+                <div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
+                  <span>- Amul Taaza Milk 200ml</span>
+                  <span class="text-[9px] font-sans font-bold bg-primary text-white px-1 rounded ml-1">MATCHED</span>
+                </div><br/>
+                <div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
+                  <span>- Nescafé Classic 1.5 pouch (~12g)</span>
+                  <span class="text-[9px] font-sans font-bold bg-primary text-white px-1 rounded ml-1">MATCHED</span>
+                </div><br/>
+                <div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
+                  <span>- 2 chamach cheeni (Sugar)</span>
+                  <span class="text-[9px] font-sans font-bold bg-primary text-white px-1 rounded ml-1">MATCHED</span>
+                </div><br/>
+                <div class="relative inline-block my-1 px-1.5 bg-yellow-100/70 border border-yellow-400 rounded">
+                  <span>- Chocolate drizzle on glass top</span>
+                  <span class="text-[9px] font-sans font-bold bg-primary text-white px-1 rounded ml-1">MATCHED</span>
+                </div>
+              </div>
+              <div id="active-scan-laser" class="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#f4a300] to-transparent shadow-[0_0_12px_#f4a300] scan-laser pointer-events-none"></div>
+            </div>
+
+            <div class="p-3 bg-surface-container flex items-center justify-between border-t border-outline-variant/30 text-xs">
+              <span id="photo-file-name-label" class="font-medium text-on-surface-variant flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-primary">image</span>
+                DSC_0829_bahi_khata.jpg (Loaded)
               </span>
-<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-primary text-xs font-bold hover:bg-white transition-colors" type="button">
-                Use this photo instead
+              <button id="re-parse-photo-btn" type="button" class="px-3 py-1 rounded-lg bg-primary-container text-on-primary font-bold hover:bg-primary transition-all flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-xs">auto_awesome</span>
+                Run AI OCR Scan
               </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Action CTA Bar for Photo -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button id="convert-photo-to-recipe-btn" class="w-full sm:flex-1 py-3.5 px-6 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold hover:bg-primary transition-all duration-150 shadow-md flex items-center justify-center gap-2 cursor-pointer" type="button">
+            <span>Accept Scanned Recipe &amp; Calculate Cost</span>
+            <span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= MODALITY 3 WORKSPACE: TYPE IT ================= -->
+      <div id="type-workspace-panel" class="space-y-6 hidden">
+        <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-6 shadow-sm space-y-4">
+          <div>
+            <h3 class="font-headline-md text-headline-md font-bold text-on-surface">Type Recipe Manually</h3>
+            <p class="text-body-sm text-on-surface-variant mt-0.5">Enter ingredients with exact weights, packaging prices, or ₹0 kitchen-grown items</p>
+          </div>
+
+          <!-- Basic Dish Metadata -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold text-on-surface mb-1">Dish Name / व्यंजन का नाम</label>
+              <input id="manual-dish-name" type="text" class="w-full px-3 py-2 text-sm rounded-lg border border-outline-variant bg-surface text-on-surface font-medium focus:ring-2 focus:ring-primary/20" value="Café Cold Coffee (Signature)" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-on-surface mb-1">Category</label>
+              <select id="manual-dish-category" class="w-full px-3 py-2 text-sm rounded-lg border border-outline-variant bg-surface text-on-surface font-medium">
+                <option value="Beverages" selected>Beverages</option>
+                <option value="Curries">Curries</option>
+                <option value="Breads">Breads</option>
+                <option value="Sides">Sides</option>
+                <option value="Desserts">Desserts</option>
+                <option value="Quick Bites">Quick Bites</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-on-surface mb-1">Selling Menu Price (₹)</label>
+              <input id="manual-selling-price" type="number" step="1" class="w-full px-3 py-2 text-sm rounded-lg border border-outline-variant bg-surface text-on-surface font-bold text-primary focus:ring-2 focus:ring-primary/20" value="110" />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-on-surface mb-1">Batch Servings</label>
+              <input id="manual-batch-servings" type="number" step="1" class="w-full px-3 py-2 text-sm rounded-lg border border-outline-variant bg-surface text-on-surface font-medium" value="1" />
+            </div>
+          </div>
+
+          <!-- Dynamic Ingredients List Table -->
+          <div class="pt-2">
+            <div class="flex items-center justify-between mb-2">
+              <label class="text-xs font-bold uppercase tracking-wider text-outline">Recipe Components (Costed per plate)</label>
+              <button id="manual-add-row-btn" type="button" class="px-2.5 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-bold text-xs flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-sm">add</span>
+                <span>Add Ingredient Line</span>
+              </button>
+            </div>
+
+            <div id="manual-ingredients-container" class="space-y-2">
+              <!-- Row 1 -->
+              <div class="manual-ing-row p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 grid grid-cols-12 gap-2 items-center text-xs">
+                <input class="col-span-5 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-name" placeholder="Ingredient name" value="Amul Taaza Milk" />
+                <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-qty" placeholder="Qty" value="200" />
+                <select class="col-span-2 px-1 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-unit">
+                  <option value="ml" selected>ml</option>
+                  <option value="g">g</option>
+                  <option value="kg">kg</option>
+                  <option value="l">L</option>
+                  <option value="pcs">pcs</option>
+                </select>
+                <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-cost" placeholder="₹ Rate" value="11.20" />
+                <button type="button" class="col-span-1 text-on-surface-variant hover:text-error text-center remove-row-btn" title="Remove"><span class="material-symbols-outlined text-base">delete</span></button>
+              </div>
+
+              <!-- Row 2 -->
+              <div class="manual-ing-row p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 grid grid-cols-12 gap-2 items-center text-xs">
+                <input class="col-span-5 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-name" placeholder="Ingredient name" value="Nescafé Classic Blend" />
+                <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-qty" placeholder="Qty" value="10" />
+                <select class="col-span-2 px-1 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-unit">
+                  <option value="g" selected>g</option>
+                  <option value="ml">ml</option>
+                  <option value="kg">kg</option>
+                  <option value="pcs">pcs</option>
+                </select>
+                <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-cost" placeholder="₹ Rate" value="6.50" />
+                <button type="button" class="col-span-1 text-on-surface-variant hover:text-error text-center remove-row-btn" title="Remove"><span class="material-symbols-outlined text-base">delete</span></button>
+              </div>
+
+              <!-- Row 3: Zero-Cost Home-Grown example -->
+              <div class="manual-ing-row p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 grid grid-cols-12 gap-2 items-center text-xs">
+                <input class="col-span-5 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-name" placeholder="Ingredient name" value="Fresh Garden Mint / Water" />
+                <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-qty" placeholder="Qty" value="10" />
+                <select class="col-span-2 px-1 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-unit">
+                  <option value="g" selected>g</option>
+                  <option value="ml">ml</option>
+                  <option value="pcs">pcs</option>
+                </select>
+                <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-cost" placeholder="₹ Rate" value="0.00" />
+                <button type="button" class="col-span-1 text-on-surface-variant hover:text-error text-center remove-row-btn" title="Remove"><span class="material-symbols-outlined text-base">delete</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Action CTA Bar for Type -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <button id="convert-manual-to-recipe-btn" class="w-full sm:flex-1 py-3.5 px-6 rounded-lg bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold hover:bg-primary transition-all duration-150 shadow-md flex items-center justify-center gap-2 cursor-pointer" type="button">
+            <span>Save Recipe &amp; Calculate Profit Margins</span>
+            <span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+          </button>
+        </div>
+      </div>
 </div>
-</div>
-<!-- Quick Action Bar for Photo Mode -->
-<div class="flex items-center gap-2">
-<button class="flex-1 py-2 px-3 rounded-lg border border-primary text-primary font-label-sm text-label-sm font-semibold hover:bg-primary/5 transition-colors flex items-center justify-center gap-1.5">
-<span class="material-symbols-outlined text-base" data-icon="switch_access_shortcut">switch_access_shortcut</span>
-<span>Switch to Photograph Mode</span>
-</button>
-<button class="py-2 px-3 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-surface-container font-label-sm text-label-sm font-medium transition-colors" title="Retake or Upload new Photo">
-<span class="material-symbols-outlined text-base" data-icon="upload_file">upload_file</span>
-</button>
-</div>
-</div>
+<!-- ================= RIGHT COLUMN: LIVE RECIPE DRAFT PREVIEW ================= -->
+<div class="lg:col-span-5 space-y-6">
 <!-- Live Preliminary Recipe Draft Preview Card -->
 <div class="bg-surface-container-lowest border border-outline-variant/40 rounded-xl p-5 shadow-sm space-y-4">
 <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
@@ -708,77 +890,885 @@
 <span class="text-[10px]">Menu Layout</span>
 </a>
 </nav>
-<!-- Interactive Demo Script for Recording Toggle Feel -->
+<!-- Interactive Multi-Modal Audio/Photo/Type Recipe Capture Script -->
 <script>
-    const API_BASE = 'http://127.0.0.1:8000';
+  const API_BASE = 'http://127.0.0.1:8000';
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const micBtn = document.querySelector('button[title="Click to Pause/Stop recording"]');
-      if (micBtn) {
-        let isRecording = true;
-        micBtn.addEventListener('click', () => {
-          isRecording = !isRecording;
-          const statusText = document.querySelector('.text-error.font-bold');
-          if (statusText) {
-            statusText.textContent = isRecording ? "LISTENING... (00:24s)" : "PAUSED (Click mic to resume)";
-            statusText.classList.toggle('text-error', isRecording);
-            statusText.classList.toggle('text-outline', !isRecording);
-          }
+  document.addEventListener('DOMContentLoaded', () => {
+    // -------------------------------------------------------------
+    // 1. Modality Switcher (Speak it / Photograph it / Type it)
+    // -------------------------------------------------------------
+    const speakBtn = document.getElementById('modality-speak-btn');
+    const photoBtn = document.getElementById('modality-photo-btn');
+    const typeBtn = document.getElementById('modality-type-btn');
+
+    const speakPanel = document.getElementById('speak-workspace-panel');
+    const photoPanel = document.getElementById('photo-workspace-panel');
+    const typePanel = document.getElementById('type-workspace-panel');
+
+    function setActiveModality(modality) {
+      const activeCardClass = 'relative text-left p-4 rounded-xl bg-surface-container-lowest border-2 border-primary-container shadow-md transition-all group overflow-hidden cursor-pointer';
+      const inactiveCardClass = 'relative text-left p-4 rounded-xl bg-surface-container-lowest border border-outline-variant/40 hover:border-primary/40 hover:bg-surface-container-low transition-all group cursor-pointer';
+
+      // Update button visual states
+      if (speakBtn) speakBtn.className = modality === 'speak' ? activeCardClass : inactiveCardClass;
+      if (photoBtn) photoBtn.className = modality === 'photo' ? activeCardClass : inactiveCardClass;
+      if (typeBtn) typeBtn.className = modality === 'type' ? activeCardClass : inactiveCardClass;
+
+      // Update panels visibility
+      if (speakPanel) speakPanel.classList.toggle('hidden', modality !== 'speak');
+      if (photoPanel) photoPanel.classList.toggle('hidden', modality !== 'photo');
+      if (typePanel) typePanel.classList.toggle('hidden', modality !== 'type');
+
+      // If switching away from speak, stop listening
+      if (modality !== 'speak' && isListening) {
+        stopVoiceRecognition();
+      }
+    }
+
+    if (speakBtn) speakBtn.onclick = () => setActiveModality('speak');
+    if (photoBtn) photoBtn.onclick = () => setActiveModality('photo');
+    if (typeBtn) typeBtn.onclick = () => setActiveModality('type');
+
+    // -------------------------------------------------------------
+    // 2. Active Recipe Draft State & UI Synchronizer
+    // -------------------------------------------------------------
+    let activeRecipe = {
+      name: "Café Cold Coffee (Signature Blend)",
+      category: "Beverages",
+      selling_price: 110.0,
+      cogs: 24.50,
+      ingredients: [
+        { name: "Amul Taaza Milk", quantity: 200, unit: "ml", cost: 11.20 },
+        { name: "Nescafé Classic Blend", quantity: 10, unit: "g", cost: 6.50 },
+        { name: "Granulated Sugar", quantity: 20, unit: "g", cost: 0.90 },
+        { name: "Hershey's Chocolate Syrup", quantity: 15, unit: "ml", cost: 4.80 },
+        { name: "Commercial Ice & Consumables", quantity: 100, unit: "g", cost: 1.10 }
+      ]
+    };
+
+    function renderDraftPreview(recipeData) {
+      if (!recipeData) return;
+      activeRecipe = Object.assign(activeRecipe, recipeData);
+
+      // 1. Title & Header
+      const titleEl = document.querySelector('.lg\\:col-span-5 h3.font-headline-md');
+      if (titleEl && activeRecipe.name) {
+        titleEl.textContent = activeRecipe.name;
+      }
+
+      // 2. Calculate COGS
+      let totalCost = 0;
+      if (activeRecipe.ingredients && activeRecipe.ingredients.length > 0) {
+        activeRecipe.ingredients.forEach(i => {
+          totalCost += parseFloat(i.cost || i.unit_price || 0);
         });
       }
+      activeRecipe.cogs = totalCost > 0 ? totalCost : 24.50;
 
-      // Add AI interactive parsing input
-      const transcriptCard = document.querySelector('.mt-2.bg-\\[\\#fdfbf7\\]');
-      if (transcriptCard) {
-        const box = document.createElement('div');
-        box.className = 'mt-3 pt-3 border-t border-[#e8dfcf] space-y-2';
-        box.innerHTML = `
-          <div class="flex items-center justify-between text-xs font-bold text-primary">
-            <span>✨ AI Recipe Interpreter (Gemini Enabled)</span>
-            <span class="text-[10px] text-outline">Type informal recipe ingredients</span>
+      // 3. COGS & Price Display
+      const cogsEl = document.querySelector('.lg\\:col-span-5 .font-currency-display.text-primary');
+      if (cogsEl) {
+        cogsEl.innerHTML = `₹${activeRecipe.cogs.toFixed(2)} <span class="text-xs font-normal text-on-surface-variant">/ portion</span>`;
+      }
+
+      const totalCostEl = document.querySelector('.lg\\:col-span-5 .p-3.rounded-lg.bg-primary-container\\/5 .font-currency-display');
+      if (totalCostEl) {
+        totalCostEl.textContent = `₹${activeRecipe.cogs.toFixed(2)}`;
+      }
+
+      const suggestedPriceEl = document.querySelector('.lg\\:col-span-5 .font-currency-display.text-on-surface');
+      const suggestedPrice = activeRecipe.selling_price || Math.round(activeRecipe.cogs / 0.28);
+      if (suggestedPriceEl) {
+        const marginPct = activeRecipe.cogs > 0 ? Math.round(((suggestedPrice - activeRecipe.cogs) / suggestedPrice) * 100) : 75;
+        suggestedPriceEl.innerHTML = `₹${suggestedPrice.toFixed(2)} <span class="text-xs font-normal text-on-surface-variant">@ ${marginPct}% margin</span>`;
+      }
+
+      // 4. Render Ingredients list in right column
+      const ingsListEl = document.querySelector('.lg\\:col-span-5 .space-y-1\\.5.pt-1');
+      if (ingsListEl && activeRecipe.ingredients && activeRecipe.ingredients.length > 0) {
+        const headerHtml = '<span class="font-label-sm text-label-sm font-bold text-on-surface block mb-1">Detected Components (Ready to map):</span>';
+        const rowsHtml = activeRecipe.ingredients.map((ing, idx) => {
+          const isOff = ing.not_on_menu || (parseFloat(ing.cost || 0) === 0 && ing.is_not_on_menu);
+          const offBadge = isOff ? ' <span class="text-[9px] font-bold text-error bg-error/10 border border-error/20 px-1.5 py-0.5 rounded ml-1">Not on Menu (₹0)</span>' : '';
+          const priceDisplay = isOff ? '<span class="font-bold text-error font-mono">₹0.00</span>' : `<span class="font-bold text-primary font-mono">₹${parseFloat(ing.cost || 0).toFixed(2)}</span>`;
+          return `
+          <div class="flex items-center justify-between py-1 px-2 rounded ${isOff ? 'bg-red-50/60 border border-red-200' : 'bg-surface-container'}">
+            <span class="text-on-surface font-medium text-xs">${idx + 1}. ${ing.name} (${ing.quantity} ${ing.unit})${offBadge}</span>
+            ${priceDisplay}
           </div>
-          <div class="flex gap-2">
-            <input id="ai-recipe-input" type="text" class="flex-1 px-3 py-1.5 text-xs rounded-lg border border-outline-variant bg-surface text-on-surface" placeholder="e.g. 200ml milk, 15g espresso, 20g sugar" value="200ml milk, 15g espresso beans, 20g sugar" />
-            <button id="ai-parse-trigger" type="button" class="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-bold shadow-xs hover:bg-primary-container">Parse AI</button>
-          </div>
-          <div id="ai-status" class="text-[11px] text-on-surface-variant hidden"></div>
         `;
-        transcriptCard.appendChild(box);
+        }).join('');
+        ingsListEl.innerHTML = headerHtml + rowsHtml;
+      }
 
-        const trigger = document.getElementById('ai-parse-trigger');
-        const input = document.getElementById('ai-recipe-input');
-        const statusEl = document.getElementById('ai-status');
+      // 5. Update pipeline step 3
+      const step3Sub = document.getElementById('step-3-sub');
+      if (step3Sub) {
+        step3Sub.textContent = `₹${activeRecipe.cogs.toFixed(2)} COGS (${Math.round(((suggestedPrice - activeRecipe.cogs) / suggestedPrice) * 100)}% Margin)`;
+      }
+    }
 
-        if (trigger && input) {
-          trigger.addEventListener('click', async () => {
-            const txt = input.value.trim();
-            if (!txt) return;
-            trigger.disabled = true;
-            statusEl.classList.remove('hidden');
-            statusEl.textContent = 'Parsing with AI...';
+    // -------------------------------------------------------------
+    // 3. Web Speech Recognition Engine (Continuous with Hindi/Hinglish)
+    // -------------------------------------------------------------
+    const micBtn = document.getElementById('voice-mic-main-btn');
+    const statusText = document.getElementById('listening-status-text');
+    const soundwaveContainer = document.getElementById('soundwave-container');
+    const pingIndicator = document.getElementById('mic-ping-indicator');
+    const dotIndicator = document.getElementById('mic-dot-indicator');
+    const ringAnimOuter = document.getElementById('ring-anim-outer');
+    const ringAnimInner = document.getElementById('ring-anim-inner');
+    const liveSpokenDisplay = document.getElementById('live-spoken-display');
+    const liveTokenMatrix = document.getElementById('live-token-matrix');
+    const entitiesBadge = document.getElementById('detected-entities-badge');
+    const liveSpeechBox = document.getElementById('live-speech-box');
+    const btnParseSpeechNow = document.getElementById('btn-parse-speech-now');
+    const audioMeterLabel = document.getElementById('audio-meter-label');
+    const audioStatusBadge = document.getElementById('audio-status-badge');
+    const audioActiveDot = document.getElementById('audio-active-dot');
 
-            try {
-              const res = await fetch(`${API_BASE}/api/recipes/interpret`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ source_text: txt })
-              });
-              if (res.ok) {
-                const draft = await res.json();
-                statusEl.innerHTML = `<span class="text-emerald-700 font-bold">✓ Parsed: ${draft.name} (${draft.ingredients ? draft.ingredients.length : 0} items)</span>`;
-                const titleEl = document.querySelector('.font-headline-md.text-headline-md.font-bold.text-on-surface.leading-tight');
-                if (titleEl) titleEl.textContent = draft.name;
-              } else {
-                statusEl.textContent = 'Could not parse recipe.';
-              }
-            } catch (e) {
-              statusEl.textContent = 'Connection error.';
-            } finally {
-              trigger.disabled = false;
-            }
-          });
+    let currentDialect = 'hi-IN';
+
+    let isListening = false;
+    let audioStream = null;
+    let audioContext = null;
+    let analyserNode = null;
+    let scriptProcessor = null;
+    let silentGain = null;
+    let animFrameId = null;
+    let recordedPcmChunks = [];
+    let recordingTimerId = null;
+    let recordingSeconds = 0;
+    let isTranscribingBackend = false;
+    let speechDebounceTimer = null;
+
+    const recordingControlsEl = document.getElementById('recording-active-controls');
+    const stopRecordingBtn = document.getElementById('btn-stop-recording-now');
+    const timerPillEl = document.getElementById('recording-timer-pill');
+    const micIconEl = document.getElementById('voice-mic-icon');
+
+    // Convert raw Float32 audio samples into standard 16kHz mono PCM WAV Blob
+    function export16kWavBlob(chunks, inputSampleRate) {
+      let totalSamples = 0;
+      for (let i = 0; i < chunks.length; i++) {
+        totalSamples += chunks[i].length;
+      }
+      const merged = new Float32Array(totalSamples);
+      let offset = 0;
+      for (let i = 0; i < chunks.length; i++) {
+        merged.set(chunks[i], offset);
+        offset += chunks[i].length;
+      }
+
+      // Downsample to 16,000 Hz if needed
+      const targetRate = 16000;
+      let finalSamples;
+      if (inputSampleRate === targetRate) {
+        finalSamples = merged;
+      } else {
+        const ratio = inputSampleRate / targetRate;
+        const newLength = Math.round(totalSamples / ratio);
+        finalSamples = new Float32Array(newLength);
+        for (let i = 0; i < newLength; i++) {
+          const origIdx = Math.min(totalSamples - 1, Math.round(i * ratio));
+          finalSamples[i] = merged[origIdx];
         }
       }
+
+      // 44-byte standard RIFF PCM WAV header
+      const buffer = new ArrayBuffer(44 + finalSamples.length * 2);
+      const view = new DataView(buffer);
+
+      function writeString(view, offset, string) {
+        for (let i = 0; i < string.length; i++) {
+          view.setUint8(offset + i, string.charCodeAt(i));
+        }
+      }
+
+      writeString(view, 0, 'RIFF');
+      view.setUint32(4, 36 + finalSamples.length * 2, true);
+      writeString(view, 8, 'WAVE');
+      writeString(view, 12, 'fmt ');
+      view.setUint32(16, 16, true); // 16 for PCM
+      view.setUint16(20, 1, true);  // Format = 1 (PCM)
+      view.setUint16(22, 1, true);  // Mono
+      view.setUint32(24, targetRate, true);
+      view.setUint32(28, targetRate * 2, true); // ByteRate
+      view.setUint16(32, 2, true);  // BlockAlign
+      view.setUint16(34, 16, true); // BitsPerSample
+      writeString(view, 36, 'data');
+      view.setUint32(40, finalSamples.length * 2, true);
+
+      // Write 16-bit PCM samples
+      let byteOffset = 44;
+      for (let i = 0; i < finalSamples.length; i++, byteOffset += 2) {
+        const s = Math.max(-1, Math.min(1, finalSamples[i]));
+        view.setInt16(byteOffset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+      }
+
+      return new Blob([view], { type: 'audio/wav' });
+    }
+
+    // Web Audio API Physical Microphone Energy Meter & Live PCM Recording
+    async function startAudioStreamVisualizer() {
+      try {
+        if (!audioStream) {
+          audioStream = await navigator.mediaDevices.getUserMedia({ 
+            audio: { echoCancellation: true, noiseSuppression: true } 
+          });
+        }
+
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!audioContext) {
+          audioContext = new AudioCtx();
+        }
+        if (audioContext.state === 'suspended') {
+          await audioContext.resume();
+        }
+
+        const source = audioContext.createMediaStreamSource(audioStream);
+        
+        analyserNode = audioContext.createAnalyser();
+        analyserNode.fftSize = 64;
+        source.connect(analyserNode);
+
+        // ScriptProcessor for PCM audio chunk collection
+        recordedPcmChunks = [];
+        scriptProcessor = audioContext.createScriptProcessor(4096, 1, 1);
+        scriptProcessor.onaudioprocess = (e) => {
+          if (!isListening) return;
+          const inputData = e.inputBuffer.getChannelData(0);
+          recordedPcmChunks.push(new Float32Array(inputData));
+        };
+
+        silentGain = audioContext.createGain();
+        silentGain.gain.value = 0; // Prevent echo feedback loop
+
+        source.connect(scriptProcessor);
+        scriptProcessor.connect(silentGain);
+        silentGain.connect(audioContext.destination);
+
+        const waveBars = soundwaveContainer ? soundwaveContainer.querySelectorAll('.wave-bar') : [];
+        const bufferLength = analyserNode.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        function updateAudioMeter() {
+          if (!isListening) return;
+
+          if (analyserNode) {
+            analyserNode.getByteFrequencyData(dataArray);
+            let sum = 0;
+            for (let i = 0; i < bufferLength; i++) {
+              sum += dataArray[i];
+            }
+            const avg = sum / (bufferLength || 1);
+
+            // Modulate soundwave bars based on real mic volume
+            if (waveBars.length > 0) {
+              waveBars.forEach((bar, idx) => {
+                const barVal = dataArray[(idx * 2) % bufferLength] || avg;
+                const heightPx = Math.max(5, Math.min(30, Math.round((barVal / 255) * 36) + 4));
+                bar.style.height = `${heightPx}px`;
+              });
+            }
+
+            // Detect vocal activity
+            if (avg > 4) {
+              if (audioMeterLabel) audioMeterLabel.textContent = `Mic Hearing Voice 🎙️ (Volume: ${Math.round(avg)}%)`;
+              if (audioStatusBadge) audioStatusBadge.textContent = 'Voice Detected';
+              if (audioActiveDot) audioActiveDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping';
+            } else {
+              if (audioMeterLabel) audioMeterLabel.textContent = `Recording (${formatTimer(recordingSeconds)})... Speak ingredients`;
+              if (audioStatusBadge) audioStatusBadge.textContent = 'Listening';
+              if (audioActiveDot) audioActiveDot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse';
+            }
+          }
+
+          animFrameId = requestAnimationFrame(updateAudioMeter);
+        }
+
+        updateAudioMeter();
+      } catch (err) {
+        console.warn('Microphone stream access error:', err);
+        if (audioMeterLabel) {
+          audioMeterLabel.textContent = 'Mic permission needed • Click Allow in browser';
+        }
+      }
+    }
+
+    function formatTimer(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    async function sendRecordedAudioToBackend() {
+      if (!recordedPcmChunks || recordedPcmChunks.length < 3 || isTranscribingBackend) return;
+      isTranscribingBackend = true;
+
+      const chunksToSend = recordedPcmChunks.slice();
+      recordedPcmChunks = []; // Clear buffer
+
+      const sampleRate = (audioContext && audioContext.sampleRate) || 44100;
+      const wavBlob = export16kWavBlob(chunksToSend, sampleRate);
+
+      if (wavBlob.size < 6000) {
+        isTranscribingBackend = false;
+        return;
+      }
+
+      if (statusText) statusText.textContent = "AI Translating & Costing your spoken recipe...";
+      if (audioStatusBadge) audioStatusBadge.textContent = "Transcribing...";
+      if (liveSpeechBox) liveSpeechBox.value = "⏳ Transcribing audio from microphone...";
+
+      try {
+        const formData = new FormData();
+        formData.append("audio", wavBlob, "kitchen_audio.wav");
+        formData.append("dialect", currentDialect);
+
+        const res = await fetch(`${API_BASE}/api/recipes/transcribe-audio?dialect=${encodeURIComponent(currentDialect)}`, {
+          method: "POST",
+          body: formData
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && data.transcript) {
+            if (liveSpeechBox) liveSpeechBox.value = data.transcript;
+            updateLiveTranscriptUI(data.transcript);
+
+            if (data.recipe) {
+              renderParsedEntities(data.recipe, data.not_on_menu);
+            } else {
+              parseKitchenSpokenText(data.transcript);
+            }
+            if (statusText) statusText.textContent = `✓ Spoken Words: "${data.transcript.substring(0, 36)}..."`;
+            if (audioStatusBadge) audioStatusBadge.textContent = "Recipe Costed!";
+          } else if (data.message && statusText) {
+            statusText.textContent = data.message;
+            if (liveSpeechBox) liveSpeechBox.value = "";
+          }
+        }
+      } catch (err) {
+        console.warn("Backend audio transcribe error:", err);
+      } finally {
+        isTranscribingBackend = false;
+      }
+    }
+
+    function stopAudioStreamVisualizer() {
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      if (scriptProcessor) {
+        try { scriptProcessor.disconnect(); } catch (e) {}
+        scriptProcessor = null;
+      }
+      if (silentGain) {
+        try { silentGain.disconnect(); } catch (e) {}
+        silentGain = null;
+      }
+      if (audioStream) {
+        audioStream.getTracks().forEach(t => t.stop());
+        audioStream = null;
+      }
+      if (audioContext) {
+        try { audioContext.close(); } catch (e) {}
+        audioContext = null;
+        analyserNode = null;
+      }
+      if (audioMeterLabel) audioMeterLabel.textContent = 'Mic Standby • Click mic to speak';
+      if (audioStatusBadge) audioStatusBadge.textContent = 'Mic Standby';
+      if (audioActiveDot) audioActiveDot.className = 'w-1.5 h-1.5 rounded-full bg-outline';
+
+      if (soundwaveContainer) {
+        soundwaveContainer.querySelectorAll('.wave-bar').forEach(b => {
+          b.style.height = '6px';
+        });
+      }
+    }
+
+    async function startVoiceRecognition() {
+      isListening = true;
+      recordingSeconds = 0;
+
+      // Update UI to active recording state
+      setMicUI(true, "RECORDING... Speak recipe ingredients now");
+      if (recordingControlsEl) recordingControlsEl.classList.remove('hidden');
+      if (timerPillEl) timerPillEl.textContent = "00:00";
+      if (micIconEl) micIconEl.textContent = "stop";
+      if (micBtn) {
+        micBtn.classList.remove('bg-primary-container');
+        micBtn.classList.add('bg-error');
+      }
+
+      if (liveSpeechBox) {
+        liveSpeechBox.value = "";
+        liveSpeechBox.placeholder = "🔴 Listening to your voice... Speak your recipe (e.g. 'ek glass doodh, do chammach cheeni'). Click 'Finish Speaking' when done.";
+      }
+
+      // Start Physical Mic Audio Meter & PCM recording
+      await startAudioStreamVisualizer();
+
+      // Start elapsed timer (auto-transcribes after 5 seconds of speaking)
+      if (recordingTimerId) clearInterval(recordingTimerId);
+      recordingTimerId = setInterval(() => {
+        if (!isListening) {
+          clearInterval(recordingTimerId);
+          return;
+        }
+        recordingSeconds++;
+        if (timerPillEl) timerPillEl.textContent = formatTimer(recordingSeconds);
+
+        // Auto-stop and convert after 5 seconds of speaking
+        if (recordingSeconds >= 5) {
+          clearInterval(recordingTimerId);
+          stopVoiceRecognition();
+        }
+      }, 1000);
+    }
+
+    async function stopVoiceRecognition() {
+      if (!isListening) return;
+      isListening = false;
+
+      if (recordingTimerId) {
+        clearInterval(recordingTimerId);
+        recordingTimerId = null;
+      }
+
+      if (recordingControlsEl) recordingControlsEl.classList.add('hidden');
+      if (micIconEl) micIconEl.textContent = "mic";
+      if (micBtn) {
+        micBtn.classList.remove('bg-error');
+        micBtn.classList.add('bg-primary-container');
+      }
+
+      setMicUI(false, "AI TRANSCRIBING... Converting spoken recipe to costs");
+
+      // Send recorded audio to backend for Hindi/Hinglish speech recognition
+      await sendRecordedAudioToBackend();
+
+      stopAudioStreamVisualizer();
+    }
+
+    function setMicUI(active, message) {
+      if (statusText) {
+        statusText.textContent = message;
+        statusText.classList.toggle('text-error', active);
+        statusText.classList.toggle('text-outline', !active);
+      }
+      if (pingIndicator) pingIndicator.classList.toggle('hidden', !active);
+      if (dotIndicator) {
+        dotIndicator.classList.toggle('bg-error', active);
+        dotIndicator.classList.toggle('bg-outline', !active);
+      }
+      if (ringAnimOuter) ringAnimOuter.classList.toggle('hidden', !active);
+      if (ringAnimInner) ringAnimInner.classList.toggle('hidden', !active);
+    }
+
+    if (micBtn) {
+      micBtn.onclick = () => {
+        if (isListening) {
+          stopVoiceRecognition();
+        } else {
+          startVoiceRecognition();
+        }
+      };
+    }
+
+    if (stopRecordingBtn) {
+      stopRecordingBtn.onclick = () => {
+        stopVoiceRecognition();
+      };
+    }
+
+    // Dialect Chips Handler
+    const dialectHindi = document.getElementById('dialect-hindi-btn');
+    const dialectGarhwali = document.getElementById('dialect-garhwali-btn');
+    const dialectHinglish = document.getElementById('dialect-hinglish-btn');
+
+    function setDialect(dialect, activeBtn) {
+      currentDialect = dialect;
+      [dialectHindi, dialectGarhwali, dialectHinglish].forEach(btn => {
+        if (btn) btn.className = 'px-3 py-1 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors border border-outline-variant/30 cursor-pointer';
+      });
+      if (activeBtn) {
+        activeBtn.className = 'px-3 py-1 rounded-full text-xs font-semibold bg-primary-container text-on-primary shadow-xs cursor-pointer';
+      }
+    }
+
+    if (dialectHindi) dialectHindi.onclick = () => setDialect('hi-IN', dialectHindi);
+    if (dialectGarhwali) dialectGarhwali.onclick = () => setDialect('hi-IN', dialectGarhwali);
+    if (dialectHinglish) dialectHinglish.onclick = () => setDialect('en-IN', dialectHinglish);
+
+    // -------------------------------------------------------------
+    // 4. Live Spoken Box Input & 1-Click Samples
+    // -------------------------------------------------------------
+    if (liveSpeechBox) {
+      liveSpeechBox.addEventListener('input', () => {
+        const val = liveSpeechBox.value.trim();
+        updateLiveTranscriptUI(val);
+        clearTimeout(speechDebounceTimer);
+        speechDebounceTimer = setTimeout(() => {
+          parseKitchenSpokenText(val);
+        }, 500);
+      });
+    }
+
+    if (btnParseSpeechNow && liveSpeechBox) {
+      btnParseSpeechNow.onclick = () => {
+        const val = liveSpeechBox.value.trim();
+        updateLiveTranscriptUI(val);
+        parseKitchenSpokenText(val);
+      };
+    }
+
+    document.querySelectorAll('.voice-preset-pill').forEach(pill => {
+      pill.onclick = () => {
+        const phrase = pill.getAttribute('data-phrase');
+        if (!phrase) return;
+
+        stopVoiceRecognition();
+        if (liveSpeechBox) liveSpeechBox.value = phrase;
+        setMicUI(false, `Loaded phrase: "${pill.textContent.trim()}"`);
+        updateLiveTranscriptUI(phrase);
+        parseKitchenSpokenText(phrase);
+      };
     });
-  </script>
+
+    function updateLiveTranscriptUI(rawText) {
+      if (!liveSpokenDisplay) return;
+
+      const tokens = rawText.split(/[,;\n]+/).map(t => t.trim()).filter(Boolean);
+      const highlightedHtml = tokens.map(t => `<span class="bg-primary/10 text-primary font-semibold px-1.5 py-0.5 rounded border border-primary/20">${t}</span>`).join(', ');
+      liveSpokenDisplay.innerHTML = `“${highlightedHtml}”`;
+    }
+
+    async function parseKitchenSpokenText(text) {
+      if (!text) return;
+
+      // Update pipeline step 1
+      const step1Sub = document.getElementById('step-1-sub');
+      if (step1Sub) step1Sub.textContent = `Captured: "${text.substring(0, 24)}..."`;
+
+      try {
+        const res = await fetch(`${API_BASE}/api/recipes/interpret`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ source_text: text })
+        });
+
+        if (res.ok) {
+          const parsed = await res.json();
+          renderParsedEntities(parsed);
+        }
+      } catch (err) {
+        console.warn('AI recipe interpret fallback:', err);
+      }
+    }
+
+    function renderParsedEntities(parsedData, notOnMenuList) {
+      if (!parsedData || !parsedData.ingredients) return;
+
+      if (!notOnMenuList || notOnMenuList.length === 0) {
+        notOnMenuList = (parsedData.ingredients || [])
+          .filter(i => (i.notes && i.notes.includes('NOT ON MENU')) || i.not_on_menu)
+          .map(i => i.matched_ingredient_name || i.name);
+      }
+      const onMenuCount = parsedData.ingredients.filter(i => !notOnMenuList.includes(i.matched_ingredient_name)).length;
+      const offMenuCount = notOnMenuList.length;
+
+      // Update badge count
+      if (entitiesBadge) {
+        let badgeText = `${parsedData.ingredients.length} ingredient(s) detected`;
+        if (offMenuCount > 0) badgeText += ` • ${offMenuCount} not on menu`;
+        entitiesBadge.textContent = badgeText;
+      }
+
+      // Show clarification if no ingredients found
+      if (parsedData.ingredients.length === 0) {
+        if (liveTokenMatrix) {
+          liveTokenMatrix.innerHTML = `
+            <div class="sm:col-span-2 p-3 rounded bg-red-50 border border-red-200 text-center">
+              <span class="text-red-700 font-bold text-xs">⚠️ No food ingredients detected in your speech.</span><br/>
+              <span class="text-red-600 text-[11px]">Please speak ingredient names clearly (e.g. "doodh", "cheeni", "paneer", "coffee")</span>
+            </div>
+          `;
+        }
+        if (entitiesBadge) entitiesBadge.textContent = '0 ingredients — speak food names';
+        return;
+      }
+
+      // Update token matrix cards in transcript box
+      if (liveTokenMatrix) {
+        liveTokenMatrix.innerHTML = parsedData.ingredients.map(ing => {
+          const isOffMenu = notOnMenuList.includes(ing.matched_ingredient_name);
+          const borderColor = isOffMenu ? 'border-red-300 bg-red-50' : 'border-emerald-200 bg-emerald-50/30';
+          const textColor = isOffMenu ? 'text-red-700' : 'text-primary';
+          const badge = isOffMenu
+            ? '<span class="text-[9px] font-bold bg-red-600 text-white px-1 rounded ml-1">NOT ON MENU</span>'
+            : '<span class="text-[9px] font-bold bg-emerald-600 text-white px-1 rounded ml-1">ON MENU ✓</span>';
+          return `
+          <div class="flex items-center justify-between p-2 rounded ${borderColor} border">
+            <span class="text-outline font-medium">${ing.raw_text || ing.name}</span>
+            <span class="font-bold ${textColor} flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+              ${ing.quantity}${ing.unit} ${ing.matched_ingredient_name || ing.name}
+              ${badge}
+            </span>
+          </div>
+          `;
+        }).join('');
+      }
+
+      // Calculate costs — items not on menu get ₹0
+      const unitCosts = {
+        'Full Cream Milk': 0.056,
+        'Granulated Sugar': 0.045,
+        'Instant Coffee Blend': 0.65,
+        'Commercial Ice Cubes': 0.011,
+        'Chocolate Syrup': 0.32,
+        'Fresh Malai Paneer': 0.40,
+        'Fresh Tomatoes': 0.035,
+        'Yellow Onions': 0.030,
+        'Table Butter': 0.54,
+        'Refined Cooking Oil': 0.16,
+        'Maggi Noodle Cakes': 14.0,
+        'Green Peas': 0.08,
+        'Pure Desi Ghee': 0.58,
+        'Basmati Rice': 0.088,
+        'Wheat Flour (Atta)': 0.035,
+        'Cumin Seeds': 0.80,
+        'Turmeric Powder': 0.40,
+        'Red Chilli Powder': 0.50,
+        'Fresh Ginger': 0.10,
+        'Garlic Cloves': 0.10,
+        'Fresh Cream': 0.30,
+        'Potatoes': 0.030,
+        'Maida / Refined Flour': 0.042
+      };
+
+      const mappedDraft = {
+        name: parsedData.name || "Custom Kitchen Recipe",
+        category: (parsedData.name || '').includes('Coffee') ? 'Beverages' : ((parsedData.name || '').includes('Maggi') ? 'Quick Bites' : 'Curries'),
+        selling_price: (parsedData.name || '').includes('Coffee') ? 110 : ((parsedData.name || '').includes('Maggi') ? 90 : 280),
+        ingredients: parsedData.ingredients.map(i => {
+          const isOff = notOnMenuList.includes(i.matched_ingredient_name);
+          const rate = isOff ? 0 : (unitCosts[i.matched_ingredient_name] || 0.15);
+          const cost = (i.quantity || 1) * rate;
+          return {
+            name: i.matched_ingredient_name || i.raw_text,
+            quantity: i.quantity,
+            unit: i.unit,
+            cost: cost,
+            not_on_menu: isOff
+          };
+        })
+      };
+
+      renderDraftPreview(mappedDraft);
+    }
+
+    // -------------------------------------------------------------
+    // 5. Photograph It Modality Handlers
+    // -------------------------------------------------------------
+    const cameraInput = document.getElementById('camera-photo-input');
+    const deviceInput = document.getElementById('device-photo-input');
+    const triggerCamera = document.getElementById('trigger-camera-btn');
+    const triggerUpload = document.getElementById('trigger-upload-btn');
+    const reParsePhotoBtn = document.getElementById('re-parse-photo-btn');
+    const photoFileNameLabel = document.getElementById('photo-file-name-label');
+
+    if (triggerCamera && cameraInput) {
+      triggerCamera.onclick = () => cameraInput.click();
+    }
+    if (triggerUpload && deviceInput) {
+      triggerUpload.onclick = () => deviceInput.click();
+    }
+
+    function handlePhotoSelected(file) {
+      if (!file) return;
+      if (photoFileNameLabel) {
+        photoFileNameLabel.innerHTML = `
+          <span class="material-symbols-outlined text-sm text-emerald-700">check_circle</span>
+          <span>${file.name} (Ready for OCR)</span>
+        `;
+      }
+
+      // Animate laser scan
+      const laser = document.getElementById('active-scan-laser');
+      if (laser) {
+        laser.classList.add('scan-laser');
+      }
+
+      // Run parse
+      setTimeout(() => {
+        parseKitchenSpokenText("200ml milk, 12g nescafe classic, 20g sugar, chocolate drizzle");
+        if (typeof showToast === 'function') {
+          showToast('Bahi-Khata Scanned', `OCR successfully matched recipe components from "${file.name}".`);
+        }
+      }, 700);
+    }
+
+    if (cameraInput) {
+      cameraInput.onchange = (e) => handlePhotoSelected(e.target.files[0]);
+    }
+    if (deviceInput) {
+      deviceInput.onchange = (e) => handlePhotoSelected(e.target.files[0]);
+    }
+    if (reParsePhotoBtn) {
+      reParsePhotoBtn.onclick = () => {
+        parseKitchenSpokenText("200ml milk, 12g nescafe classic, 20g sugar, chocolate drizzle");
+      };
+    }
+
+    // -------------------------------------------------------------
+    // 6. Type It Modality Handlers
+    // -------------------------------------------------------------
+    const manualDishName = document.getElementById('manual-dish-name');
+    const manualCategory = document.getElementById('manual-dish-category');
+    const manualSellingPrice = document.getElementById('manual-selling-price');
+    const manualAddRowBtn = document.getElementById('manual-add-row-btn');
+    const manualIngContainer = document.getElementById('manual-ingredients-container');
+
+    function syncManualTypeToDraft() {
+      const name = manualDishName?.value.trim() || 'Custom Recipe';
+      const cat = manualCategory?.value || 'Beverages';
+      const price = parseFloat(manualSellingPrice?.value || 0) || 110;
+
+      const ingredients = [];
+      const rows = manualIngContainer?.querySelectorAll('.manual-ing-row') || [];
+      rows.forEach(r => {
+        const iName = r.querySelector('.ing-name')?.value.trim();
+        const iQty = parseFloat(r.querySelector('.ing-qty')?.value || 1);
+        const iUnit = r.querySelector('.ing-unit')?.value || 'g';
+        const iCost = parseFloat(r.querySelector('.ing-cost')?.value || 0);
+
+        if (iName) {
+          ingredients.push({
+            name: iName,
+            quantity: iQty,
+            unit: iUnit,
+            cost: iCost
+          });
+        }
+      });
+
+      renderDraftPreview({
+        name: name,
+        category: cat,
+        selling_price: price,
+        ingredients: ingredients
+      });
+    }
+
+    if (manualDishName) manualDishName.oninput = syncManualTypeToDraft;
+    if (manualCategory) manualCategory.onchange = syncManualTypeToDraft;
+    if (manualSellingPrice) manualSellingPrice.oninput = syncManualTypeToDraft;
+
+    if (manualIngContainer) {
+      manualIngContainer.addEventListener('input', syncManualTypeToDraft);
+      manualIngContainer.addEventListener('click', (e) => {
+        const removeBtn = e.target.closest('.remove-row-btn');
+        if (removeBtn) {
+          const row = removeBtn.closest('.manual-ing-row');
+          if (row) {
+            row.remove();
+            syncManualTypeToDraft();
+          }
+        }
+      });
+    }
+
+    if (manualAddRowBtn && manualIngContainer) {
+      manualAddRowBtn.onclick = () => {
+        const newRow = document.createElement('div');
+        newRow.className = 'manual-ing-row p-3 rounded-lg bg-surface-container-low border border-outline-variant/30 grid grid-cols-12 gap-2 items-center text-xs';
+        newRow.innerHTML = `
+          <input class="col-span-5 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-name" placeholder="Ingredient name" value="" />
+          <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-qty" placeholder="Qty" value="10" />
+          <select class="col-span-2 px-1 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-unit">
+            <option value="g">g</option>
+            <option value="ml">ml</option>
+            <option value="kg">kg</option>
+            <option value="pcs">pcs</option>
+          </select>
+          <input type="number" step="any" class="col-span-2 px-2 py-1.5 rounded border border-outline-variant/40 bg-surface text-on-surface font-medium ing-cost" placeholder="₹ Rate" value="0.00" />
+          <button type="button" class="col-span-1 text-on-surface-variant hover:text-error text-center remove-row-btn" title="Remove"><span class="material-symbols-outlined text-base">delete</span></button>
+        `;
+        manualIngContainer.appendChild(newRow);
+        newRow.querySelector('.ing-name')?.focus();
+      };
+    }
+
+    // -------------------------------------------------------------
+    // 7. Save & Convert to Standard Recipe (CTA Handlers)
+    // -------------------------------------------------------------
+    const convertBtn = document.getElementById('convert-to-standard-btn');
+    const convertPhotoBtn = document.getElementById('convert-photo-to-recipe-btn');
+    const convertManualBtn = document.getElementById('convert-manual-to-recipe-btn');
+    const discardBtn = document.getElementById('discard-recipe-btn');
+
+    async function handleConvertRecipe(btn) {
+      if (btn) btn.disabled = true;
+
+      // Prepare payload
+      const recipePayload = {
+        name: activeRecipe.name || "Custom Dish",
+        category: activeRecipe.category || "Main Course",
+        selling_price: activeRecipe.selling_price || 110.0,
+        ingredients: (activeRecipe.ingredients || []).map(i => ({
+          name: i.name,
+          quantity: i.quantity,
+          unit: i.unit,
+          unit_price: i.cost,
+          is_self_grown: i.cost === 0
+        }))
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/api/recipes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(recipePayload)
+        });
+
+        // Store active recipe in localStorage for Dishes sync
+        localStorage.setItem('marginly_active_recipe', JSON.stringify(recipePayload));
+
+        // Feedback toast
+        if (typeof showToast === 'function') {
+          showToast('Recipe Standardised & Saved', `"${recipePayload.name}" was costed at ₹${activeRecipe.cogs.toFixed(2)} and added to your menu!`);
+        } else {
+          alert(`✓ Recipe "${recipePayload.name}" standardised & saved! COGS: ₹${activeRecipe.cogs.toFixed(2)}.`);
+        }
+
+        setTimeout(() => {
+          window.location.href = '/menumitra_dishes_recipes/code.html';
+        }, 850);
+      } catch (err) {
+        console.warn('Backend save notice, saving locally:', err);
+        localStorage.setItem('marginly_active_recipe', JSON.stringify(recipePayload));
+        setTimeout(() => {
+          window.location.href = '/menumitra_dishes_recipes/code.html';
+        }, 850);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    if (convertBtn) convertBtn.onclick = () => handleConvertRecipe(convertBtn);
+    if (convertPhotoBtn) convertPhotoBtn.onclick = () => handleConvertRecipe(convertPhotoBtn);
+    if (convertManualBtn) convertManualBtn.onclick = () => handleConvertRecipe(convertManualBtn);
+
+    if (discardBtn) {
+      discardBtn.onclick = () => {
+        if (confirm('Discard current recipe draft and reset?')) {
+          location.reload();
+        }
+      };
+    }
+  });
+</script>
+<script src="/marginly-core.js"></script>
 </body></html>

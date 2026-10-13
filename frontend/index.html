@@ -851,34 +851,63 @@ async function syncDashboardWithBackend() {
           kpiValues[3].textContent = '₹0';
         }
 
+        // Action Panel Badge & Potential Boost
+        const actionBadge = document.querySelector('.bg-error-container.text-on-error-container');
+        if (actionBadge) {
+          actionBadge.textContent = '0 Fixes Needed';
+          actionBadge.className = 'text-label-sm font-label-sm font-bold bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full';
+        }
+        const boostText = document.querySelector('.text-label-lg.font-currency-display.text-primary.font-bold');
+        if (boostText) boostText.textContent = '₹0/mo (No sales yet)';
+
         // Action Panel Empty State
         const actionCardsContainer = document.querySelector('.space-y-3\\.5');
         if (actionCardsContainer) {
           actionCardsContainer.innerHTML = `
             <div class="bg-surface-bright p-5 rounded-xl border border-outline-variant/40 text-center space-y-3">
-              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto">
-                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+              <div class="w-10 h-10 rounded-full bg-surface-container text-on-surface-variant flex items-center justify-center mx-auto">
+                <span class="material-symbols-outlined text-[20px]">menu_book</span>
               </div>
-              <h4 class="font-bold text-on-surface text-label-lg">No Operational Losses</h4>
+              <h4 class="font-bold text-on-surface text-label-lg">No Menu Items Yet</h4>
               <p class="text-body-sm text-on-surface-variant">
-                Your menu has 0 active loss-making dishes. Add recipes and sales to discover high-margin opportunities!
+                Your menu has 0 registered dishes. Add recipes and sales to discover high-margin opportunities and calculations!
               </p>
               <a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" class="inline-flex items-center gap-1 text-primary text-label-md font-bold hover:underline">
-                <span>Add recipe now</span>
+                <span>Add first recipe now</span>
                 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
               </a>
             </div>
           `;
         }
 
-        // Bottom section empty state
+        // Bottom section empty state: Total Monthly Profit
         const totalProfitEl = document.querySelector('.text-currency-display.font-currency-display.text-primary.ml-1\\.5.font-bold');
         if (totalProfitEl) totalProfitEl.textContent = '₹0';
 
-        const tileValues = document.querySelectorAll('.text-headline-md.font-headline-md.font-bold.text-on-surface');
-        tileValues.forEach(el => {
-          if (el.textContent.includes('₹')) el.textContent = '₹0';
+        // Breakdown text
+        const breakdownDesc = document.querySelector('section.bg-surface-container-lowest p.text-body-sm');
+        if (breakdownDesc) breakdownDesc.textContent = 'Breakdown of gross monthly operating margin across 0 active menu dishes';
+
+        // Progress bar: neutral empty bar
+        const progressBarContainer = document.querySelector('.w-full.h-5.rounded-full.overflow-hidden.flex');
+        if (progressBarContainer) {
+          progressBarContainer.innerHTML = '<div class="h-full bg-surface-container-high w-full flex items-center justify-center text-[10px] text-on-surface-variant font-medium">No sales recorded yet</div>';
+        }
+
+        // Progress bar legend values
+        const legendItems = document.querySelectorAll('.flex.flex-wrap.items-center.justify-between.text-label-sm span strong');
+        legendItems.forEach(el => el.textContent = '0%');
+        const legendParen = document.querySelectorAll('.flex.flex-wrap.items-center.justify-between.text-label-sm span');
+        legendParen.forEach(el => {
+          if (el.textContent.includes('₹')) el.innerHTML = el.innerHTML.replace(/\(₹[0-9,]+\)/g, '(₹0)');
         });
+
+        // 4-Tile Counts and Rupees
+        const tileCounts = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 .text-body-sm.font-bold');
+        tileCounts.forEach(el => el.textContent = '0 Dishes');
+
+        const tileValues = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 .text-headline-md');
+        tileValues.forEach(el => el.textContent = '₹0');
 
       } else {
         // Dynamic population when dishes exist
@@ -886,8 +915,41 @@ async function syncDashboardWithBackend() {
         if (kpiValues.length >= 4) {
           kpiValues[0].textContent = `₹${Math.round(data.average_contribution_margin)}`;
           kpiValues[1].textContent = `${data.total_revenue > 0 ? ((1 - (data.total_contribution / data.total_revenue)) * 100).toFixed(1) : 0}%`;
-          kpiValues[2].textContent = `${data.dogs_count}`;
-          kpiValues[3].textContent = `₹${Math.round(data.dogs_count * 1200).toLocaleString('en-IN')}`;
+          kpiValues[2].textContent = `${data.dogs_count || 0}`;
+          kpiValues[3].textContent = `₹${Math.round((data.dogs_count || 0) * 1200).toLocaleString('en-IN')}`;
+        }
+
+        const totalProfitEl = document.querySelector('.text-currency-display.font-currency-display.text-primary.ml-1\\.5.font-bold');
+        if (totalProfitEl) totalProfitEl.textContent = `₹${Math.round(data.total_contribution || 0).toLocaleString('en-IN')}`;
+
+        const breakdownDesc = document.querySelector('section.bg-surface-container-lowest p.text-body-sm');
+        if (breakdownDesc) breakdownDesc.textContent = `Breakdown of gross monthly operating margin across ${data.items.length} active menu dishes`;
+
+        // Calculate tile sums
+        const stars = data.items.filter(i => (i.category_type || '').toUpperCase() === 'STAR' || (i.matrix_category || '').toUpperCase() === 'STAR');
+        const plowhorses = data.items.filter(i => (i.category_type || '').toUpperCase() === 'PLOWHORSE' || (i.matrix_category || '').toUpperCase() === 'PLOWHORSE');
+        const puzzles = data.items.filter(i => (i.category_type || '').toUpperCase() === 'PUZZLE' || (i.matrix_category || '').toUpperCase() === 'PUZZLE');
+        const dogs = data.items.filter(i => (i.category_type || '').toUpperCase() === 'DOG' || (i.matrix_category || '').toUpperCase() === 'DOG');
+
+        const starProfit = stars.reduce((sum, i) => sum + (i.total_contribution || 0), 0);
+        const plowProfit = plowhorses.reduce((sum, i) => sum + (i.total_contribution || 0), 0);
+        const puzzleProfit = puzzles.reduce((sum, i) => sum + (i.total_contribution || 0), 0);
+        const dogProfit = dogs.reduce((sum, i) => sum + (i.total_contribution || 0), 0);
+
+        const tileCounts = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 .text-body-sm.font-bold');
+        if (tileCounts.length >= 4) {
+          tileCounts[0].textContent = `${stars.length} Dishes`;
+          tileCounts[1].textContent = `${plowhorses.length} Dishes`;
+          tileCounts[2].textContent = `${puzzles.length} Dishes`;
+          tileCounts[3].textContent = `${dogs.length} Dishes`;
+        }
+
+        const tileValues = document.querySelectorAll('.grid.grid-cols-1.sm\\:grid-cols-2.lg\\:grid-cols-4 .text-headline-md');
+        if (tileValues.length >= 4) {
+          tileValues[0].textContent = `₹${Math.round(starProfit).toLocaleString('en-IN')}`;
+          tileValues[1].textContent = `₹${Math.round(plowProfit).toLocaleString('en-IN')}`;
+          tileValues[2].textContent = `₹${Math.round(puzzleProfit).toLocaleString('en-IN')}`;
+          tileValues[3].textContent = `₹${Math.round(dogProfit).toLocaleString('en-IN')}`;
         }
       }
     }
@@ -899,5 +961,5 @@ async function syncDashboardWithBackend() {
 // Run on load
 document.addEventListener('DOMContentLoaded', syncDashboardWithBackend);
 </script>
-
+<script src="/marginly-core.js"></script>
 </body></html>

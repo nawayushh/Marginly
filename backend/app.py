@@ -16,12 +16,12 @@ import sqlite3
 import logging
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
-from decimal import Decimal
 import hashlib
 import uuid
-from typing import List, Optional, Dict, Any
+import re
+from typing import List, Optional, Dict, Any, Union
 
-from fastapi import FastAPI, HTTPException, status, Query
+from fastapi import FastAPI, HTTPException, status, Query, Request, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
@@ -37,8 +37,12 @@ from ai_service import (
     check_lm_studio_health,
     interpret_recipe_text,
     generate_menu_recommendations,
+    get_market_insights,
+    fallback_market_insights,
     RecipeDraftResponse,
     MenuRecommendationsResponse,
+    MarketInsightsResponse,
+    check_realtime_mandi_alerts,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -178,10 +182,28 @@ def init_db():
         restaurant_name TEXT,
         location TEXT,
         cuisine_type TEXT,
+        phone TEXT,
+        restaurant_type TEXT,
+        daily_covers INTEGER,
+        sourcing_model TEXT,
+        signature_dish TEXT,
         role TEXT NOT NULL DEFAULT 'owner',
         created_at TEXT NOT NULL
     );
     """)
+
+    # Ensure all columns exist for existing databases
+    for col, col_type in [
+        ("phone", "TEXT"),
+        ("restaurant_type", "TEXT"),
+        ("daily_covers", "INTEGER"),
+        ("sourcing_model", "TEXT"),
+        ("signature_dish", "TEXT"),
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE users ADD COLUMN {col} {col_type};")
+        except sqlite3.OperationalError:
+            pass
 
     # 10. Auth Tokens
     cursor.execute("""
@@ -206,197 +228,12 @@ def init_db():
     conn.close()
 
 def seed_default_user():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    now = datetime.now(timezone.utc).isoformat()
-    import hashlib
-    cursor.execute("SELECT COUNT(*) as count FROM users;")
-    if cursor.fetchone()["count"] == 0:
-        pw_hash = hashlib.sha256("abc123".encode()).hexdigest()
-        cursor.execute("""
-        INSERT INTO users (username, password_hash, display_name, restaurant_name, location, cuisine_type, role, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-        """, ("abc123", pw_hash, "Restaurant Owner", "My Restaurant", "Auto-detected", "Multi-Cuisine", "owner", now))
-        conn.commit()
-    conn.close()
+    # Do not auto-seed demo users; require explicit registration
+    pass
 
 def seed_demo_data_if_empty():
-    seed_default_user()
-    # Don't auto-seed demo dishes/ingredients by default to keep blank for user calculations
-    return
-
-    now = datetime.now(timezone.utc).isoformat()
-
-    # Seed Ingredients (Stored with price per base unit: g, ml, each)
-    # E.g. Espresso Beans: ₹1200/kg -> ₹1.20 per gram
-    # Whole Milk: ₹65/L -> ₹0.065 per ml
-    # Chicken Breast: ₹320/kg -> ₹0.32 per gram
-    # Basmati Rice: ₹110/kg -> ₹0.11 per gram
-    # Butter: ₹540/kg -> ₹0.54 per gram
-    # Paneer: ₹420/kg -> ₹0.42 per gram
-    # Cooking Oil: ₹160/L -> ₹0.16 per ml
-    # Flour / Maida: ₹45/kg -> ₹0.045 per gram
-    # Onions: ₹35/kg -> ₹0.035 per gram
-    # Tomatoes: ₹40/kg -> ₹0.040 per gram
-    # Burger Bun: ₹15 each -> ₹15.0 per each
-    # Cheese Slice: ₹12 each -> ₹12.0 per each
-
-    ingredients_seed = [
-        ("Espresso Coffee Beans", "g", 1.20, "Roaster's Hub", now),
-        ("Whole Milk", "ml", 0.065, "Local Dairy Farm", now),
-        ("Fresh Paneer", "g", 0.42, "Dairy Co", now),
-        ("Basmati Rice", "g", 0.11, "Grain Wholesaler", now),
-        ("Chicken Breast", "g", 0.32, "City Meat Supplier", now),
-        ("Table Butter", "g", 0.54, "Dairy Co", now),
-        ("Refined Sunflower Oil", "ml", 0.16, "Grocery Mart", now),
-        ("Yellow Onions", "g", 0.035, "Veggie Mandi", now),
-        ("Fresh Tomatoes", "g", 0.040, "Veggie Mandi", now),
-        ("Brioche Burger Bun", "each", 15.0, "Artisan Bakery", now),
-        ("Cheddar Cheese Slice", "each", 12.0, "Dairy Co", now),
-    ]
-
-    for name, unit, price, supplier, dt in ingredients_seed:
-        cursor.execute("""
-        INSERT INTO ingredients (name, base_unit, current_unit_price, supplier, last_price_updated_at, created_at)
-        VALUES (?, ?, ?, ?, ?, ?);
-        """, (name, unit, price, supplier, dt, dt))
-
-    # Seed Recipes
-    # Recipe 1: Café Latte (1 serving)
-    cursor.execute("""
-    INSERT INTO recipes (name, description, source_text, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-    """, (
-        "Café Latte",
-        "Classic espresso drink with steamed velvety milk",
-        "18g espresso beans, 220ml steamed whole milk",
-        1.0,
-        2.0, # ₹2 overhead for cup and stirrer
-        "confirmed",
-        now, now
-    ))
-    latte_id = cursor.lastrowid
-    # Lines for Latte
-    cursor.execute("SELECT id FROM ingredients WHERE name='Espresso Coffee Beans';")
-    bean_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Whole Milk';")
-    milk_id = cursor.fetchone()["id"]
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 18, 'g', 2.0);", (latte_id, bean_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 220, 'ml', 5.0);", (latte_id, milk_id))
-
-    # Recipe 2: Paneer Butter Masala (Batch for 4 servings)
-    cursor.execute("""
-    INSERT INTO recipes (name, description, source_text, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-    """, (
-        "Paneer Butter Masala",
-        "Rich tomato and butter gravy with cottage cheese cubes",
-        "400g Paneer, 100g Butter, 400g Tomatoes, 200g Onions, 30ml Oil",
-        4.0,
-        15.0, # gas & spice blend
-        "confirmed",
-        now, now
-    ))
-    pbm_id = cursor.lastrowid
-    cursor.execute("SELECT id FROM ingredients WHERE name='Fresh Paneer';")
-    paneer_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Table Butter';")
-    butter_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Fresh Tomatoes';")
-    tomato_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Yellow Onions';")
-    onion_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Refined Sunflower Oil';")
-    oil_id = cursor.fetchone()["id"]
-
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 400, 'g', 0.0);", (pbm_id, paneer_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 100, 'g', 0.0);", (pbm_id, butter_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 400, 'g', 8.0);", (pbm_id, tomato_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 200, 'g', 12.0);", (pbm_id, onion_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 30, 'ml', 0.0);", (pbm_id, oil_id))
-
-    # Recipe 3: Classic Crispy Chicken Burger (1 serving)
-    cursor.execute("""
-    INSERT INTO recipes (name, description, source_text, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-    """, (
-        "Crispy Chicken Burger",
-        "Seasoned chicken breast with brioche bun and cheddar",
-        "1 bun, 150g chicken breast, 1 cheddar slice, 20ml oil",
-        1.0,
-        5.0, # packaging and fry overhead
-        "confirmed",
-        now, now
-    ))
-    burger_id = cursor.lastrowid
-    cursor.execute("SELECT id FROM ingredients WHERE name='Brioche Burger Bun';")
-    bun_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Chicken Breast';")
-    chicken_id = cursor.fetchone()["id"]
-    cursor.execute("SELECT id FROM ingredients WHERE name='Cheddar Cheese Slice';")
-    cheese_id = cursor.fetchone()["id"]
-
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 1, 'each', 0.0);", (burger_id, bun_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 150, 'g', 5.0);", (burger_id, chicken_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 1, 'each', 0.0);", (burger_id, cheese_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 20, 'ml', 0.0);", (burger_id, oil_id))
-
-    # Recipe 4: Steamed Basmati Rice (Batch for 5 servings)
-    cursor.execute("""
-    INSERT INTO recipes (name, description, source_text, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-    """, (
-        "Steamed Basmati Rice",
-        "Fragrant steamed long-grain basmati rice",
-        "500g Basmati Rice, 5g Butter",
-        5.0,
-        5.0,
-        "confirmed",
-        now, now
-    ))
-    rice_rec_id = cursor.lastrowid
-    cursor.execute("SELECT id FROM ingredients WHERE name='Basmati Rice';")
-    rice_ing_id = cursor.fetchone()["id"]
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 500, 'g', 0.0);", (rice_rec_id, rice_ing_id))
-    cursor.execute("INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent) VALUES (?, ?, 10, 'g', 0.0);", (rice_rec_id, butter_id))
-
-    # Seed Menu Items & Sales for period "Current Month"
-    # Latte: price 190, sold 320 (Star: high CM ₹150+, high popularity)
-    # Burger: price 280, sold 210 (Star/Plowhorse depending on mix)
-    # Paneer Butter Masala: price 320, sold 110 (Puzzle: High CM, moderate popularity)
-    # Steamed Basmati Rice: price 120, sold 85 (Dog: Low CM, low popularity)
-    menu_items_seed = [
-        ("Café Latte", "Beverages", latte_id, 190.0, 340),
-        ("Crispy Chicken Burger", "Burgers & Sandwiches", burger_id, 260.0, 260),
-        ("Paneer Butter Masala", "Curries", pbm_id, 320.0, 110),
-        ("Steamed Basmati Rice", "Sides", rice_rec_id, 90.0, 75),
-    ]
-
-    for m_name, cat, r_id, price, qty_sold in menu_items_seed:
-        cursor.execute("""
-        INSERT INTO menu_items (name, category, recipe_id, selling_price, created_at)
-        VALUES (?, ?, ?, ?, ?);
-        """, (m_name, cat, r_id, price, now))
-        item_id = cursor.lastrowid
-
-        cursor.execute("""
-        INSERT INTO sales_records (menu_item_id, period, quantity_sold, channel, created_at)
-        VALUES (?, 'Current Month', ?, 'Dine-in', ?);
-        """, (item_id, qty_sold, now))
-
-    # Seed default user
-    import hashlib
-    cursor.execute("SELECT COUNT(*) as count FROM users;")
-    if cursor.fetchone()["count"] == 0:
-        pw_hash = hashlib.sha256("abc123".encode()).hexdigest()
-        cursor.execute("""
-        INSERT INTO users (username, password_hash, display_name, restaurant_name, location, cuisine_type, role, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-        """, ("abc123", pw_hash, "Restaurant Owner", "My Restaurant", "Auto-detected", "Multi-Cuisine", "owner", now))
-
-    conn.commit()
-    conn.close()
-    logger.info("Demo dataset successfully seeded.")
+    # Keep database at clean slate with 0 dishes, 0 recipes, 0 sales until user enters them
+    pass
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -436,14 +273,14 @@ class HealthResponse(BaseModel):
 class IngredientCreate(BaseModel):
     name: str = Field(..., min_length=1)
     base_unit: str = Field(..., pattern="^(g|kg|mg|ml|l|each|pcs|piece|unit)$")
-    current_unit_price: float = Field(..., gt=0.0)
+    current_unit_price: float = Field(..., ge=0.0)  # ge=0.0 allows ₹0 for self-grown / in-house items
     currency: str = "INR"
     supplier: Optional[str] = None
 
 class IngredientUpdate(BaseModel):
     name: Optional[str] = None
     base_unit: Optional[str] = None
-    current_unit_price: Optional[float] = Field(None, gt=0.0)
+    current_unit_price: Optional[float] = Field(None, ge=0.0)
     supplier: Optional[str] = None
 
 class IngredientResponse(BaseModel):
@@ -458,13 +295,18 @@ class IngredientResponse(BaseModel):
 
 class RecipeLineInput(BaseModel):
     ingredient_id: Optional[int] = None
+    name: Optional[str] = None
     quantity: float = Field(..., gt=0.0)
     unit: str
     waste_percent: float = Field(0.0, ge=0.0, lt=100.0)
+    unit_price: Optional[float] = None
+    is_self_grown: Optional[bool] = False
     notes: Optional[str] = None
 
 class RecipeCreate(BaseModel):
     name: str = Field(..., min_length=1)
+    category: Optional[str] = "Main Course"
+    selling_price: Optional[float] = None
     description: Optional[str] = None
     source_text: Optional[str] = None
     servings_per_batch: float = Field(1.0, gt=0.0)
@@ -472,6 +314,7 @@ class RecipeCreate(BaseModel):
     yield_unit: Optional[str] = None
     batch_overhead_cost: float = Field(0.0, ge=0.0)
     lines: List[RecipeLineInput] = []
+    ingredients: Optional[List[Dict[str, Any]]] = None
 
 class RecipeCostLineDetail(BaseModel):
     ingredient_id: Optional[int]
@@ -523,6 +366,11 @@ class UserRegister(BaseModel):
     restaurant_name: Optional[str] = None
     location: Optional[str] = None
     cuisine_type: Optional[str] = None
+    phone: Optional[str] = None
+    restaurant_type: Optional[str] = None
+    daily_covers: Optional[Union[str, int]] = None
+    sourcing_model: Optional[str] = None
+    signature_dish: Optional[str] = None
 
 class UserLogin(BaseModel):
     username: str
@@ -535,7 +383,36 @@ class UserProfile(BaseModel):
     restaurant_name: Optional[str] = None
     location: Optional[str] = None
     cuisine_type: Optional[str] = None
+    phone: Optional[str] = None
+    restaurant_type: Optional[str] = None
+    daily_covers: Optional[int] = None
+    sourcing_model: Optional[str] = None
+    signature_dish: Optional[str] = None
     role: str
+
+class UserUpdate(BaseModel):
+    display_name: Optional[str] = None
+    restaurant_name: Optional[str] = None
+    location: Optional[str] = None
+    cuisine_type: Optional[str] = None
+    phone: Optional[str] = None
+    restaurant_type: Optional[str] = None
+    daily_covers: Optional[int] = None
+    sourcing_model: Optional[str] = None
+    signature_dish: Optional[str] = None
+
+class MarketInsightsRequest(BaseModel):
+    location: Optional[str] = "Dehradun / Delhi NCR"
+    cuisine_type: Optional[str] = "Multi-Cuisine"
+    restaurant_type: Optional[str] = "Dine-in"
+
+class MarketImportRequest(BaseModel):
+    location: Optional[str] = "Dehradun / Delhi NCR"
+    city: Optional[str] = None
+    cuisine_type: Optional[str] = "Multi-Cuisine"
+    restaurant_type: Optional[str] = "Dine-in"
+    ingredients: Optional[List[Dict[str, Any]]] = None
+    dishes: Optional[List[Dict[str, Any]]] = None
 
 # -------------------------------------------------------------------------
 # Helper: Recipe Costing Engine (Deterministic)
@@ -631,17 +508,54 @@ def register(user: UserRegister):
     now = datetime.now(timezone.utc).isoformat()
     pw_hash = hashlib.sha256(user.password.encode()).hexdigest()
     try:
+        covers_val = 100
+        if isinstance(user.daily_covers, int):
+            covers_val = user.daily_covers
+        elif isinstance(user.daily_covers, str):
+            digits = re.findall(r'\d+', user.daily_covers)
+            if digits:
+                covers_val = int(digits[-1])
+
         cursor.execute("""
-        INSERT INTO users (username, password_hash, display_name, restaurant_name, location, cuisine_type, role, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, 'owner', ?);
-        """, (user.username.strip().lower(), pw_hash, user.display_name, user.restaurant_name, user.location, user.cuisine_type, now))
+        INSERT INTO users (username, password_hash, display_name, restaurant_name, location, cuisine_type, phone, restaurant_type, daily_covers, sourcing_model, signature_dish, role, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'owner', ?);
+        """, (
+            user.username.strip().lower(),
+            pw_hash,
+            user.display_name or user.username,
+            user.restaurant_name or "My Restaurant",
+            user.location or "Local Mandi Hub",
+            user.cuisine_type or "Multi-Cuisine",
+            user.phone,
+            user.restaurant_type or "Dine-in",
+            covers_val,
+            user.sourcing_model or "Local Mandi",
+            user.signature_dish or "Chef's Special",
+            now
+        ))
         conn.commit()
         user_id = cursor.lastrowid
         token = str(uuid.uuid4())
         cursor.execute("INSERT INTO auth_tokens (user_id, token, created_at) VALUES (?, ?, ?);", (user_id, token, now))
         conn.commit()
         conn.close()
-        return {"token": token, "user": {"id": user_id, "username": user.username, "display_name": user.display_name, "restaurant_name": user.restaurant_name, "location": user.location, "cuisine_type": user.cuisine_type, "role": "owner"}}
+        return {
+            "token": token,
+            "user": {
+                "id": user_id,
+                "username": user.username,
+                "display_name": user.display_name or user.username,
+                "restaurant_name": user.restaurant_name or "My Restaurant",
+                "location": user.location or "Local Mandi Hub",
+                "cuisine_type": user.cuisine_type or "Multi-Cuisine",
+                "phone": user.phone,
+                "restaurant_type": user.restaurant_type or "Dine-in",
+                "daily_covers": user.daily_covers or 100,
+                "sourcing_model": user.sourcing_model or "Local Mandi",
+                "signature_dish": user.signature_dish or "Chef's Special",
+                "role": "owner"
+            }
+        }
     except sqlite3.IntegrityError:
         conn.close()
         raise HTTPException(status_code=400, detail="Username already taken")
@@ -651,7 +565,12 @@ def login(creds: UserLogin):
     conn = get_db_connection()
     cursor = conn.cursor()
     pw_hash = hashlib.sha256(creds.password.encode()).hexdigest()
-    cursor.execute("SELECT * FROM users WHERE username = ? AND password_hash = ?;", (creds.username.strip().lower(), pw_hash))
+    login_id = creds.username.strip().lower()
+    cursor.execute("""
+        SELECT * FROM users 
+        WHERE (LOWER(username) = ? OR LOWER(phone) = ? OR LOWER(display_name) = ?) 
+          AND password_hash = ?;
+    """, (login_id, login_id, login_id, pw_hash))
     user = cursor.fetchone()
     if not user:
         conn.close()
@@ -661,7 +580,23 @@ def login(creds: UserLogin):
     cursor.execute("INSERT INTO auth_tokens (user_id, token, created_at) VALUES (?, ?, ?);", (user["id"], token, now))
     conn.commit()
     conn.close()
-    return {"token": token, "user": {"id": user["id"], "username": user["username"], "display_name": user["display_name"], "restaurant_name": user["restaurant_name"], "location": user["location"], "cuisine_type": user["cuisine_type"], "role": user["role"]}}
+    return {
+        "token": token,
+        "user": {
+            "id": user["id"],
+            "username": user["username"],
+            "display_name": user["display_name"],
+            "restaurant_name": user["restaurant_name"],
+            "location": user["location"],
+            "cuisine_type": user["cuisine_type"],
+            "phone": user["phone"] if "phone" in user.keys() else None,
+            "restaurant_type": user["restaurant_type"] if "restaurant_type" in user.keys() else "Dine-in",
+            "daily_covers": user["daily_covers"] if "daily_covers" in user.keys() else 100,
+            "sourcing_model": user["sourcing_model"] if "sourcing_model" in user.keys() else "Local Mandi",
+            "signature_dish": user["signature_dish"] if "signature_dish" in user.keys() else None,
+            "role": user["role"]
+        }
+    }
 
 @app.get("/api/me")
 def get_me(token: str = Query(...)):
@@ -676,10 +611,23 @@ def get_me(token: str = Query(...)):
     conn.close()
     if not user:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
-    return {"id": user["id"], "username": user["username"], "display_name": user["display_name"], "restaurant_name": user["restaurant_name"], "location": user["location"], "cuisine_type": user["cuisine_type"], "role": user["role"]}
+    return {
+        "id": user["id"],
+        "username": user["username"],
+        "display_name": user["display_name"],
+        "restaurant_name": user["restaurant_name"],
+        "location": user["location"],
+        "cuisine_type": user["cuisine_type"],
+        "phone": user["phone"] if "phone" in user.keys() else None,
+        "restaurant_type": user["restaurant_type"] if "restaurant_type" in user.keys() else "Dine-in",
+        "daily_covers": user["daily_covers"] if "daily_covers" in user.keys() else 100,
+        "sourcing_model": user["sourcing_model"] if "sourcing_model" in user.keys() else "Local Mandi",
+        "signature_dish": user["signature_dish"] if "signature_dish" in user.keys() else None,
+        "role": user["role"]
+    }
 
 @app.patch("/api/profile")
-def update_profile(token: str = Query(...), updates: UserRegister = None):
+def update_profile(token: str = Query(...), updates: UserUpdate = None):
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT user_id FROM auth_tokens WHERE token = ?;", (token,))
@@ -690,14 +638,47 @@ def update_profile(token: str = Query(...), updates: UserRegister = None):
     user_id = row["user_id"]
     if updates:
         cursor.execute("""
-        UPDATE users SET display_name = COALESCE(?, display_name), restaurant_name = COALESCE(?, restaurant_name), location = COALESCE(?, location), cuisine_type = COALESCE(?, cuisine_type)
+        UPDATE users SET 
+            display_name = COALESCE(?, display_name), 
+            restaurant_name = COALESCE(?, restaurant_name), 
+            location = COALESCE(?, location), 
+            cuisine_type = COALESCE(?, cuisine_type),
+            phone = COALESCE(?, phone),
+            restaurant_type = COALESCE(?, restaurant_type),
+            daily_covers = COALESCE(?, daily_covers),
+            sourcing_model = COALESCE(?, sourcing_model),
+            signature_dish = COALESCE(?, signature_dish)
         WHERE id = ?;
-        """, (updates.display_name, updates.restaurant_name, updates.location, updates.cuisine_type, user_id))
+        """, (
+            updates.display_name,
+            updates.restaurant_name,
+            updates.location,
+            updates.cuisine_type,
+            updates.phone,
+            updates.restaurant_type,
+            updates.daily_covers,
+            updates.sourcing_model,
+            updates.signature_dish,
+            user_id
+        ))
         conn.commit()
     cursor.execute("SELECT * FROM users WHERE id = ?;", (user_id,))
     user = cursor.fetchone()
     conn.close()
-    return {"id": user["id"], "username": user["username"], "display_name": user["display_name"], "restaurant_name": user["restaurant_name"], "location": user["location"], "cuisine_type": user["cuisine_type"], "role": user["role"]}
+    return {
+        "id": user["id"],
+        "username": user["username"],
+        "display_name": user["display_name"],
+        "restaurant_name": user["restaurant_name"],
+        "location": user["location"],
+        "cuisine_type": user["cuisine_type"],
+        "phone": user["phone"] if "phone" in user.keys() else None,
+        "restaurant_type": user["restaurant_type"] if "restaurant_type" in user.keys() else "Dine-in",
+        "daily_covers": user["daily_covers"] if "daily_covers" in user.keys() else 100,
+        "sourcing_model": user["sourcing_model"] if "sourcing_model" in user.keys() else "Local Mandi",
+        "signature_dish": user["signature_dish"] if "signature_dish" in user.keys() else None,
+        "role": user["role"]
+    }
 
 # --- Ingredients ---
 @app.get("/api/ingredients", response_model=List[IngredientResponse])
@@ -811,11 +792,65 @@ def create_recipe(rec: RecipeCreate):
     """, (rec.name, rec.description, rec.source_text, rec.servings_per_batch, rec.yield_quantity, rec.yield_unit, rec.batch_overhead_cost, now, now))
     rec_id = cursor.lastrowid
 
-    for line in rec.lines:
+    # Gather lines: from rec.lines or rec.ingredients
+    resolved_lines = list(rec.lines)
+    if not resolved_lines and rec.ingredients:
+        for ing in rec.ingredients:
+            resolved_lines.append(RecipeLineInput(
+                ingredient_id=ing.get("ingredient_id"),
+                name=ing.get("name"),
+                quantity=float(ing.get("quantity", 1.0)),
+                unit=ing.get("unit", "g"),
+                waste_percent=float(ing.get("waste_percent", 0.0)),
+                unit_price=float(ing.get("unit_price", 0.0)) if ing.get("unit_price") is not None else None,
+                is_self_grown=bool(ing.get("is_self_grown", False))
+            ))
+
+    for line in resolved_lines:
+        ing_id = line.ingredient_id
+        if not ing_id and line.name:
+            # Check if ingredient exists by name
+            cursor.execute("SELECT id FROM ingredients WHERE LOWER(name) = ?;", (line.name.strip().lower(),))
+            row = cursor.fetchone()
+            if row:
+                ing_id = row["id"]
+            else:
+                # Create ingredient
+                u_str = line.unit.lower()
+                stored_unit = "g" if u_str in ["g", "kg", "mg"] else ("ml" if u_str in ["ml", "l"] else u_str)
+                price_val = 0.0 if line.is_self_grown else (line.unit_price or 10.0)
+                if stored_unit in ["g", "ml"]:
+                    if u_str in ["kg", "l"] or price_val > 5.0:
+                        unit_price_calc = price_val / 1000.0
+                    else:
+                        unit_price_calc = price_val
+                else:
+                    unit_price_calc = price_val
+
+                cursor.execute("""
+                INSERT INTO ingredients (name, base_unit, current_unit_price, supplier, last_price_updated_at, created_at)
+                VALUES (?, ?, ?, 'Recipe Direct Input', ?, ?);
+                """, (line.name.strip(), stored_unit, unit_price_calc, now, now))
+                ing_id = cursor.lastrowid
+
         cursor.execute("""
         INSERT INTO recipe_lines (recipe_id, ingredient_id, quantity, unit, waste_percent, notes)
         VALUES (?, ?, ?, ?, ?, ?);
-        """, (rec_id, line.ingredient_id, line.quantity, line.unit.lower(), line.waste_percent, line.notes))
+        """, (rec_id, ing_id, line.quantity, line.unit.lower(), line.waste_percent, line.notes))
+
+    # If selling_price is provided, create/link menu_item and seed starter sales record
+    if rec.selling_price is not None and rec.selling_price > 0:
+        cursor.execute("""
+        INSERT INTO menu_items (name, category, recipe_id, selling_price, created_at)
+        VALUES (?, ?, ?, ?, ?);
+        """, (rec.name, rec.category or "Main Course", rec_id, rec.selling_price, now))
+        menu_id = cursor.lastrowid
+
+        cursor.execute("""
+        INSERT INTO sales_records (menu_item_id, period, quantity_sold, channel, created_at)
+        VALUES (?, 'Current Month', ?, 'Dine-in', ?)
+        ON CONFLICT(menu_item_id, period, channel) DO NOTHING;
+        """, (menu_id, 120, now))
 
     conn.commit()
     cost_info = compute_recipe_cost_for_id(rec_id, conn)
@@ -839,6 +874,85 @@ async def interpret_recipe(req: RecipeInterpretRequest):
 
     draft = await interpret_recipe_text(req.source_text, catalog_names)
     return draft
+
+@app.post("/api/recipes/transcribe-audio")
+async def transcribe_recipe_audio(request: Request):
+    content_type = request.headers.get("content-type", "")
+    dialect = request.query_params.get("dialect", "hi-IN")
+    wav_bytes = b""
+    
+    if "multipart/form-data" in content_type:
+        form = await request.form()
+        audio_file = form.get("audio") or form.get("file")
+        if audio_file and hasattr(audio_file, "read"):
+            wav_bytes = await audio_file.read()
+        dialect = str(form.get("dialect", dialect))
+    elif "application/json" in content_type:
+        try:
+            data = await request.json()
+            b64 = data.get("audio_base64", "")
+            if b64:
+                import base64
+                if "," in b64:
+                    b64 = b64.split(",", 1)[1]
+                wav_bytes = base64.b64decode(b64)
+            dialect = data.get("dialect", dialect)
+        except Exception:
+            pass
+    else:
+        wav_bytes = await request.body()
+
+    if not wav_bytes or len(wav_bytes) < 44:
+        raise HTTPException(status_code=400, detail="Empty or invalid audio data received")
+
+    import speech_recognition as sr
+    import io
+
+    r = sr.Recognizer()
+    transcript = ""
+
+    try:
+        with sr.AudioFile(io.BytesIO(wav_bytes)) as source:
+            audio_data = r.record(source)
+            try:
+                # Try requested dialect first (hi-IN or en-IN)
+                transcript = r.recognize_google(audio_data, language=dialect)
+            except sr.UnknownValueError:
+                # Try fallback dialect
+                alt_dialect = "en-IN" if dialect == "hi-IN" else "hi-IN"
+                try:
+                    transcript = r.recognize_google(audio_data, language=alt_dialect)
+                except Exception:
+                    transcript = ""
+    except Exception as e:
+        logger.warning(f"Audio transcription recognition error: {e}")
+
+    if not transcript:
+        return {
+            "success": False,
+            "transcript": "",
+            "message": "No clear speech detected. Speak closer to the microphone or try again.",
+            "recipe": None
+        }
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM ingredients;")
+    catalog_names = [row["name"] for row in cursor.fetchall()]
+    conn.close()
+
+    draft = await interpret_recipe_text(transcript, catalog_names)
+    not_on_menu = [
+        ing.matched_ingredient_name for ing in draft.ingredients 
+        if ing.notes and "NOT ON MENU" in ing.notes
+    ]
+    return {
+        "success": True,
+        "transcript": transcript,
+        "dialect": dialect,
+        "recipe": draft,
+        "not_on_menu": not_on_menu
+    }
 
 # --- Menu Items ---
 @app.get("/api/menu-items")
@@ -972,6 +1086,121 @@ async def get_recommendations(req: AnalysisRequest):
     return recs
 
 # --- Alerts & Price History ---
+# --- Market Intelligence & Regional Pricing ---
+@app.post("/api/market-insights", response_model=MarketInsightsResponse)
+async def fetch_market_insights(req: MarketInsightsRequest):
+    insights = await get_market_insights(
+        location=req.location or "Dehradun / Delhi NCR",
+        cuisine_type=req.cuisine_type or "Multi-Cuisine",
+        restaurant_type=req.restaurant_type or "Dine-in"
+    )
+    return insights
+
+@app.post("/api/market-insights/import")
+def import_market_starter_package(req: MarketImportRequest):
+    """
+    Imports the curated regional ingredients and starter dishes into the SQLite database,
+    allowing the user to begin calculations immediately without manual entry.
+    Supports ₹0 unit price for home-grown/self-produced ingredients.
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    now = datetime.now(timezone.utc).isoformat()
+
+    imported_ingredients = 0
+    imported_dishes = 0
+
+    ingredients_to_import = req.ingredients
+    dishes_to_import = req.dishes
+
+    if not ingredients_to_import and not dishes_to_import:
+        resolved_loc = req.location or req.city or "Dehradun / Delhi NCR"
+        resolved_cuisine = req.cuisine_type or "Multi-Cuisine"
+        gen = fallback_market_insights(resolved_loc, resolved_cuisine, req.restaurant_type or "Dine-in")
+        ingredients_to_import = [
+            {"name": i.name, "base_unit": i.base_unit, "market_price": i.market_price, "is_homegrown": False}
+            for i in gen.ingredients
+        ]
+        dishes_to_import = [
+            {"name": d.name, "category": d.category, "suggested_selling_price": d.suggested_selling_price, "estimated_plate_cost": d.estimated_plate_cost, "description": d.description}
+            for d in gen.starter_dishes
+        ]
+
+    # 1. Import Ingredients if provided
+    if ingredients_to_import:
+        for ing in ingredients_to_import:
+            name = ing.get("name", "").strip()
+            if not name:
+                continue
+            base_unit = ing.get("base_unit", "kg").lower()
+            price = float(ing.get("market_price", 0.0))
+
+            # Convert to base unit pricing (g, ml, each)
+            if base_unit == "kg":
+                unit_price = price / 1000.0
+                stored_unit = "g"
+            elif base_unit == "l":
+                unit_price = price / 1000.0
+                stored_unit = "ml"
+            else:
+                unit_price = price
+                stored_unit = base_unit
+
+            # If user marked as self-grown/home-grown, allow price to be 0
+            if ing.get("is_homegrown", False):
+                unit_price = 0.0
+
+            cursor.execute("""
+            INSERT INTO ingredients (name, base_unit, current_unit_price, supplier, last_price_updated_at, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
+            ON CONFLICT(name) DO UPDATE SET
+                current_unit_price = excluded.current_unit_price,
+                last_price_updated_at = excluded.last_price_updated_at;
+            """, (name, stored_unit, unit_price, f"{req.location} Mandi Benchmark", now, now))
+            imported_ingredients += 1
+
+    # 2. Import Starter Dishes if provided
+    if dishes_to_import:
+        for d in dishes_to_import:
+            d_name = d.get("name", "").strip()
+            if not d_name:
+                continue
+            cat = d.get("category", "Main Course")
+            sp = float(d.get("suggested_selling_price", 150.0))
+            plate_cost = float(d.get("estimated_plate_cost", 40.0))
+            desc = d.get("description", "")
+
+            # Create standard recipe draft
+            cursor.execute("""
+            INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
+            VALUES (?, ?, 1.0, 5.0, 'confirmed', ?, ?);
+            """, (d_name, desc, now, now))
+            rec_id = cursor.lastrowid
+
+            # Create menu item
+            cursor.execute("""
+            INSERT INTO menu_items (name, category, recipe_id, selling_price, created_at)
+            VALUES (?, ?, ?, ?, ?);
+            """, (d_name, cat, rec_id, sp, now))
+            menu_id = cursor.lastrowid
+
+            # Seed realistic starter sales record
+            cursor.execute("""
+            INSERT INTO sales_records (menu_item_id, period, quantity_sold, channel, created_at)
+            VALUES (?, 'Current Month', ?, 'Dine-in', ?)
+            ON CONFLICT(menu_item_id, period, channel) DO NOTHING;
+            """, (menu_id, 120, now))
+            imported_dishes += 1
+
+    conn.commit()
+    conn.close()
+    return {
+        "status": "success",
+        "imported_ingredients": imported_ingredients,
+        "imported_dishes": imported_dishes,
+        "message": f"Successfully initialized {imported_dishes} starter dishes and {imported_ingredients} ingredients with regional mandi rates!"
+    }
+
 @app.get("/api/alerts")
 def get_alerts():
     conn = get_db_connection()
@@ -980,6 +1209,78 @@ def get_alerts():
     rows = cursor.fetchall()
     conn.close()
     return [dict(r) for r in rows]
+
+@app.post("/api/alerts/sync-live-mandi")
+@app.post("/api/alerts/check-mandi")
+async def sync_live_mandi(payload: Dict[str, Any] = None):
+    location = "Dehradun / Delhi NCR"
+    if payload and isinstance(payload, dict):
+        location = payload.get("location") or location
+    
+    alerts_data = await check_realtime_mandi_alerts(location)
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    now = datetime.now(timezone.utc).isoformat()
+    
+    synced_alerts = []
+    for item in alerts_data:
+        commodity = item.get("commodity", "Ingredient")
+        direction = item.get("direction", "SPIKE")
+        change_pct = float(item.get("change_percent", 0.0))
+        rate = float(item.get("market_price", 0.0))
+        unit = item.get("unit", "kg")
+        severity = item.get("severity", "warning")
+        reason = item.get("impact_reason", "")
+        
+        msg = f"{commodity} wholesale mandi rate {direction.lower()} by {abs(change_pct):.1f}% (₹{rate}/{unit}). {reason}"
+        
+        # Check if identical alert already exists to prevent duplicate spam
+        cursor.execute("SELECT id FROM alerts WHERE message = ?;", (msg,))
+        existing = cursor.fetchone()
+        if not existing:
+            cursor.execute("""
+            INSERT INTO alerts (alert_type, severity, message, item_id, created_at)
+            VALUES (?, ?, ?, NULL, ?);
+            """, ("PRICE_SPIKE", severity, msg, now))
+            alert_id = cursor.lastrowid
+        else:
+            alert_id = existing["id"]
+            
+        synced_alerts.append({
+            "id": alert_id,
+            "commodity": commodity,
+            "direction": direction,
+            "change_percent": change_pct,
+            "market_price": rate,
+            "unit": unit,
+            "severity": severity,
+            "message": msg,
+            "created_at": now
+        })
+        
+    conn.commit()
+    conn.close()
+    return {"status": "success", "alerts": synced_alerts, "count": len(synced_alerts)}
+
+@app.delete("/api/alerts/{alert_id}")
+def delete_alert(alert_id: int):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM alerts WHERE id = ?;", (alert_id,))
+    conn.commit()
+    conn.close()
+    return {"status": "success", "deleted_id": alert_id}
+
+@app.post("/api/alerts/clear")
+def clear_all_alerts():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM alerts;")
+    conn.commit()
+    conn.close()
+    return {"status": "success", "message": "All alerts cleared"}
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -161,37 +161,99 @@
   </style>
   </head>
 <body class="bg-background text-on-surface antialiased font-body-md min-h-screen pb-24">
-<!-- TOP APP BAR (Shared Components JSON execution) -->
-<header class="sticky top-0 z-40 bg-surface dark:bg-inverse-surface shadow-sm">
-<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm h-16 max-w-7xl mx-auto">
-<!-- Leading: Avatar + Outlet Switcher -->
-<div class="flex items-center gap-space-sm">
-<div class="relative w-9 h-9 rounded-full bg-surface-container-high border border-outline-variant/40 flex items-center justify-center overflow-hidden shrink-0">
-<span class="material-symbols-outlined text-primary text-xl" data-icon="storefront">storefront</span>
+<!-- ================= TOP APP BAR ================= -->
+<header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<!-- Brand & Tagline -->
+<div class="flex items-center space-x-4">
+<a href="/index.html" class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
 </div>
-<div class="flex flex-col">
-<div class="flex items-center gap-1">
-<span class="text-label-lg font-label-lg text-primary tracking-tight font-bold">Café Doon Brew, Rajpur Rd</span>
-<span class="material-symbols-outlined text-outline text-sm" data-icon="expand_more">expand_more</span>
+<div>
+<div class="flex items-baseline space-x-1.5">
+<span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
+<span class="text-[10px] font-label-sm font-semibold tracking-wider text-secondary uppercase bg-secondary-fixed/50 px-1.5 py-0.5 rounded">Pro</span>
 </div>
-<span class="text-label-sm font-label-sm text-on-surface-variant">Dehradun · Active Outlet</span>
+<p class="text-[11px] font-body-sm text-on-surface-variant leading-none hidden sm:block">Know which dishes make you money</p>
 </div>
-</div>
-<!-- Trailing: Language Switcher & Notifications -->
-<div class="flex items-center gap-space-sm">
-<!-- Hindi/English Pill -->
-<button class="flex items-center text-label-sm font-label-sm bg-surface-container px-2 py-1 rounded-full border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-high transition-colors" type="button">
-<span class="font-bold text-primary">EN</span>
-<span class="mx-1 text-outline">/</span>
-<span class="text-on-surface-variant">हिं</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/50 hidden md:block"></div>
+<!-- Outlet Switcher Dropdown -->
+<div class="relative group">
+<button class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors text-left border border-outline-variant/40 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[18px] text-primary-container" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span id="outlet-name" class="text-label-md font-label-md text-on-surface font-semibold max-w-[160px] truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
 </button>
-<!-- Alerts Badge Button -->
-<button aria-label="Notifications" class="relative p-2 rounded-full text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95 duration-150" type="button">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-container ring-2 ring-surface"></span>
+<!-- Dropdown Hints Modal Preview -->
+<div class="hidden group-hover:block absolute left-0 top-full mt-1.5 w-64 bg-surface-container-lowest rounded-xl custom-shadow-elevated border border-outline-variant/40 p-2 z-50">
+<div class="text-[10px] font-label-sm uppercase tracking-wider text-on-surface-variant px-2 py-1">Active Outlet</div>
+<div class="p-2 rounded-lg bg-surface-container-high flex items-center justify-between text-on-surface">
+<span id="dropdown-outlet-name" class="text-label-md font-label-md font-medium truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center & Right Navigation Actions -->
+<div class="flex items-center space-x-3 sm:space-x-4">
+<!-- Language Switch -->
+<div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-primary font-bold shadow-xs">EN</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-primary transition-colors">हिं</button>
+</div>
+<!-- Notifications -->
+<a href="/menumitra_price_alerts_volatility_radar/code.html" class="relative w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors border border-outline-variant/30 active:scale-95 duration-150" title="Price Alerts">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span id="notif-badge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error text-[10px] font-bold flex items-center justify-center">0</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/50"></div>
+<!-- Owner Profile -->
+<div class="flex items-center space-x-2 pl-1">
+<div id="user-initials" class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-bold flex items-center justify-center text-label-md border-2 border-surface-container-lowest">
+RO
+</div>
+<div class="hidden lg:block text-left leading-tight">
+<div id="user-display-name" class="text-label-md font-label-md text-on-surface font-semibold">Restaurant Owner</div>
+<div id="user-role" class="text-[11px] font-body-sm text-on-surface-variant">Owner &amp; Chef</div>
+</div>
+<!-- Logout Button -->
+<button onclick="logout()" class="ml-2 p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="Sign Out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
 </button>
 </div>
 </div>
+</div>
+<!-- Secondary Desktop Menu Bar -->
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<div class="flex space-x-1 py-1.5">
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_dishes_recipes/code.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Dishes &amp; Recipes</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Add Recipe</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_printed_menu_layout_heatmap/code.html">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span>Menu Layout</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_price_alerts_volatility_radar/code.html">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>Price Alerts</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-primary font-bold bg-primary-fixed/40 flex items-center space-x-1.5" href="/menumitra_what_if_simulator/code.html">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">calculate</span>
+<span>What-If Simulator</span>
+</a>
+</div>
+</nav>
 </header>
 <!-- MAIN SIMULATOR CANVAS -->
 <main class="w-full max-w-xl mx-auto px-margin-mobile pt-space-md space-y-space-md">
@@ -217,21 +279,21 @@
 </div>
 <!-- Pre-selected Dish Bar -->
 <div class="relative">
-<div class="w-full bg-surface-container-low border border-outline-variant/60 rounded-lg p-space-sm flex items-center justify-between shadow-xs">
+<div id="target-dish-card" class="w-full bg-surface-container-low border border-outline-variant/60 rounded-lg p-space-sm flex items-center justify-between shadow-xs cursor-pointer hover:border-primary/50 transition-colors">
 <div class="flex items-center gap-space-sm">
 <div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/30 text-primary">
-<span class="material-symbols-outlined" data-icon="local_cafe" style="font-variation-settings: 'FILL' 1;">local_cafe</span>
+<span id="target-dish-icon" class="material-symbols-outlined" data-icon="local_cafe" style="font-variation-settings: 'FILL' 1;">local_cafe</span>
 </div>
 <div>
 <div class="flex items-center gap-2">
-<span class="text-label-lg font-label-lg font-bold text-on-surface">Cold Coffee</span>
-<!-- Plowhorse Badge -->
-<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/40 font-bold">
+<span id="target-dish-name" class="text-label-lg font-label-lg font-bold text-on-surface">Cold Coffee</span>
+<!-- Quadrant Badge -->
+<span id="target-dish-badge" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/40 font-bold">
 <span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>
                   PLOWHORSE
                 </span>
 </div>
-<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">High volume (410 orders/mo) · Moderate profit</p>
+<p id="target-dish-meta" class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">High volume (410 orders/mo) · Moderate profit</p>
 </div>
 </div>
 <span class="material-symbols-outlined text-on-surface-variant" data-icon="unfold_more">unfold_more</span>
@@ -243,24 +305,24 @@
 <span class="text-label-md font-label-md text-on-surface font-semibold flex items-center gap-1">
 <span class="material-symbols-outlined text-sm text-outline" data-icon="receipt_long">receipt_long</span> Current Baseline Costing
           </span>
-<span class="text-label-sm font-label-sm text-outline">Verified Oct 2024</span>
+<span class="text-label-sm font-label-sm text-outline">Verified Live</span>
 </div>
 <div class="grid grid-cols-2 gap-space-sm pt-1">
 <div>
 <span class="text-body-sm font-body-sm text-on-surface-variant">Selling Price</span>
-<p class="text-headline-md font-headline-md text-on-surface font-bold">₹140</p>
+<p id="target-baseline-price" class="text-headline-md font-headline-md text-on-surface font-bold">₹140</p>
 </div>
 <div>
 <span class="text-body-sm font-body-sm text-on-surface-variant">Plate Cost</span>
-<p class="text-headline-md font-headline-md text-tertiary font-bold">₹96</p>
+<p id="target-baseline-cost" class="text-headline-md font-headline-md text-tertiary font-bold">₹96</p>
 </div>
 <div class="border-t border-outline-variant/20 pt-2">
-<span class="text-body-sm font-body-sm text-on-surface-variant">Profit / Cup</span>
-<p class="text-label-lg font-label-lg text-primary font-bold">₹44 <span class="text-body-sm font-body-sm text-on-surface-variant font-normal">(31.4% margin)</span></p>
+<span id="target-unit-label" class="text-body-sm font-body-sm text-on-surface-variant">Profit / Cup</span>
+<p id="target-baseline-profit" class="text-label-lg font-label-lg text-primary font-bold">₹44 <span class="text-body-sm font-body-sm text-on-surface-variant font-normal">(31.4% margin)</span></p>
 </div>
 <div class="border-t border-outline-variant/20 pt-2">
 <span class="text-body-sm font-body-sm text-on-surface-variant">Monthly Take-Home</span>
-<p class="text-label-lg font-label-lg text-on-surface font-bold">₹18,040</p>
+<p id="target-baseline-monthly" class="text-label-lg font-label-lg text-on-surface font-bold">₹18,040</p>
 </div>
 </div>
 <!-- Recipe Ingredient Quick breakdown pill drawer -->
@@ -417,12 +479,12 @@
 <!-- QUICK ACTIONS CTA CLUSTER -->
 <section class="space-y-space-sm pt-space-xs">
 <!-- High-Impact Primary Button -->
-<button class="w-full bg-primary-container text-on-primary py-3.5 px-4 rounded-lg font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-[0.98] transition-all" type="button">
+<button id="save-scenario-btn" class="w-full bg-primary-container text-on-primary py-3.5 px-4 rounded-lg font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-sm hover:brightness-105 active:scale-[0.98] transition-all cursor-pointer" type="button">
 <span class="material-symbols-outlined text-xl" data-icon="picture_as_pdf">picture_as_pdf</span>
         Save Scenario &amp; Export New Price List
       </button>
 <!-- Secondary Dish Button -->
-<button class="w-full bg-transparent border-2 border-primary-container text-primary-container py-3 px-4 rounded-lg font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 hover:bg-surface-container-high transition-colors active:scale-[0.98]" type="button">
+<button id="test-another-dish-btn" class="w-full bg-transparent border-2 border-primary-container text-primary-container py-3 px-4 rounded-lg font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 hover:bg-surface-container-high transition-colors active:scale-[0.98] cursor-pointer" type="button">
 <span class="material-symbols-outlined text-xl" data-icon="shuffle">shuffle</span>
         Test Another Dish (e.g. Masala Maggi)
       </button>
@@ -437,51 +499,409 @@
 <!-- Destination intent is "Simulator", which is the 4th item (index 3) -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface dark:bg-inverse-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] border-t border-outline-variant/30 dark:border-outline/30">
 <!-- 1. Dashboard (Inactive) -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="/index.html">
 <span class="material-symbols-outlined text-2xl" data-icon="dashboard">dashboard</span>
 <span class="text-label-sm font-label-sm mt-0.5">Dashboard</span>
 </a>
 <!-- 2. Dishes (Inactive) -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="/menumitra_dishes_recipes/code.html">
 <span class="material-symbols-outlined text-2xl" data-icon="restaurant_menu">restaurant_menu</span>
 <span class="text-label-sm font-label-sm mt-0.5">Dishes</span>
 </a>
 <!-- 3. Add (Inactive) -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
 <span class="material-symbols-outlined text-2xl" data-icon="add_circle">add_circle</span>
 <span class="text-label-sm font-label-sm mt-0.5">Add</span>
 </a>
 <!-- 4. Simulator (ACTIVE INTENT: Exact Match) -->
-<a aria-current="page" class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="#">
+<a aria-current="page" class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed font-bold hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="/menumitra_what_if_simulator/code.html">
 <span class="material-symbols-outlined text-2xl" data-icon="calculate" style="font-variation-settings: 'FILL' 1;">calculate</span>
 <span class="text-label-sm font-label-sm mt-0.5">Simulator</span>
 </a>
 <!-- 5. Menu Layout (Inactive) -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors active:scale-90 duration-150 flex-1" href="/menumitra_printed_menu_layout_heatmap/code.html">
 <span class="material-symbols-outlined text-2xl" data-icon="tune">tune</span>
 <span class="text-label-sm font-label-sm mt-0.5">Menu Layout</span>
 </a>
 </nav>
-<!-- Interactive Simulator Logic for Range Inputs -->
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const priceSlider = document.getElementById('price-slider');
-      const volumeSlider = document.getElementById('volume-slider');
+<!-- DISH SELECTOR MODAL -->
+<div id="dish-selector-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+  <div class="bg-surface rounded-2xl max-w-md w-full p-6 shadow-2xl border border-outline-variant/40 space-y-4">
+    <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-xl">restaurant_menu</span>
+        <h3 class="font-bold text-base text-on-surface">Choose Dish for Simulation</h3>
+      </div>
+      <button id="close-dish-modal-btn" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline transition cursor-pointer">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+    <p class="text-xs text-on-surface-variant">Select any menu item to simulate how price increments or recipe swaps boost monthly pocket:</p>
+    <div id="dish-options-list" class="space-y-2 max-h-72 overflow-y-auto pr-1">
+      <!-- Options injected by JS -->
+    </div>
+  </div>
+</div>
 
-      // Micro-interaction touch feedbacks
+<!-- SAVE & EXPORT PRICING BRIEF MODAL -->
+<div id="save-export-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+  <div class="bg-surface rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-outline-variant/40 space-y-4">
+    <div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary text-xl">picture_as_pdf</span>
+        <h3 class="font-bold text-base text-on-surface">Pricing Decision Brief (PDF Ready)</h3>
+      </div>
+      <button id="close-export-modal-btn" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-outline transition cursor-pointer">
+        <span class="material-symbols-outlined text-lg">close</span>
+      </button>
+    </div>
+
+    <!-- Printable Pricing Memo Card -->
+    <div id="printable-pricing-memo" class="bg-surface-container-low p-5 rounded-xl border border-outline-variant/40 space-y-3 font-sans text-xs">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+        <div>
+          <h4 id="memo-outlet-name" class="font-bold text-sm text-on-surface">Doon Bistro & Kitchen</h4>
+          <span class="text-[10px] text-on-surface-variant">Marginly Decision Memo • October 2024</span>
+        </div>
+        <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10px] uppercase">CONFIRMED SIMULATION</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 text-on-surface">
+        <div><span class="text-on-surface-variant block">Dish Name:</span> <strong id="memo-dish-name" class="text-sm">Cold Coffee</strong></div>
+        <div><span class="text-on-surface-variant block">Category:</span> <strong id="memo-dish-cat">Beverage</strong></div>
+        <div><span class="text-on-surface-variant block">Current Menu Price:</span> <span id="memo-old-price" class="font-mono line-through text-outline">₹140</span></div>
+        <div><span class="text-on-surface-variant block">New Approved Price:</span> <strong id="memo-new-price" class="font-mono text-primary text-sm">₹155</strong></div>
+      </div>
+
+      <div class="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant/30 space-y-1">
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Plate / Cup Cost:</span>
+          <strong id="memo-plate-cost" class="font-mono text-on-surface">₹90</strong>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-on-surface-variant">Gross Margin %:</span>
+          <strong id="memo-margin-pct" class="font-mono text-emerald-700">41.9%</strong>
+        </div>
+        <div class="flex justify-between text-sm font-bold pt-1 border-t border-outline-variant/20">
+          <span class="text-primary">Net Monthly Profit Boost:</span>
+          <span id="memo-monthly-boost" class="text-emerald-700 font-mono">+₹7,940 / mo</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-2 pt-2">
+      <button id="download-print-pdf-btn" type="button" class="flex-1 py-3 px-4 rounded-xl bg-primary-container text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-primary transition cursor-pointer">
+        <span class="material-symbols-outlined text-base">print</span>
+        <span>Print / Save as PDF</span>
+      </button>
+      <button id="confirm-save-menu-btn" type="button" class="flex-1 py-3 px-4 rounded-xl bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-emerald-800 transition cursor-pointer">
+        <span class="material-symbols-outlined text-base">check_circle</span>
+        <span>Save New Price to Menu</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Interactive Simulator Logic for Live Recalculations -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Dish Presets & State
+    const DISH_PRESETS = [
+      { id: 1, name: 'Cold Coffee', icon: 'local_cafe', category: 'Beverages', basePrice: 140, baseCost: 96, baseVol: 410, quadrant: 'PLOWHORSE', unit: 'Cup' },
+      { id: 2, name: 'Paneer Butter Masala', icon: 'soup_kitchen', category: 'Main Course', basePrice: 280, baseCost: 242, baseVol: 310, quadrant: 'PUZZLE', unit: 'Plate' },
+      { id: 3, name: 'Masala Maggi', icon: 'ramen_dining', category: 'Snacks', basePrice: 90, baseCost: 42, baseVol: 520, quadrant: 'PLOWHORSE', unit: 'Bowl' },
+      { id: 4, name: 'Crispy Chicken Burger', icon: 'lunch_dining', category: 'Fast Food', basePrice: 260, baseCost: 165, baseVol: 280, quadrant: 'STAR', unit: 'Burger' },
+      { id: 5, name: 'Masala Dosa', icon: 'breakfast_dining', category: 'South Indian', basePrice: 120, baseCost: 45, baseVol: 480, quadrant: 'STAR', unit: 'Plate' },
+      { id: 6, name: 'Steamed Basmati Rice', icon: 'rice_bowl', category: 'Sides', basePrice: 90, baseCost: 68, baseVol: 85, quadrant: 'DOG', unit: 'Portion' }
+    ];
+
+    let currentDish = DISH_PRESETS[0];
+
+    const priceSlider = document.getElementById('price-slider');
+    const volumeSlider = document.getElementById('volume-slider');
+    const costCheckbox = document.querySelector('section.level-1-card:nth-of-type(2) input[type="checkbox"], input[type="checkbox"]');
+
+    // DOM Target Elements
+    const targetDishCard = document.getElementById('target-dish-card');
+    const targetDishIcon = document.getElementById('target-dish-icon');
+    const targetDishName = document.getElementById('target-dish-name');
+    const targetDishBadge = document.getElementById('target-dish-badge');
+    const targetDishMeta = document.getElementById('target-dish-meta');
+
+    const targetBaselinePrice = document.getElementById('target-baseline-price');
+    const targetBaselineCost = document.getElementById('target-baseline-cost');
+    const targetBaselineProfit = document.getElementById('target-baseline-profit');
+    const targetBaselineMonthly = document.getElementById('target-baseline-monthly');
+    const targetUnitLabel = document.getElementById('target-unit-label');
+
+    const priceHikeBadge = document.querySelector('label[for="price-slider"]')?.closest('.flex')?.querySelector('.text-right span');
+    const simPriceText = document.querySelector('.flex.items-center.justify-between.text-body-sm.font-body-sm.text-on-surface-variant.bg-surface-container-low.px-3.py-2 strong');
+    
+    const volBadge = document.querySelector('label[for="volume-slider"]')?.closest('.flex')?.querySelector('.text-right span');
+    const projectedVolText = document.querySelector('#volume-slider')?.closest('.space-y-2')?.querySelector('.bg-surface-container-low strong');
+    const projectedVolDelta = document.querySelector('#volume-slider')?.closest('.space-y-2')?.querySelector('.bg-surface-container-low span.text-error, #volume-slider')?.closest('.space-y-2')?.querySelector('.bg-surface-container-low span.text-emerald-700');
+
+    const heroGainAmount = document.querySelector('.text-headline-xl-mobile.font-headline-xl-mobile.text-primary.font-bold');
+    const gainPctBadge = document.querySelector('.px-2\\.5.py-1.rounded-full.text-label-sm.font-label-sm.bg-\\[\\#DCFCE7\\], .px-2\\.5.py-1.rounded-full.text-label-sm.font-label-sm.border:has(span[data-icon="trending_up"])');
+    const jumpParagraph = document.querySelector('p.text-body-md.font-body-md.text-on-surface-variant.mt-1 strong');
+
+    const profitPerCupBox = document.querySelector('.grid.grid-cols-2.gap-space-sm.bg-surface\\/90');
+    const profitPerCupEl = profitPerCupBox?.querySelectorAll('.text-currency-display')?.[0];
+    const perCupBoostEl = profitPerCupBox?.querySelectorAll('.text-currency-display')?.[1];
+    const grossMarginEl = profitPerCupBox?.querySelectorAll('.text-body-sm.text-outline')?.[1];
+
+    const insightParagraph = document.querySelector('.p-3\\.5.rounded-xl.bg-surface-container-high\\/60.border-l-4.border-primary p');
+    const ingredientCostSpan = document.querySelector('section.level-1-card:nth-of-type(2) .font-semibold.text-on-surface');
+
+    // Modals
+    const dishModal = document.getElementById('dish-selector-modal');
+    const closeDishModalBtn = document.getElementById('close-dish-modal-btn');
+    const dishOptionsList = document.getElementById('dish-options-list');
+    const testAnotherBtn = document.getElementById('test-another-dish-btn');
+
+    const saveExportModal = document.getElementById('save-export-modal');
+    const closeExportModalBtn = document.getElementById('close-export-modal-btn');
+    const saveScenarioBtn = document.getElementById('save-scenario-btn');
+    const downloadPdfBtn = document.getElementById('download-print-pdf-btn');
+    const confirmSaveMenuBtn = document.getElementById('confirm-save-menu-btn');
+
+    let calculatedState = {};
+
+    function selectDish(dish) {
+      currentDish = dish;
+      if (targetDishName) targetDishName.textContent = dish.name;
+      if (targetDishIcon) targetDishIcon.textContent = dish.icon;
+      if (targetDishMeta) targetDishMeta.textContent = `High volume (${dish.baseVol} orders/mo) · ${dish.category}`;
+      if (targetBaselinePrice) targetBaselinePrice.textContent = `₹${dish.basePrice}`;
+      if (targetBaselineCost) targetBaselineCost.textContent = `₹${dish.baseCost}`;
+      if (targetUnitLabel) targetUnitLabel.textContent = `Profit / ${dish.unit}`;
+
+      const bProfit = dish.basePrice - dish.baseCost;
+      const bMonthly = dish.baseVol * bProfit;
+      const bMargin = ((bProfit / dish.basePrice) * 100).toFixed(1);
+      if (targetBaselineProfit) targetBaselineProfit.innerHTML = `₹${bProfit} <span class="text-body-sm font-normal text-on-surface-variant">(${bMargin}% margin)</span>`;
+      if (targetBaselineMonthly) targetBaselineMonthly.textContent = `₹${bMonthly.toLocaleString('en-IN')}`;
+
+      // Badge
+      if (targetDishBadge) {
+        targetDishBadge.textContent = dish.quadrant;
+        targetDishBadge.className = dish.quadrant === 'STAR' ? 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-bold bg-[#DCFCE7] text-[#15803D] border border-[#15803D]/40' :
+                                    dish.quadrant === 'PLOWHORSE' ? 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-bold bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/40' :
+                                    dish.quadrant === 'PUZZLE' ? 'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-bold bg-[#DBEAFE] text-[#2563EB] border border-[#2563EB]/40' :
+                                    'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-bold bg-[#FEE2E2] text-[#DC2626] border border-[#DC2626]/40';
+      }
+
+      recalculate();
+    }
+
+    function renderDishOptions() {
+      if (!dishOptionsList) return;
+      dishOptionsList.innerHTML = DISH_PRESETS.map(d => `
+        <div class="dish-option-item p-3 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 flex items-center justify-between cursor-pointer transition ${d.id === currentDish.id ? 'ring-2 ring-primary bg-primary-fixed/20' : ''}" data-dish-id="${d.id}">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-surface flex items-center justify-center text-primary border border-outline-variant/30">
+              <span class="material-symbols-outlined text-lg">${d.icon}</span>
+            </div>
+            <div>
+              <h4 class="font-bold text-xs text-on-surface">${d.name}</h4>
+              <span class="text-[10px] text-on-surface-variant">${d.category} • ${d.baseVol} orders/mo</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <span class="font-bold text-xs text-on-surface">₹${d.basePrice}</span>
+            <span class="text-[10px] block text-primary font-semibold">Cost: ₹${d.baseCost}</span>
+          </div>
+        </div>
+      `).join('');
+
+      dishOptionsList.querySelectorAll('.dish-option-item').forEach(item => {
+        item.onclick = () => {
+          const id = parseInt(item.getAttribute('data-dish-id'), 10);
+          const found = DISH_PRESETS.find(p => p.id === id);
+          if (found) {
+            selectDish(found);
+            if (dishModal) dishModal.classList.add('hidden');
+          }
+        };
+      });
+    }
+
+    function recalculate() {
+      const basePrice = currentDish.basePrice;
+      const baseCost = currentDish.baseCost;
+      const baseVol = currentDish.baseVol;
+      const baseProfitPerCup = basePrice - baseCost;
+      const baseMonthlyProfit = baseVol * baseProfitPerCup;
+
+      const priceHike = parseInt(priceSlider ? priceSlider.value : 15, 10);
+      const volChangePct = parseInt(volumeSlider ? volumeSlider.value : -3, 10);
+      const isCostOptimized = costCheckbox ? costCheckbox.checked : true;
+
+      const costSavedAmount = Math.max(4, Math.round(baseCost * 0.06));
+      const newPrice = basePrice + priceHike;
+      const newCost = isCostOptimized ? (baseCost - costSavedAmount) : baseCost;
+      const newVol = Math.round(baseVol * (1 + volChangePct / 100));
+      const volDiff = newVol - baseVol;
+
+      const newProfitPerCup = newPrice - newCost;
+      const profitBoostDiff = newProfitPerCup - baseProfitPerCup;
+      const perCupBoostPct = (((profitBoostDiff) / Math.max(1, baseProfitPerCup)) * 100).toFixed(1);
+      const newMarginPct = ((newProfitPerCup / newPrice) * 100).toFixed(1);
+      const newFoodCostPct = ((newCost / newPrice) * 100).toFixed(1);
+
+      const newMonthlyProfit = Math.round(newVol * newProfitPerCup);
+      const monthlyGain = newMonthlyProfit - baseMonthlyProfit;
+      const totalGainPct = (((newMonthlyProfit - baseMonthlyProfit) / Math.max(1, baseMonthlyProfit)) * 100).toFixed(1);
+
+      calculatedState = {
+        dishName: currentDish.name,
+        category: currentDish.category,
+        oldPrice: basePrice,
+        newPrice: newPrice,
+        oldCost: baseCost,
+        newCost: newCost,
+        newMarginPct: newMarginPct,
+        monthlyGain: monthlyGain,
+        newMonthlyProfit: newMonthlyProfit
+      };
+
+      // 1. Sliders & Inputs UI
+      if (priceHikeBadge) priceHikeBadge.textContent = `+ ₹${priceHike}`;
+      if (simPriceText) simPriceText.textContent = `₹${newPrice}`;
+
+      if (volBadge) {
+        volBadge.textContent = `${volChangePct >= 0 ? '+' : ''}${volChangePct}% orders`;
+        volBadge.className = `inline-flex items-center px-2 py-1 rounded text-label-lg font-label-lg font-bold ${volChangePct < 0 ? 'bg-error-container text-error' : 'bg-emerald-100 text-emerald-800'}`;
+      }
+
+      if (projectedVolText) projectedVolText.textContent = `${newVol} ${currentDish.unit.toLowerCase()}s`;
+      if (projectedVolDelta) {
+        projectedVolDelta.textContent = `(${volDiff >= 0 ? '+' : ''}${volDiff} ${currentDish.unit.toLowerCase()}s)`;
+        projectedVolDelta.className = `text-body-sm font-body-sm ${volDiff < 0 ? 'text-error font-semibold' : 'text-emerald-700 font-semibold'}`;
+      }
+
+      if (ingredientCostSpan) {
+        ingredientCostSpan.textContent = `₹${newCost}`;
+      }
+
+      // 2. Results Header Banner
+      if (heroGainAmount) {
+        heroGainAmount.textContent = `${monthlyGain >= 0 ? '+' : '-'} ₹${Math.abs(monthlyGain).toLocaleString('en-IN')}`;
+      }
+
+      if (gainPctBadge) {
+        gainPctBadge.innerHTML = `<span class="material-symbols-outlined text-xs">trending_up</span> ${totalGainPct >= 0 ? '+' : ''}${totalGainPct}% Total Gain`;
+        gainPctBadge.className = `px-2.5 py-1 rounded-full text-label-sm font-label-sm font-bold border flex items-center gap-1 ${monthlyGain >= 0 ? 'bg-[#DCFCE7] text-[#15803D] border-[#15803D]/30' : 'bg-error-container text-error border-error/30'}`;
+      }
+
+      if (jumpParagraph) {
+        jumpParagraph.textContent = `₹${newMonthlyProfit.toLocaleString('en-IN')}`;
+      }
+
+      // 3. Grid Metrics: Profit/Portion & Boost
+      if (profitPerCupEl) {
+        profitPerCupEl.textContent = `₹${newProfitPerCup}`;
+      }
+
+      if (perCupBoostEl) {
+        perCupBoostEl.textContent = `${perCupBoostPct >= 0 ? '+' : ''}${perCupBoostPct}%`;
+        perCupBoostEl.className = `text-currency-display font-currency-display ${profitBoostDiff >= 0 ? 'text-[#15803D]' : 'text-error'} font-bold`;
+      }
+
+      if (grossMarginEl) {
+        grossMarginEl.textContent = `${newMarginPct}% gross margin (${newFoodCostPct}% food cost)`;
+      }
+
+      // 4. Plain English Dynamic Insight
+      if (insightParagraph) {
+        insightParagraph.innerHTML = `"Even if you ${volDiff < 0 ? 'lose <strong>' + Math.abs(volDiff) + ' orders</strong>' : 'gain <strong>' + volDiff + ' orders</strong>'} due to a ₹${priceHike} hike, you will make <strong>₹${Math.abs(monthlyGain).toLocaleString('en-IN')} ${monthlyGain >= 0 ? 'MORE' : 'LESS'}</strong> every month because each ${currentDish.unit.toLowerCase()} earns <strong>₹${profitBoostDiff >= 0 ? '+' : ''}${profitBoostDiff} extra</strong>."`;
+      }
+
+      // 5. Track slider fill gradients
       [priceSlider, volumeSlider].forEach(slider => {
         if (!slider) return;
-        slider.addEventListener('input', () => {
-          // Dynamic slider track filling for tactile feedback
-          const min = slider.min || 0;
-          const max = slider.max || 100;
-          const val = slider.value;
-          const percentage = ((val - min) / (max - min)) * 100;
-          slider.style.background = `linear-gradient(to right, #0F5C5C 0%, #0F5C5C ${percentage}%, #E5E0D8 ${percentage}%, #E5E0D8 100%)`;
-        });
-        // trigger initial setup
-        slider.dispatchEvent(new Event('input'));
+        const min = parseFloat(slider.min) || 0;
+        const max = parseFloat(slider.max) || 100;
+        const val = parseFloat(slider.value) || 0;
+        const percentage = ((val - min) / (max - min)) * 100;
+        slider.style.background = `linear-gradient(to right, #0F5C5C 0%, #0F5C5C ${percentage}%, #E5E0D8 ${percentage}%, #E5E0D8 100%)`;
       });
-    });
-  </script>
+    }
+
+    if (priceSlider) priceSlider.addEventListener('input', recalculate);
+    if (volumeSlider) volumeSlider.addEventListener('input', recalculate);
+    if (costCheckbox) costCheckbox.addEventListener('change', recalculate);
+
+    // Wire Dish Switcher Modals
+    function openDishModal() {
+      renderDishOptions();
+      if (dishModal) dishModal.classList.remove('hidden');
+    }
+
+    if (testAnotherBtn) testAnotherBtn.onclick = openDishModal;
+    if (targetDishCard) targetDishCard.onclick = openDishModal;
+    if (closeDishModalBtn) closeDishModalBtn.onclick = () => dishModal.classList.add('hidden');
+    if (dishModal) {
+      dishModal.onclick = (e) => {
+        if (e.target === dishModal) dishModal.classList.add('hidden');
+      };
+    }
+
+    // Wire Save & Export PDF Modal
+    function openExportModal() {
+      let activeUser = null;
+      try { activeUser = JSON.parse(localStorage.getItem('marginly_user')); } catch (e) {}
+
+      document.getElementById('memo-outlet-name').textContent = activeUser?.restaurant_name || 'Doon Bistro & Kitchen';
+      document.getElementById('memo-dish-name').textContent = calculatedState.dishName;
+      document.getElementById('memo-dish-cat').textContent = calculatedState.category;
+      document.getElementById('memo-old-price').textContent = `₹${calculatedState.oldPrice}`;
+      document.getElementById('memo-new-price').textContent = `₹${calculatedState.newPrice}`;
+      document.getElementById('memo-plate-cost').textContent = `₹${calculatedState.newCost}`;
+      document.getElementById('memo-margin-pct').textContent = `${calculatedState.newMarginPct}%`;
+      document.getElementById('memo-monthly-boost').textContent = `${calculatedState.monthlyGain >= 0 ? '+' : ''}₹${calculatedState.monthlyGain.toLocaleString('en-IN')} / mo`;
+
+      if (saveExportModal) saveExportModal.classList.remove('hidden');
+    }
+
+    if (saveScenarioBtn) saveScenarioBtn.onclick = openExportModal;
+    if (closeExportModalBtn) closeExportModalBtn.onclick = () => saveExportModal.classList.add('hidden');
+    if (saveExportModal) {
+      saveExportModal.onclick = (e) => {
+        if (e.target === saveExportModal) saveExportModal.classList.add('hidden');
+      };
+    }
+
+    if (downloadPdfBtn) {
+      downloadPdfBtn.onclick = () => {
+        window.print();
+      };
+    }
+
+    if (confirmSaveMenuBtn) {
+      confirmSaveMenuBtn.onclick = () => {
+        // Save to localStorage simulation history
+        const saved = JSON.parse(localStorage.getItem('marginly_saved_simulations') || '[]');
+        saved.push({
+          timestamp: new Date().toISOString(),
+          ...calculatedState
+        });
+        localStorage.setItem('marginly_saved_simulations', JSON.stringify(saved));
+
+        confirmSaveMenuBtn.textContent = '✓ Saved to Menu!';
+        confirmSaveMenuBtn.className = 'flex-1 py-3 px-4 rounded-xl bg-emerald-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md cursor-default';
+        setTimeout(() => {
+          if (saveExportModal) saveExportModal.classList.add('hidden');
+          confirmSaveMenuBtn.textContent = 'Save New Price to Menu';
+          confirmSaveMenuBtn.className = 'flex-1 py-3 px-4 rounded-xl bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-emerald-800 transition cursor-pointer';
+          alert(`✓ Saved! ${calculatedState.dishName} new price ₹${calculatedState.newPrice} logged to your menu strategy.`);
+        }, 800);
+      };
+    }
+
+    recalculate();
+  });
+</script>
+<script src="/marginly-core.js"></script>
 </body></html>

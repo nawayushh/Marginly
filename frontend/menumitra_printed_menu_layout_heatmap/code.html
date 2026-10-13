@@ -149,71 +149,99 @@
   </style>
 </head>
 <body class="min-h-full flex flex-col font-body-md text-body-md bg-background antialiased selection:bg-primary selection:text-on-primary">
-<!-- TOP APP BAR -->
-<header class="bg-surface sticky top-0 z-40 shadow-sm border-b border-outline-variant/30">
-<div class="flex justify-between items-center w-full px-margin py-space-sm h-16 max-w-[1600px] mx-auto">
-<!-- Brand & Outlet Selector -->
-<div class="flex items-center gap-space-lg">
-<div class="flex items-center gap-2.5">
-<div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center text-on-primary shadow-sm">
-<span class="material-symbols-outlined text-[20px]" data-icon="restaurant_menu">restaurant_menu</span>
+<!-- ================= TOP APP BAR ================= -->
+<header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<!-- Brand & Tagline -->
+<div class="flex items-center space-x-4">
+<a href="/index.html" class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
 </div>
 <div>
-<div class="flex items-center gap-1.5">
-<span class="font-headline-md text-headline-md text-primary tracking-tight font-bold">MenuMitra</span>
-<span class="bg-secondary-container/30 text-on-secondary-container text-[10px] font-bold px-1.5 py-0.5 rounded">PRO</span>
+<div class="flex items-baseline space-x-1.5">
+<span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
+<span class="text-[10px] font-label-sm font-semibold tracking-wider text-secondary uppercase bg-secondary-fixed/50 px-1.5 py-0.5 rounded">Pro</span>
 </div>
-<p class="text-[11px] text-on-surface-variant font-medium leading-tight">Know which dishes make you money</p>
+<p class="text-[11px] font-body-sm text-on-surface-variant leading-none hidden sm:block">Know which dishes make you money</p>
 </div>
-</div>
-<div class="h-6 w-px bg-outline-variant/40 hidden md:block"></div>
+</a>
+<div class="h-6 w-px bg-outline-variant/50 hidden md:block"></div>
 <!-- Outlet Switcher Dropdown -->
-<div class="hidden lg:flex items-center">
-<button class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-low hover:bg-surface-container rounded-lg border border-outline-variant/40 transition-colors text-left group">
-<span class="material-symbols-outlined text-primary text-[18px]" data-icon="storefront">storefront</span>
-<div>
-<span class="block text-label-sm font-label-sm text-on-surface font-semibold group-hover:text-primary">Café Doon Brew, Rajpur Rd</span>
-<span class="block text-[10px] text-on-surface-variant">Dehradun Outlet #1</span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant text-[16px] ml-1" data-icon="expand_more">expand_more</span>
+<div class="relative group">
+<button class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors text-left border border-outline-variant/40 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[18px] text-primary-container" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span id="outlet-name" class="text-label-md font-label-md text-on-surface font-semibold max-w-[160px] truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
 </button>
+<!-- Dropdown Hints Modal Preview -->
+<div class="hidden group-hover:block absolute left-0 top-full mt-1.5 w-64 bg-surface-container-lowest rounded-xl custom-shadow-elevated border border-outline-variant/40 p-2 z-50">
+<div class="text-[10px] font-label-sm uppercase tracking-wider text-on-surface-variant px-2 py-1">Active Outlet</div>
+<div class="p-2 rounded-lg bg-surface-container-high flex items-center justify-between text-on-surface">
+<span id="dropdown-outlet-name" class="text-label-md font-label-md font-medium truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
 </div>
 </div>
-<!-- Navigation Links (Desktop) -->
-<nav class="hidden xl:flex items-center gap-1 text-label-md font-label-md">
-<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Dashboard</a>
-<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Dishes &amp; Recipes</a>
-<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Add Recipe</a>
-<a class="px-3 py-2 rounded-lg bg-primary-container/10 text-primary font-bold border-b-2 border-primary" href="#">Menu Layout</a>
-<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Price Alerts</a>
-<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">What-If Simulator</a>
-<a class="px-3 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">Reports</a>
-</nav>
-<!-- Right Actions: Language, Notification, Owner Profile -->
-<div class="flex items-center gap-3">
-<!-- Language Toggle -->
-<div class="flex items-center bg-surface-container-low border border-outline-variant/40 rounded-lg p-0.5 text-label-sm font-label-sm">
-<button class="px-2 py-1 rounded bg-surface-container-lowest font-bold text-primary shadow-xs">EN</button>
-<button class="px-2 py-1 rounded text-on-surface-variant hover:text-on-surface transition-colors">हिं</button>
+</div>
+</div>
+<!-- Center & Right Navigation Actions -->
+<div class="flex items-center space-x-3 sm:space-x-4">
+<!-- Language Switch -->
+<div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-primary font-bold shadow-xs">EN</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-primary transition-colors">हिं</button>
 </div>
 <!-- Notifications -->
-<button aria-label="Notifications" class="relative w-9 h-9 rounded-lg flex items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
-<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-on-error text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
-</button>
-<div class="h-6 w-px bg-outline-variant/40"></div>
+<a href="/menumitra_price_alerts_volatility_radar/code.html" class="relative w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors border border-outline-variant/30 active:scale-95 duration-150" title="Price Alerts">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span id="notif-badge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error text-[10px] font-bold flex items-center justify-center">0</span>
+</a>
+<div class="h-6 w-px bg-outline-variant/50"></div>
 <!-- Owner Profile -->
-<div class="flex items-center gap-2.5 pl-1">
-<div class="w-9 h-9 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm">
-            VA
-          </div>
-<div class="hidden sm:block text-left">
-<span class="block text-label-sm font-label-sm text-on-surface leading-tight">Vikram Anand</span>
-<span class="block text-[10px] text-on-surface-variant leading-tight">Owner &amp; Head Chef</span>
+<div class="flex items-center space-x-2 pl-1">
+<div id="user-initials" class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-bold flex items-center justify-center text-label-md border-2 border-surface-container-lowest">
+RO
+</div>
+<div class="hidden lg:block text-left leading-tight">
+<div id="user-display-name" class="text-label-md font-label-md text-on-surface font-semibold">Restaurant Owner</div>
+<div id="user-role" class="text-[11px] font-body-sm text-on-surface-variant">Owner &amp; Chef</div>
+</div>
+<!-- Logout Button -->
+<button onclick="logout()" class="ml-2 p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="Sign Out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</button>
 </div>
 </div>
 </div>
+<!-- Secondary Desktop Menu Bar -->
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<div class="flex space-x-1 py-1.5">
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_dishes_recipes/code.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span>Dishes &amp; Recipes</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Add Recipe</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-primary font-bold bg-primary-fixed/40 flex items-center space-x-1.5" href="/menumitra_printed_menu_layout_heatmap/code.html">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">tune</span>
+<span>Menu Layout</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_price_alerts_volatility_radar/code.html">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span>Price Alerts</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_what_if_simulator/code.html">
+<span class="material-symbols-outlined text-[18px]">calculate</span>
+<span>What-If Simulator</span>
+</a>
 </div>
+</nav>
 </header>
 <!-- SUBHEADER / ACTION BAR -->
 <section class="bg-surface border-b border-outline-variant/30">
@@ -813,4 +841,5 @@
       });
     });
   </script>
+<script src="/marginly-core.js"></script>
 </body></html>

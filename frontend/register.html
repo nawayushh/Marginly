@@ -562,6 +562,167 @@
               </div>
             </div>
 
+            <!-- Extended Questions for Accurate Real-Time Analytics -->
+            <div class="pt-2 border-t border-outline-variant/30 space-y-3.5">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-primary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">tune</span>
+                  Restaurant Intelligence Profile
+                </span>
+                <span class="text-[10px] text-on-surface-variant font-medium bg-surface-container px-2 py-0.5 rounded-full">Used for AI cost benchmarks</span>
+              </div>
+
+              <!-- Phone & Format Row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Contact Phone (for SMS/WhatsApp price surge radar) -->
+                <div>
+                  <label for="phone" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">
+                    Contact Phone (Price Alerts)
+                  </label>
+                  <div class="relative rounded-xl shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                      <span class="material-symbols-outlined text-lg">call</span>
+                    </div>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      placeholder="e.g. +91 98765 43210"
+                      class="block w-full pl-10 pr-3.5 py-2.5 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm placeholder:text-on-surface-variant/40 focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition"
+                    />
+                  </div>
+                  <p class="text-[10px] text-on-surface-variant/70 mt-1">For Mandi price spike SMS/WhatsApp</p>
+                </div>
+
+                <!-- Restaurant Format -->
+                <div>
+                  <label for="restaurantType" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">
+                    Restaurant Format
+                  </label>
+                  <div class="relative rounded-xl shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                      <span class="material-symbols-outlined text-lg">storefront</span>
+                    </div>
+                    <select
+                      id="restaurantType"
+                      name="restaurantType"
+                      class="block w-full pl-10 pr-9 py-2.5 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition appearance-none cursor-pointer"
+                    >
+                      <option value="Dine-in Restaurant" selected>Dine-in Restaurant</option>
+                      <option value="Fast Food / QSR">Fast Food / QSR</option>
+                      <option value="Cloud Kitchen / Delivery">Cloud Kitchen / Delivery</option>
+                      <option value="Cafe & Bakery">Cafe &amp; Bakery</option>
+                      <option value="Food Truck / Kiosk">Food Truck / Kiosk</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-on-surface-variant/60">
+                      <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+                    </div>
+                  </div>
+                  <p class="text-[10px] text-on-surface-variant/70 mt-1">Calibrates fixed kitchen overheads</p>
+                </div>
+              </div>
+
+              <!-- Daily Volume & Sourcing Model Row -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Daily Covers -->
+                <div>
+                  <label for="dailyCovers" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">
+                    Daily Guest Covers / Orders
+                  </label>
+                  <div class="relative rounded-xl shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                      <span class="material-symbols-outlined text-lg">groups</span>
+                    </div>
+                    <select
+                      id="dailyCovers"
+                      name="dailyCovers"
+                      class="block w-full pl-10 pr-9 py-2.5 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition appearance-none cursor-pointer"
+                    >
+                      <option value="Under 50 covers/day">Under 50 covers / day</option>
+                      <option value="50-150 covers/day" selected>50 - 150 covers / day</option>
+                      <option value="150-300 covers/day">150 - 300 covers / day</option>
+                      <option value="300+ covers/day">300+ covers / day</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-on-surface-variant/60">
+                      <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Sourcing Model (with Farm/Self-grown ₹0 support) -->
+                <div>
+                  <label for="sourcingModel" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">
+                    Ingredient Sourcing Model
+                  </label>
+                  <div class="relative rounded-xl shadow-sm">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                      <span class="material-symbols-outlined text-lg">agriculture</span>
+                    </div>
+                    <select
+                      id="sourcingModel"
+                      name="sourcingModel"
+                      class="block w-full pl-10 pr-9 py-2.5 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition appearance-none cursor-pointer"
+                    >
+                      <option value="Local Mandi / APMC" selected>Local Wholesale Mandi (APMC)</option>
+                      <option value="Packaged / FMCG Distributor">Packaged FMCG Distributor</option>
+                      <option value="Farm Direct / Kitchen Garden">Farm Direct / Kitchen Garden (₹0 Base)</option>
+                      <option value="Hybrid / Mixed">Hybrid (Mandi + Self-Grown)</option>
+                    </select>
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-on-surface-variant/60">
+                      <span class="material-symbols-outlined text-lg">arrow_drop_down</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Signature / Top Dish Field -->
+              <div>
+                <label for="signatureDish" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-1">
+                  Signature Dish (First Menu Item)
+                </label>
+                <div class="relative rounded-xl shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                    <span class="material-symbols-outlined text-lg">restaurant</span>
+                  </div>
+                  <input
+                    type="text"
+                    id="signatureDish"
+                    name="signatureDish"
+                    placeholder="e.g. Masala Dosa, Cold Coffee, Butter Chicken, Veg Momos"
+                    class="block w-full pl-10 pr-3.5 py-2.5 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm placeholder:text-on-surface-variant/40 focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition"
+                  />
+                </div>
+                <p class="text-[10px] text-on-surface-variant/70 mt-1">Our AI calculates food cost and margin for this dish automatically</p>
+              </div>
+
+              <!-- REAL-TIME AREA MANDI BENCHMARK PREVIEW CARD (Gemini Powered) -->
+              <div id="mandiReportCard" class="bg-surface-container-low border border-primary-container/30 rounded-2xl p-4 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary text-xl">insights</span>
+                    <span class="text-xs font-bold text-on-surface uppercase tracking-wider">Real-Time Area Mandi Benchmark (Gemini AI)</span>
+                  </div>
+                  <button id="fetchMandiBtn" type="button" class="text-[11px] font-bold text-primary hover:underline flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">refresh</span>
+                    <span>Refresh Mandi Rates</span>
+                  </button>
+                </div>
+                
+                <p class="text-[11px] text-on-surface-variant leading-tight">
+                  Calculated based on today's wholesale prices in your city. You can toggle <strong class="text-primary font-bold">₹0 Cost</strong> if you grow ingredients yourself (home garden/farm).
+                </p>
+
+                <!-- Ingredients Table with Self-Grown ₹0 Checkboxes -->
+                <div id="mandiIngredientsContainer" class="max-h-52 overflow-y-auto space-y-1.5 pr-1">
+                  <div class="p-3 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-lg border border-dashed border-outline-variant/40">
+                    <span class="material-symbols-outlined text-primary text-base block mb-1">psychology</span>
+                    <span>Click "Fetch Mandi Rates" to benchmark live rates for your city with Gemini AI, or continue with a clean catalog.</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
           <!-- Terms & Agreement Checkbox -->
@@ -759,7 +920,23 @@
 
     function showError(message, title = 'Registration Failed') {
       errorTitle.textContent = title;
-      errorText.textContent = message;
+      if (typeof message === 'object' && message !== null) {
+        if (Array.isArray(message)) {
+          errorText.textContent = message.map(m => m.msg || (m.loc ? `${m.loc.slice(-1)[0]}: ${m.msg || ''}` : JSON.stringify(m))).join('; ');
+        } else if (message.detail) {
+          if (Array.isArray(message.detail)) {
+            errorText.textContent = message.detail.map(d => `${d.loc ? d.loc.slice(-1)[0] : 'field'}: ${d.msg || ''}`).join('; ');
+          } else {
+            errorText.textContent = typeof message.detail === 'object' ? JSON.stringify(message.detail) : String(message.detail);
+          }
+        } else if (message.message) {
+          errorText.textContent = String(message.message);
+        } else {
+          errorText.textContent = JSON.stringify(message);
+        }
+      } else {
+        errorText.textContent = String(message || 'An error occurred. Please try again.');
+      }
       errorMessage.classList.remove('hidden');
       errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
@@ -899,6 +1076,113 @@
       locStatus.classList.add('hidden');
     }
 
+    // DOM Elements for Extended Profile & Mandi Intelligence
+    const phoneInput = document.getElementById('phone');
+    const restaurantTypeSelect = document.getElementById('restaurantType');
+    const dailyCoversSelect = document.getElementById('dailyCovers');
+    const sourcingModelSelect = document.getElementById('sourcingModel');
+    const signatureDishInput = document.getElementById('signatureDish');
+    const mandiIngredientsContainer = document.getElementById('mandiIngredientsContainer');
+    const fetchMandiBtn = document.getElementById('fetchMandiBtn');
+    const importStarterDishes = document.getElementById('importStarterDishes');
+
+    let currentMarketInsights = null;
+
+    // Load Real-Time Area Mandi Benchmark via Gemini / Market Insights API
+    async function loadMandiInsights() {
+      const city = locationInput.value.trim() || 'Dehradun';
+      const cuisine = cuisineTypeSelect.value || 'Multi-Cuisine';
+
+      if (!mandiIngredientsContainer) return;
+      mandiIngredientsContainer.innerHTML = `
+        <div class="p-3 text-center text-xs text-primary font-semibold flex items-center justify-center gap-2">
+          <svg class="animate-spin h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span>Fetching live wholesale mandi rates for ${city} (${cuisine}) via Gemini AI...</span>
+        </div>
+      `;
+
+      try {
+        const res = await fetch('http://127.0.0.1:8000/api/market-insights', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ location: city, cuisine_type: cuisine })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          currentMarketInsights = data;
+          if (data.ingredients && data.ingredients.length > 0) {
+            renderMandiIngredients(data.ingredients);
+          } else {
+            showEmptyMandiNotice('No live wholesale rates returned for this region. You can add ingredients anytime after setup.');
+          }
+        } else {
+          showEmptyMandiNotice('Could not reach Gemini live rate service. You can continue and configure recipes later.');
+        }
+      } catch (e) {
+        console.warn('Market insights fetch note:', e);
+        showEmptyMandiNotice('Unable to connect to live rates API. You can continue with zero pre-filled data.');
+      }
+    }
+
+    function showEmptyMandiNotice(msg) {
+      if (!mandiIngredientsContainer) return;
+      mandiIngredientsContainer.innerHTML = `
+        <div class="p-3 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-lg border border-outline-variant/30">
+          <span class="material-symbols-outlined text-outline text-base block mb-0.5">info</span>
+          <span>${msg}</span>
+        </div>
+      `;
+    }
+
+    function renderMandiIngredients(ingredients) {
+      if (!ingredients || ingredients.length === 0) {
+        showEmptyMandiNotice('No mandi benchmark rates found.');
+        return;
+      }
+
+      mandiIngredientsContainer.innerHTML = ingredients.map((item, idx) => `
+        <div class="flex items-center justify-between p-2 rounded-lg bg-surface border border-outline-variant/30 text-xs">
+          <div class="flex items-center gap-2 truncate pr-2">
+            <span class="font-semibold text-on-surface truncate">${item.name}</span>
+            <span class="text-[10px] text-outline shrink-0">₹${item.market_price || item.benchmark_price || 0} / ${item.base_unit || item.unit || 'kg'}</span>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <label class="flex items-center gap-1 cursor-pointer text-[10px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+              <input type="checkbox" class="self-grown-toggle w-3 h-3 text-emerald-600 rounded" data-index="${idx}" />
+              <span>Self-Grown (₹0)</span>
+            </label>
+            <input type="number" step="0.5" value="${item.market_price || item.benchmark_price || 0}" data-original="${item.market_price || item.benchmark_price || 0}" data-index="${idx}" class="ingredient-price-input w-16 px-1.5 py-0.5 text-right rounded border border-outline-variant bg-surface text-xs font-bold text-primary" />
+          </div>
+        </div>
+      `).join('');
+
+      // Wire ₹0 Self-Grown toggles
+      mandiIngredientsContainer.querySelectorAll('.self-grown-toggle').forEach(chk => {
+        chk.addEventListener('change', (e) => {
+          const idx = chk.getAttribute('data-index');
+          const input = mandiIngredientsContainer.querySelector(`.ingredient-price-input[data-index="${idx}"]`);
+          if (input) {
+            if (chk.checked) {
+              input.dataset.prev = input.value;
+              input.value = '0';
+              input.disabled = true;
+              input.classList.add('bg-surface-container', 'opacity-70');
+            } else {
+              input.value = input.dataset.prev || input.dataset.original || '10';
+              input.disabled = false;
+              input.classList.remove('bg-surface-container', 'opacity-70');
+            }
+          }
+        });
+      });
+    }
+
+    if (fetchMandiBtn) fetchMandiBtn.addEventListener('click', loadMandiInsights);
+
     // 8. Form Submission Handler
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -911,6 +1195,11 @@
       const restaurantName = restaurantNameInput.value.trim();
       const cuisineType = cuisineTypeSelect.value;
       const location = locationInput.value.trim();
+      const phone = phoneInput ? phoneInput.value.trim() : '';
+      const restaurantType = restaurantTypeSelect ? restaurantTypeSelect.value : 'Dine-in Restaurant';
+      const dailyCovers = dailyCoversSelect ? dailyCoversSelect.value : '50-150 covers/day';
+      const sourcingModel = sourcingModelSelect ? sourcingModelSelect.value : 'Local Mandi / APMC';
+      const signatureDish = signatureDishInput ? signatureDishInput.value.trim() : '';
 
       // Client-side validations
       if (!username) {
@@ -957,7 +1246,12 @@
         display_name: displayName || username,
         restaurant_name: restaurantName,
         location: location || '',
-        cuisine_type: cuisineType || 'Multi-Cuisine'
+        cuisine_type: cuisineType || 'Multi-Cuisine',
+        phone: phone,
+        restaurant_type: restaurantType,
+        daily_covers: dailyCovers,
+        sourcing_model: sourcingModel,
+        signature_dish: signatureDish
       };
 
       try {
@@ -991,15 +1285,23 @@
           display_name: displayName || username,
           restaurant_name: restaurantName,
           cuisine_type: cuisineType,
-          location: location
+          location: location,
+          phone: phone,
+          restaurant_type: restaurantType,
+          daily_covers: dailyCovers,
+          sourcing_model: sourcingModel,
+          signature_dish: signatureDish
         };
 
         try {
+          localStorage.removeItem('marginly_logged_out');
           localStorage.setItem('marginly_token', token);
           localStorage.setItem('marginly_user', JSON.stringify(userObj));
         } catch (storageErr) {
           console.warn('LocalStorage save warning:', storageErr);
         }
+
+
 
         // Show success state
         successBanner.classList.remove('hidden');
