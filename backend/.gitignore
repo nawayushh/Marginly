@@ -1,0 +1,13 @@
+# Secrets and local settings
+.env
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+
+# Local database (created automatically)
+*.db
+*.db-journal
