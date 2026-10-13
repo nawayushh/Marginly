@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import Optional
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
@@ -26,6 +27,10 @@ class Settings(BaseModel):
     LM_STUDIO_API_KEY: str = os.getenv("LM_STUDIO_API_KEY", "lm-studio")
     LM_STUDIO_MODEL: str = os.getenv("LM_STUDIO_MODEL", "qwen2.5-7b-instruct")
     LM_STUDIO_TIMEOUT_SECONDS: float = float(os.getenv("LM_STUDIO_TIMEOUT_SECONDS", "45.0"))
+
+    # Gemini API Configuration
+    GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY", None)
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
 
     # Calculation thresholds
     POPULARITY_FACTOR: float = float(os.getenv("POPULARITY_FACTOR", "1.0"))

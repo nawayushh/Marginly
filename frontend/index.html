@@ -1,0 +1,903 @@
+<!DOCTYPE html><html class="h-full" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MenuMitra - Menu Engineering Dashboard</title>
+<!-- Inter & Material Symbols -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS with configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error": "#ffffff",
+            "surface-tint": "#216868",
+            "primary": "#004343",
+            "outline-variant": "#bfc8c8",
+            "on-secondary": "#ffffff",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#aceeee",
+            "on-primary-fixed": "#002020",
+            "secondary-fixed": "#ffddb3",
+            "on-primary-fixed-variant": "#004f50",
+            "surface-container-low": "#f5f3f0",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#633f00",
+            "inverse-primary": "#90d2d1",
+            "tertiary-fixed-dim": "#ffb693",
+            "surface-container-highest": "#e4e2df",
+            "tertiary-fixed": "#ffdbcc",
+            "on-secondary-fixed": "#291800",
+            "tertiary-container": "#7a452a",
+            "on-primary-container": "#90d2d1",
+            "surface-dim": "#dbdad7",
+            "tertiary": "#5e2f16",
+            "secondary-fixed-dim": "#ffb951",
+            "surface-bright": "#fbf9f6",
+            "outline": "#6f7978",
+            "surface-variant": "#e4e2df",
+            "on-surface-variant": "#3f4948",
+            "surface": "#fbf9f6",
+            "on-tertiary-fixed-variant": "#6c391f",
+            "on-background": "#1b1c1a",
+            "on-tertiary-container": "#ffb693",
+            "secondary-container": "#fdab12",
+            "on-secondary-container": "#684300",
+            "primary-fixed-dim": "#90d2d1",
+            "error": "#ba1a1a",
+            "on-surface": "#1b1c1a",
+            "inverse-on-surface": "#f2f0ed",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#30312f",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#351000",
+            "primary-container": "#0f5c5c",
+            "surface-container-high": "#eae8e5",
+            "secondary": "#825500",
+            "surface-container": "#efeeeb",
+            "background": "#fbf9f6",
+            "on-primary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "margin-mobile": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "currency-display": ["Inter"],
+            "headline-xl": ["Inter"],
+            "headline-xl-mobile": ["Inter"],
+            "body-sm": ["Inter"]
+          },
+          "fontSize": {
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "currency-display": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-xl": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-xl-mobile": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-shadow-soft {
+      box-shadow: 0 2px 8px -2px rgba(15, 92, 92, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+    }
+    .custom-shadow-elevated {
+      box-shadow: 0 10px 24px -4px rgba(15, 92, 92, 0.08), 0 4px 8px -2px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md text-body-md min-h-screen flex flex-col antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ================= TOP APP BAR ================= -->
+<header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<!-- Brand & Tagline -->
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div>
+<div class="flex items-baseline space-x-1.5">
+<span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
+<span class="text-[10px] font-label-sm font-semibold tracking-wider text-secondary uppercase bg-secondary-fixed/50 px-1.5 py-0.5 rounded">Pro</span>
+</div>
+<p class="text-[11px] font-body-sm text-on-surface-variant leading-none hidden sm:block">Know which dishes make you money</p>
+</div>
+</div>
+<div class="h-6 w-px bg-outline-variant/50 hidden md:block"></div>
+<!-- Outlet Switcher Dropdown -->
+<div class="relative group">
+<button class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high transition-colors text-left border border-outline-variant/40 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[18px] text-primary-container" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span id="outlet-name" class="text-label-md font-label-md text-on-surface font-semibold max-w-[160px] truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant">arrow_drop_down</span>
+</button>
+<!-- Dropdown Hints Modal Preview -->
+<div class="hidden group-hover:block absolute left-0 top-full mt-1.5 w-64 bg-surface-container-lowest rounded-xl custom-shadow-elevated border border-outline-variant/40 p-2 z-50">
+<div class="text-[10px] font-label-sm uppercase tracking-wider text-on-surface-variant px-2 py-1">Active Outlet</div>
+<div class="p-2 rounded-lg bg-surface-container-high flex items-center justify-between text-on-surface">
+<span id="dropdown-outlet-name" class="text-label-md font-label-md font-medium truncate">My Restaurant</span>
+<span class="material-symbols-outlined text-primary text-[18px]">check</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center & Right Navigation Actions -->
+<div class="flex items-center space-x-3 sm:space-x-4">
+<!-- Language Switch -->
+<div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant/30 text-label-sm font-label-sm">
+<button class="px-2.5 py-1 rounded bg-surface-container-lowest text-primary font-bold shadow-xs">EN</button>
+<button class="px-2.5 py-1 rounded text-on-surface-variant hover:text-primary transition-colors">हिं</button>
+</div>
+<!-- Notifications -->
+<button class="relative w-9 h-9 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant transition-colors border border-outline-variant/30 active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span id="notif-badge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-error text-on-error text-[10px] font-bold flex items-center justify-center">0</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/50"></div>
+<!-- Owner Profile -->
+<div class="flex items-center space-x-2 pl-1">
+<div id="user-initials" class="w-9 h-9 rounded-full bg-primary-container text-on-primary font-bold flex items-center justify-center text-label-md border-2 border-surface-container-lowest">
+            RO
+          </div>
+<div class="hidden lg:block text-left leading-tight">
+<div id="user-display-name" class="text-label-md font-label-md text-on-surface font-semibold">Restaurant Owner</div>
+<div id="user-role" class="text-[11px] font-body-sm text-on-surface-variant">Owner &amp; Chef</div>
+</div>
+<!-- Logout Button -->
+<button onclick="logout()" class="ml-2 p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-error transition-colors" title="Sign Out">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Secondary Desktop Menu Bar -->
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<div class="flex space-x-1 py-1.5">
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-primary font-bold bg-primary-fixed/40 flex items-center space-x-1.5" href="/index.html">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="">Dashboard</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_dishes_recipes/code.html">
+<span class="material-symbols-outlined text-[18px]">restaurant_menu</span>
+<span class="">Dishes &amp; Recipes</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span class="">Add Recipe</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_printed_menu_layout_heatmap/code.html">
+<span class="material-symbols-outlined text-[18px]">tune</span>
+<span class="">Menu Layout</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_price_alerts_volatility_radar/code.html">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+<span class="">Price Alerts</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/menumitra_what_if_simulator/code.html">
+<span class="material-symbols-outlined text-[18px]">calculate</span>
+<span class="">What-If Simulator</span>
+</a>
+<a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
+<span class="material-symbols-outlined text-[18px]">query_stats</span>
+<span class="">Reports</span>
+</a>
+</div>
+</nav>
+</header>
+<!-- ================= MAIN CONTENT WORKSPACE ================= -->
+<main class="flex-1 max-w-7xl w-full mx-auto px-margin-mobile md:px-margin py-6 space-y-6">
+<!-- 1. TOP ROW: 4 KPI CARDS -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">Avg profit per cover</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+</div>
+<div class="my-3">
+<div class="flex items-baseline space-x-2">
+<span class="text-headline-xl font-headline-xl text-on-surface tracking-tight">₹71</span>
+<span class="inline-flex items-center text-label-sm font-label-sm text-[#15803D] bg-[#DCFCE7] px-2 py-0.5 rounded-full font-bold">
+<span class="material-symbols-outlined text-[14px] mr-0.5 font-bold">trending_up</span>+₹6
+            </span>
+</div>
+<span class="text-[11px] font-body-sm text-on-surface-variant">vs last month (₹65)</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline border-t border-outline-variant/30 pt-2 flex items-center justify-between">
+<span class="">Contribution per dining guest</span>
+<span class="material-symbols-outlined text-[14px]">info</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">Food cost %</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">pie_chart</span>
+</div>
+</div>
+<div class="my-3">
+<div class="flex items-baseline space-x-2">
+<span class="text-headline-xl font-headline-xl text-on-surface tracking-tight">38.4%</span>
+<span class="inline-flex items-center text-label-sm font-label-sm text-[#15803D] bg-[#DCFCE7] px-2 py-0.5 rounded-full font-bold">
+<span class="material-symbols-outlined text-[14px] mr-0.5 font-bold">trending_down</span>-2.1%
+            </span>
+</div>
+<span class="text-[11px] font-body-sm text-on-surface-variant">Optimal range: 30% - 35%</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline border-t border-outline-variant/30 pt-2 flex items-center justify-between">
+<span class="">Target: &lt; 35% (Gap: 3.4%)</span>
+<span class="text-[10px] font-bold text-secondary uppercase bg-secondary-fixed/50 px-1.5 py-0.2 rounded">Actionable</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">Loss-making dishes</span>
+<div class="w-8 h-8 rounded-lg bg-error-container/40 flex items-center justify-center text-error">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+</div>
+<div class="my-3">
+<div class="flex items-baseline space-x-2">
+<span class="text-headline-xl font-headline-xl text-error tracking-tight">3</span>
+<span class="inline-flex items-center text-label-sm font-label-sm text-[#DC2626] bg-[#FEE2E2] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">
+              Immediate Action
+            </span>
+</div>
+<span class="text-[11px] font-body-sm text-on-surface-variant">Eating ₹11,400 monthly margin</span>
+</div>
+<div class="text-body-sm font-body-sm text-outline border-t border-outline-variant/30 pt-2 flex items-center justify-between">
+<span class="">Cost exceeds margin benchmark</span>
+<span class="material-symbols-outlined text-[14px] text-error">arrow_forward</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface-variant font-medium">Money left on the table</span>
+<div class="w-8 h-8 rounded-lg bg-[#FEF3C7] flex items-center justify-center text-[#D97706]">
+<span class="material-symbols-outlined text-[18px]">savings</span>
+</div>
+</div>
+<div class="my-3">
+<div class="flex items-baseline space-x-2">
+<span class="text-headline-xl font-headline-xl text-primary tracking-tight">₹48,200</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-bold">/ mo</span>
+</div>
+<span class="inline-flex items-center text-label-sm font-label-sm text-[#B45309] bg-[#FEF3C7] px-2 py-0.5 rounded-md font-semibold mt-0.5">
+<span class="material-symbols-outlined text-[13px] mr-1">bolt</span>Low hanging fruit
+          </span>
+</div>
+<div class="text-body-sm font-body-sm text-outline border-t border-outline-variant/30 pt-2 flex items-center justify-between">
+<span class="">Recoverable through price tweaks</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+</div>
+</section>
+<!-- 2. CENTER HERO SECTION (2/3 MATRIX + 1/3 ACTION PANEL) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT 2/3 COLUMN: BOSTON BOX MATRIX -->
+<div class="lg:col-span-8 bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft flex flex-col">
+<!-- Header & Category Chips -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-3 border-b border-outline-variant/30">
+<div>
+<div class="flex items-center space-x-2">
+<h2 class="text-headline-md font-headline-md text-on-surface font-bold tracking-tight">Menu Engineering Matrix</h2>
+<span class="text-[11px] font-label-sm bg-surface-container text-on-surface-variant px-2 py-0.5 rounded font-medium">Boston Box</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-0.5">Scatter plot of Popularity (Units Sold) vs Profitability (₹ per plate)</p>
+</div>
+<!-- Category Filter Chips -->
+<div class="flex items-center overflow-x-auto pb-1 sm:pb-0 space-x-1.5">
+<button class="px-3 py-1 rounded-full bg-primary-container text-surface-bright font-label-sm text-label-sm whitespace-nowrap font-semibold shadow-xs">All (48)</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-sm text-label-sm whitespace-nowrap transition-colors">Beverages (12)</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-sm text-label-sm whitespace-nowrap transition-colors">Starters (14)</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-sm text-label-sm whitespace-nowrap transition-colors">Mains (16)</button>
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant hover:text-primary font-label-sm text-label-sm whitespace-nowrap transition-colors">Desserts (6)</button>
+</div>
+</div>
+<!-- 2x2 Scatter Canvas Area -->
+<div class="relative w-full aspect-[4/3] sm:aspect-[16/10] mt-4 border border-outline-variant/40 rounded-xl overflow-hidden bg-surface-bright">
+<!-- 4 Tinted Quadrants Background -->
+<div class="absolute inset-0 grid grid-cols-2 grid-rows-2">
+<!-- Top-Left: PUZZLE -->
+<div class="bg-[#DBEAFE]/30 p-3 flex flex-col justify-between border-r border-b border-dashed border-outline-variant/60 relative">
+<div class="flex items-center space-x-1.5 opacity-80">
+<span class="w-2 h-2 rounded-full bg-[#2563EB]"></span>
+<span class="text-label-sm font-label-sm font-bold text-[#2563EB] tracking-wider">PUZZLE</span>
+<span class="text-[10px] font-body-sm text-on-surface-variant hidden sm:inline">• Profitable but hidden</span>
+</div>
+<span class="text-[10px] font-label-sm text-outline/60 uppercase">High Margin / Low Popularity</span>
+</div>
+<!-- Top-Right: STAR -->
+<div class="bg-[#DCFCE7]/35 p-3 flex flex-col justify-between border-b border-dashed border-outline-variant/60 relative">
+<div class="flex items-center space-x-1.5 opacity-80 justify-end sm:justify-start">
+<span class="w-2 h-2 rounded-full bg-[#15803D]"></span>
+<span class="text-label-sm font-label-sm font-bold text-[#15803D] tracking-wider">STAR</span>
+<span class="text-[10px] font-body-sm text-on-surface-variant hidden sm:inline">• Keep &amp; promote</span>
+</div>
+<span class="text-[10px] font-label-sm text-outline/60 uppercase text-right">High Margin / High Popularity</span>
+</div>
+<!-- Bottom-Left: DOG -->
+<div class="bg-[#FEE2E2]/30 p-3 flex flex-col justify-between border-r border-dashed border-outline-variant/60 relative">
+<span class="text-[10px] font-label-sm text-outline/60 uppercase">Low Margin / Low Popularity</span>
+<div class="flex items-center space-x-1.5 opacity-80">
+<span class="w-2 h-2 rounded-full bg-[#DC2626]"></span>
+<span class="text-label-sm font-label-sm font-bold text-[#DC2626] tracking-wider">DOG</span>
+<span class="text-[10px] font-body-sm text-on-surface-variant hidden sm:inline">• Losing space</span>
+</div>
+</div>
+<!-- Bottom-Right: PLOWHORSE -->
+<div class="bg-[#FEF3C7]/35 p-3 flex flex-col justify-between relative">
+<span class="text-[10px] font-label-sm text-outline/60 uppercase text-right">Low Margin / High Popularity</span>
+<div class="flex items-center space-x-1.5 opacity-80 justify-end sm:justify-start">
+<span class="w-2 h-2 rounded-full bg-[#D97706]"></span>
+<span class="text-label-sm font-label-sm font-bold text-[#D97706] tracking-wider">PLOWHORSE</span>
+<span class="text-[10px] font-body-sm text-on-surface-variant hidden sm:inline">• Popular, thin margin</span>
+</div>
+</div>
+</div>
+<!-- Axis Threshold Labels & Crosshairs Indicator -->
+<div class="absolute left-1/2 top-2 transform -translate-x-1/2 bg-surface-container-lowest/90 px-2 py-0.5 rounded text-[10px] font-label-sm text-outline border border-outline-variant/40 shadow-xs">
+            Avg Threshold: 300 orders
+          </div>
+<div class="absolute top-1/2 left-2 transform -translate-y-1/2 bg-surface-container-lowest/90 px-2 py-0.5 rounded text-[10px] font-label-sm text-outline border border-outline-variant/40 shadow-xs">
+            Avg Profit: ₹80 / plate
+          </div>
+<!-- PLOTTED DISH BUBBLES (Proportional to Profit) -->
+<!-- 1. STAR: Chicken Momos (540 sold, ₹102 profit) -> Right 77%, Top 22% -->
+<div class="absolute left-[76%] top-[24%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-14 h-14 rounded-full bg-[#15803D]/25 border-2 border-[#15803D] flex items-center justify-center text-[#15803D] shadow-sm hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1.5 py-0.5 rounded text-[10px] font-semibold text-on-surface pointer-events-none">
+              Chicken Momos
+            </div>
+</div>
+<!-- 2. STAR: Masala Maggi (620 sold, ₹62 profit) -> Right 88%, Top 40% (just above profit line) -->
+<div class="absolute left-[88%] top-[39%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-11 h-11 rounded-full bg-[#15803D]/25 border-2 border-[#15803D] flex items-center justify-center text-[#15803D] shadow-sm hover:scale-110 transition-transform">
+<span class="text-[11px] font-bold">₹62</span>
+</div>
+<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1.5 py-0.5 rounded text-[10px] font-semibold text-on-surface pointer-events-none">
+              Masala Maggi
+            </div>
+</div>
+<!-- 3. PUZZLE: Paneer Tikka Pizza (85 sold, ₹168 profit) -> Left 16%, Top 16% -->
+<div class="absolute left-[16%] top-[16%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-[#2563EB]/20 border-2 border-[#2563EB] flex items-center justify-center text-[#2563EB] shadow-sm hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">extension</span>
+</div>
+<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1.5 py-0.5 rounded text-[10px] font-semibold text-on-surface pointer-events-none">
+              Paneer Pizza
+            </div>
+</div>
+<!-- 4. PUZZLE: Cheese Garlic Bread (120 sold, ₹109 profit) -> Left 28%, Top 32% -->
+<div class="absolute left-[28%] top-[31%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-9 h-9 rounded-full bg-[#2563EB]/20 border-2 border-[#2563EB] flex items-center justify-center text-[#2563EB] shadow-sm hover:scale-110 transition-transform">
+<span class="text-[10px] font-bold">₹109</span>
+</div>
+<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1.5 py-0.5 rounded text-[10px] font-semibold text-on-surface pointer-events-none">
+              Garlic Bread
+            </div>
+</div>
+<!-- 5. PLOWHORSE: Mango Smoothie (300 sold, ₹32 profit) -> Right 55%, Bottom 72% -->
+<div class="absolute left-[54%] top-[74%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-9 h-9 rounded-full bg-[#D97706]/20 border-2 border-[#D97706] flex items-center justify-center text-[#D97706] shadow-sm hover:scale-110 transition-transform">
+<span class="text-[10px] font-bold">₹32</span>
+</div>
+<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1.5 py-0.5 rounded text-[10px] font-semibold text-on-surface pointer-events-none">
+              Mango Smoothie
+            </div>
+</div>
+<!-- 6. DOG: Signature Himalayan Thali (38 sold, high waste) -> Left 12%, Bottom 62% -->
+<div class="absolute left-[12%] top-[62%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-9 h-9 rounded-full bg-[#DC2626]/20 border-2 border-[#DC2626] flex items-center justify-center text-[#DC2626] shadow-sm hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+</div>
+<div class="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1.5 py-0.5 rounded text-[10px] font-semibold text-error pointer-events-none">
+              Himalayan Thali
+            </div>
+</div>
+<!-- 7. DOG: Seasonal Fruit Tart (22 sold, ₹18 margin) -> Left 8%, Bottom 86% -->
+<div class="absolute left-[8%] top-[86%] transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-7 h-7 rounded-full bg-[#DC2626]/20 border border-[#DC2626] flex items-center justify-center text-[#DC2626] shadow-sm">
+<span class="text-[9px] font-bold">₹18</span>
+</div>
+<div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 whitespace-nowrap bg-surface-container-lowest/90 border border-outline-variant/40 px-1 py-0.2 rounded text-[9px] font-semibold text-error pointer-events-none">
+              Fruit Tart
+            </div>
+</div>
+<!-- 8. PLOWHORSE: Cold Coffee (410 sold, ₹44 profit) WITH PROMINENT ACTIVE HOVER TOOLTIP -->
+<div class="absolute left-[67%] top-[65%] transform -translate-x-1/2 -translate-y-1/2 z-30">
+<!-- Bubble Element -->
+<div class="w-13 h-13 rounded-full bg-[#FEF3C7] border-[2.5px] border-[#D97706] flex items-center justify-center text-[#D97706] ring-4 ring-[#D97706]/20 shadow-md cursor-pointer animate-pulse">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">local_cafe</span>
+</div>
+<!-- PROMINENT ACTIVE HOVER TOOLTIP (Pinned for rich presentation) -->
+<div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 w-64 bg-surface-container-lowest rounded-xl p-3 custom-shadow-elevated border border-outline-variant/60 z-40">
+<div class="flex items-center justify-between pb-1.5 border-b border-outline-variant/30">
+<span class="text-label-lg font-label-lg font-bold text-on-surface">Cold Coffee</span>
+<span class="text-[10px] font-label-sm font-bold bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/40 px-2 py-0.5 rounded-full flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#D97706]"></span>
+<span class="">PLOWHORSE</span>
+</span>
+</div>
+<div class="py-2 space-y-1 text-body-sm font-body-sm">
+<div class="flex justify-between text-on-surface-variant">
+<span class="">Selling Price: <strong class="text-on-surface">₹140</strong></span>
+<span class="">Plate Cost: <strong class="text-on-surface">₹96</strong></span>
+</div>
+<div class="flex justify-between items-center pt-1">
+<span class="text-on-surface-variant">Profit per plate:</span>
+<span class="text-label-md font-label-md text-primary font-bold">₹44 <span class="text-xs font-normal text-on-surface-variant">(31.4% margin)</span></span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="">Sold last month:</span>
+<span class="font-semibold text-on-surface">410 units</span>
+</div>
+</div>
+<div class="bg-primary-container/10 p-2 rounded-lg flex items-center justify-between border border-primary-container/20">
+<span class="text-[11px] font-medium text-primary-container">Total monthly profit:</span>
+<span class="text-label-lg font-currency-display text-primary font-bold">₹18,040</span>
+</div>
+<!-- Tooltip Arrow Pointing to Bubble -->
+<div class="w-3 h-3 bg-surface-container-lowest border-r border-b border-outline-variant/60 transform rotate-45 absolute -bottom-1.5 left-1/2 -translate-x-1/2"></div>
+</div>
+</div>
+</div>
+<!-- Axis Labels -->
+<div class="flex justify-between items-center text-[11px] font-label-sm text-on-surface-variant pt-2 px-1">
+<span class="">Popularity: 0 sold</span>
+<span class="font-bold text-primary">Popularity → (Monthly Units Sold: 0 to 700)</span>
+<span class="">700+ units</span>
+</div>
+<!-- Visual Legend Underneath Matrix -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-4 mt-3 border-t border-outline-variant/30">
+<!-- Star Legend -->
+<div class="p-2 rounded-xl bg-[#DCFCE7]/60 border border-[#15803D]/20 flex items-center space-x-2">
+<div class="w-3 h-3 rounded-full bg-[#15803D] shrink-0"></div>
+<div class="leading-tight">
+<div class="text-label-sm font-label-sm font-bold text-[#15803D]">STAR</div>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Keep &amp; promote</div>
+</div>
+</div>
+<!-- Plowhorse Legend -->
+<div class="p-2 rounded-xl bg-[#FEF3C7]/60 border border-[#D97706]/20 flex items-center space-x-2">
+<div class="w-3 h-3 rounded-full bg-[#D97706] shrink-0"></div>
+<div class="leading-tight">
+<div class="text-label-sm font-label-sm font-bold text-[#D97706]">PLOWHORSE</div>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Popular, thin margin</div>
+</div>
+</div>
+<!-- Puzzle Legend -->
+<div class="p-2 rounded-xl bg-[#DBEAFE]/60 border border-[#2563EB]/20 flex items-center space-x-2">
+<div class="w-3 h-3 rounded-full bg-[#2563EB] shrink-0"></div>
+<div class="leading-tight">
+<div class="text-label-sm font-label-sm font-bold text-[#2563EB]">PUZZLE</div>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Profitable but hidden</div>
+</div>
+</div>
+<!-- Dog Legend -->
+<div class="p-2 rounded-xl bg-[#FEE2E2]/60 border border-[#DC2626]/20 flex items-center space-x-2">
+<div class="w-3 h-3 rounded-full bg-[#DC2626] shrink-0"></div>
+<div class="leading-tight">
+<div class="text-label-sm font-label-sm font-bold text-[#DC2626]">DOG</div>
+<div class="text-[11px] font-body-sm text-on-surface-variant">Losing menu space</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT 1/3 COLUMN: ACTION PANEL -->
+<div class="lg:col-span-4 bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft flex flex-col space-y-4">
+<!-- Header with High-Impact Badges -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+<div>
+<h3 class="text-label-lg font-label-lg font-bold text-on-surface">Needs your attention today</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Immediate operational fixes</p>
+</div>
+<span class="text-label-sm font-label-sm font-bold bg-error-container text-on-error-container px-2.5 py-1 rounded-full">
+            3 High-Impact Fixes
+          </span>
+</div>
+<!-- Potential Boost Banner -->
+<div class="bg-secondary-fixed/30 border border-secondary/20 p-3 rounded-xl flex items-center justify-between">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-secondary text-[22px]">trending_up</span>
+<div>
+<div class="text-[11px] font-label-sm uppercase font-bold text-secondary">Total Potential Boost</div>
+<div class="text-label-lg font-currency-display text-primary font-bold">Unlock +₹32,400/mo</div>
+</div>
+</div>
+<button class="text-label-sm font-label-sm text-primary font-bold hover:underline">Calculate</button>
+</div>
+<!-- Action Cards Container -->
+<div class="space-y-3.5">
+<!-- Card 1: Cold Coffee -->
+<div class="bg-surface-bright p-3.5 rounded-xl border border-outline-variant/40 space-y-2.5 hover:border-[#D97706]/40 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-on-surface text-label-lg">Cold Coffee</span>
+<span class="text-[10px] font-label-sm font-bold bg-[#FEF3C7] text-[#D97706] border border-[#D97706]/30 px-2 py-0.2 rounded-full uppercase">
+                  PLOWHORSE
+                </span>
+</div>
+<span class="text-body-sm font-body-sm text-error font-semibold">-₹6/cup loss gap</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Cold Coffee loses ₹6 on every cup at its current cost. You sold 410 last month. <strong class="text-on-surface font-semibold">Fix:</strong> raise price to ₹155 or cut cost by ₹10.
+            </p>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] font-label-sm text-[#D97706] font-bold">+₹12,300/mo impact</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary text-label-md font-label-md font-semibold transition-all duration-150 active:scale-95 shadow-xs flex items-center space-x-1">
+<span class="">See fix</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Paneer Tikka Pizza -->
+<div class="bg-surface-bright p-3.5 rounded-xl border border-outline-variant/40 space-y-2.5 hover:border-[#2563EB]/40 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-on-surface text-label-lg">Paneer Tikka Pizza</span>
+<span class="text-[10px] font-label-sm font-bold bg-[#DBEAFE] text-[#2563EB] border border-[#2563EB]/30 px-2 py-0.2 rounded-full uppercase">
+                  PUZZLE
+                </span>
+</div>
+<span class="text-body-sm font-body-sm text-[#15803D] font-semibold">₹168 margin</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Generates massive ₹168 profit per order, but sold only 85 times. Hidden in page 3 of menu. <strong class="text-on-surface font-semibold">Fix:</strong> Feature in 'Chef Recommendations' top banner.
+            </p>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] font-label-sm text-[#2563EB] font-bold">+₹15,100/mo impact</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-primary-container hover:bg-primary text-on-primary text-label-md font-label-md font-semibold transition-all duration-150 active:scale-95 shadow-xs flex items-center space-x-1">
+<span class="">See fix</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Signature Himalayan Thali -->
+<div class="bg-surface-bright p-3.5 rounded-xl border border-outline-variant/40 space-y-2.5 hover:border-[#DC2626]/40 transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-1.5">
+<span class="font-bold text-on-surface text-label-lg">Signature Thali</span>
+<span class="text-[10px] font-label-sm font-bold bg-[#FEE2E2] text-[#DC2626] border border-[#DC2626]/30 px-2 py-0.2 rounded-full uppercase">
+                  DOG
+                </span>
+</div>
+<span class="text-body-sm font-body-sm text-error font-semibold">Slow turnover</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Loses space and ingredients spoil quickly (38 orders/mo). High ₹265 prep cost. <strong class="text-on-surface font-semibold">Fix:</strong> Switch to weekend pre-order or streamline gravies.
+            </p>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] font-label-sm text-[#DC2626] font-bold">+₹5,000/mo saved</span>
+<button class="px-3.5 py-1.5 rounded-lg border border-primary-container text-primary-container hover:bg-primary-container/10 text-label-md font-label-md font-semibold transition-all duration-150 active:scale-95 flex items-center space-x-1">
+<span class="">Review dish</span>
+<span class="material-symbols-outlined text-[16px]">tune</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. BOTTOM SECTION: PROFIT DISTRIBUTION & 4-TILE MATRIX SUMMARY -->
+<section class="bg-surface-container-lowest p-space-lg rounded-2xl border border-outline-variant/40 custom-shadow-soft space-y-6">
+<!-- Progress Bar Title & Total -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h3 class="text-label-lg font-headline-md font-bold text-on-surface">Where your profit comes from</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Breakdown of gross monthly operating margin across 48 active menu dishes</p>
+</div>
+<div class="text-right">
+<span class="text-body-sm font-body-sm text-on-surface-variant">Total Monthly Profit:</span>
+<span class="text-currency-display font-currency-display text-primary ml-1.5 font-bold">₹2,48,600</span>
+</div>
+</div>
+<!-- Horizontal Stacked Progress Bar -->
+<div class="space-y-2">
+<div class="w-full h-5 rounded-full overflow-hidden flex bg-surface-container shadow-inner">
+<div class="h-full bg-[#15803D] hover:opacity-90 transition-opacity cursor-pointer" style="width: 52%;" title="Stars: 52% (₹1,29,200)"></div>
+<div class="h-full bg-[#D97706] hover:opacity-90 transition-opacity cursor-pointer" style="width: 21%;" title="Plowhorses: 21% (₹52,200)"></div>
+<div class="h-full bg-[#2563EB] hover:opacity-90 transition-opacity cursor-pointer" style="width: 18%;" title="Puzzles: 18% (₹44,700)"></div>
+<div class="h-full bg-[#DC2626] hover:opacity-90 transition-opacity cursor-pointer" style="width: 9%;" title="Dogs: 9% (₹22,500)"></div>
+</div>
+<!-- Legend for Progress Bar -->
+<div class="flex flex-wrap items-center justify-between text-label-sm font-label-sm pt-1 gap-2">
+<div class="flex items-center space-x-1.5 text-[#15803D]">
+<span class="w-2.5 h-2.5 rounded-full bg-[#15803D]"></span>
+<span class="">Stars: <strong>52%</strong> (₹1,29,200)</span>
+</div>
+<div class="flex items-center space-x-1.5 text-[#D97706]">
+<span class="w-2.5 h-2.5 rounded-full bg-[#D97706]"></span>
+<span class="">Plowhorses: <strong>21%</strong> (₹52,200)</span>
+</div>
+<div class="flex items-center space-x-1.5 text-[#2563EB]">
+<span class="w-2.5 h-2.5 rounded-full bg-[#2563EB]"></span>
+<span class="">Puzzles: <strong>18%</strong> (₹44,700)</span>
+</div>
+<div class="flex items-center space-x-1.5 text-[#DC2626]">
+<span class="w-2.5 h-2.5 rounded-full bg-[#DC2626]"></span>
+<span class="">Dogs: <strong>9%</strong> (₹22,500)</span>
+</div>
+</div>
+</div>
+<!-- Quick Summary 4-Tile Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+<!-- Tile 1: Star -->
+<div class="p-4 rounded-xl bg-[#DCFCE7]/40 border border-[#15803D]/20 space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md font-bold text-[#15803D] uppercase tracking-wider">STAR</span>
+<span class="text-body-sm font-body-sm font-bold text-[#15803D]">14 Dishes</span>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">₹1,29,200</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Your primary revenue drivers. Protect recipes and maintain consistent quality.</p>
+</div>
+<!-- Tile 2: Plowhorse -->
+<div class="p-4 rounded-xl bg-[#FEF3C7]/40 border border-[#D97706]/20 space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md font-bold text-[#D97706] uppercase tracking-wider">PLOWHORSE</span>
+<span class="text-body-sm font-body-sm font-bold text-[#D97706]">18 Dishes</span>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">₹52,200</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Volume giants needing minor margin hikes or smart supplier renegotiation.</p>
+</div>
+<!-- Tile 3: Puzzle -->
+<div class="p-4 rounded-xl bg-[#DBEAFE]/40 border border-[#2563EB]/20 space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md font-bold text-[#2563EB] uppercase tracking-wider">PUZZLE</span>
+<span class="text-body-sm font-body-sm font-bold text-[#2563EB]">9 Dishes</span>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">₹44,700</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">High-margin gems needing visibility. Train waitstaff to actively recommend.</p>
+</div>
+<!-- Tile 4: Dog -->
+<div class="p-4 rounded-xl bg-[#FEE2E2]/40 border border-[#DC2626]/20 space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md font-bold text-[#DC2626] uppercase tracking-wider">DOG</span>
+<span class="text-body-sm font-body-sm font-bold text-[#DC2626]">7 Dishes</span>
+</div>
+<div class="text-headline-md font-headline-md font-bold text-on-surface">₹22,500</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Candidate items for revamp or menu removal to eliminate kitchen inventory waste.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- ================= MOBILE DOCKED BOTTOM NAV ================= -->
+<!-- Conforms to Shared Components JSON (Mobile destination filter) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] border-t border-outline-variant/30">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-label-sm">Dashboard</span>
+</a>
+<!-- Dishes -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">restaurant_menu</span>
+<span class="text-[10px] font-label-sm">Dishes</span>
+</a>
+<!-- Add Recipe -->
+<a class="flex flex-col items-center justify-center text-primary-container hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">add_circle</span>
+<span class="text-[10px] font-label-sm font-semibold">Add</span>
+</a>
+<!-- Simulator -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">calculate</span>
+<span class="text-[10px] font-label-sm">Simulator</span>
+</a>
+<!-- Menu Layout -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-[20px]">tune</span>
+<span class="text-[10px] font-label-sm">Menu Layout</span>
+</a>
+<!-- ================= BACKEND & AI INTEGRATION SCRIPT ================= -->
+<script>
+const API_BASE = 'http://127.0.0.1:8000';
+
+// 1. Auth Gate: redirect to login if not authenticated
+const token = localStorage.getItem('marginly_token');
+const userStr = localStorage.getItem('marginly_user');
+let user = null;
+try {
+  user = userStr ? JSON.parse(userStr) : null;
+} catch (e) {
+  user = null;
+}
+
+if (!token || !user) {
+  window.location.href = '/login.html';
+}
+
+function logout() {
+  localStorage.removeItem('marginly_token');
+  localStorage.removeItem('marginly_user');
+  window.location.href = '/login.html';
+}
+
+function getInitials(name) {
+  if (!name) return 'RO';
+  return name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+// 2. Set Header User & Restaurant Details
+if (user) {
+  const restName = user.restaurant_name || 'My Restaurant';
+  const dispName = user.display_name || user.username || 'Restaurant Owner';
+  const role = user.role === 'owner' ? 'Owner & Head Chef' : (user.role || 'Owner');
+
+  const outletEl = document.getElementById('outlet-name');
+  if (outletEl) outletEl.textContent = restName;
+
+  const dropOutletEl = document.getElementById('dropdown-outlet-name');
+  if (dropOutletEl) dropOutletEl.textContent = restName;
+
+  const dispNameEl = document.getElementById('user-display-name');
+  if (dispNameEl) dispNameEl.textContent = dispName;
+
+  const roleEl = document.getElementById('user-role');
+  if (roleEl) roleEl.textContent = role;
+
+  const initialsEl = document.getElementById('user-initials');
+  if (initialsEl) initialsEl.textContent = getInitials(dispName);
+}
+
+async function syncDashboardWithBackend() {
+  try {
+    const [healthRes, analysisRes, alertsRes, menuRes] = await Promise.all([
+      fetch(`${API_BASE}/health`),
+      fetch(`${API_BASE}/api/analysis`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ period: 'Current Month', popularity_factor: 1.0 })
+      }),
+      fetch(`${API_BASE}/api/alerts`),
+      fetch(`${API_BASE}/api/menu-items`)
+    ]);
+
+    if (alertsRes.ok) {
+      const alerts = await alertsRes.json();
+      const notifBadge = document.getElementById('notif-badge');
+      if (notifBadge) notifBadge.textContent = alerts ? alerts.length : 0;
+    }
+
+    if (analysisRes.ok) {
+      const data = await analysisRes.json();
+      const menuItems = menuRes.ok ? await menuRes.json() : [];
+
+      console.log('✅ Analysis data received:', data);
+      
+      // If no dishes added yet, render clean blank/zero states
+      if (!data.items || data.items.length === 0) {
+        // Clear matrix dish bubbles and show informative empty state
+        const matrixCanvas = document.querySelector('.relative.w-full.aspect-\\[4\\/3\\], .relative.w-full.aspect-\\[16\\/10\\]');
+        if (matrixCanvas) {
+          // Remove existing demo bubbles
+          const bubbles = matrixCanvas.querySelectorAll('.group.cursor-pointer, .absolute.left-\\[67\\%\\]');
+          bubbles.forEach(b => b.remove());
+
+          // Insert clean empty state badge
+          const emptyBadge = document.createElement('div');
+          emptyBadge.className = 'absolute inset-0 flex flex-col items-center justify-center p-6 text-center pointer-events-none z-20';
+          emptyBadge.innerHTML = `
+            <div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center text-primary-container mb-3 shadow-sm border border-outline-variant/30">
+              <span class="material-symbols-outlined text-[32px]">menu_book</span>
+            </div>
+            <h4 class="font-headline-md text-headline-md font-bold text-on-surface">Menu Matrix is Blank</h4>
+            <p class="text-body-sm text-on-surface-variant max-w-sm mt-1 mb-4">
+              Add your dishes & recipes with ingredient costs to calculate exact popularity vs profitability.
+            </p>
+            <a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" class="pointer-events-auto px-4 py-2 rounded-xl bg-primary-container text-on-primary font-bold text-label-md flex items-center gap-1.5 shadow-md hover:bg-primary transition-all">
+              <span class="material-symbols-outlined text-[18px]">add_circle</span>
+              <span>Add Your First Recipe</span>
+            </a>
+          `;
+          matrixCanvas.appendChild(emptyBadge);
+        }
+
+        // Set KPI Cards to zero/blank
+        const kpiValues = document.querySelectorAll('section.grid .text-headline-xl');
+        if (kpiValues.length >= 4) {
+          kpiValues[0].textContent = '₹0';
+          kpiValues[1].textContent = '0.0%';
+          kpiValues[2].textContent = '0';
+          kpiValues[3].textContent = '₹0';
+        }
+
+        // Action Panel Empty State
+        const actionCardsContainer = document.querySelector('.space-y-3\\.5');
+        if (actionCardsContainer) {
+          actionCardsContainer.innerHTML = `
+            <div class="bg-surface-bright p-5 rounded-xl border border-outline-variant/40 text-center space-y-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto">
+                <span class="material-symbols-outlined text-[20px]">check_circle</span>
+              </div>
+              <h4 class="font-bold text-on-surface text-label-lg">No Operational Losses</h4>
+              <p class="text-body-sm text-on-surface-variant">
+                Your menu has 0 active loss-making dishes. Add recipes and sales to discover high-margin opportunities!
+              </p>
+              <a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" class="inline-flex items-center gap-1 text-primary text-label-md font-bold hover:underline">
+                <span>Add recipe now</span>
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </a>
+            </div>
+          `;
+        }
+
+        // Bottom section empty state
+        const totalProfitEl = document.querySelector('.text-currency-display.font-currency-display.text-primary.ml-1\\.5.font-bold');
+        if (totalProfitEl) totalProfitEl.textContent = '₹0';
+
+        const tileValues = document.querySelectorAll('.text-headline-md.font-headline-md.font-bold.text-on-surface');
+        tileValues.forEach(el => {
+          if (el.textContent.includes('₹')) el.textContent = '₹0';
+        });
+
+      } else {
+        // Dynamic population when dishes exist
+        const kpiValues = document.querySelectorAll('section.grid .text-headline-xl');
+        if (kpiValues.length >= 4) {
+          kpiValues[0].textContent = `₹${Math.round(data.average_contribution_margin)}`;
+          kpiValues[1].textContent = `${data.total_revenue > 0 ? ((1 - (data.total_contribution / data.total_revenue)) * 100).toFixed(1) : 0}%`;
+          kpiValues[2].textContent = `${data.dogs_count}`;
+          kpiValues[3].textContent = `₹${Math.round(data.dogs_count * 1200).toLocaleString('en-IN')}`;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Dashboard sync note:', err);
+  }
+}
+
+// Run on load
+document.addEventListener('DOMContentLoaded', syncDashboardWithBackend);
+</script>
+
+</body></html>

@@ -198,17 +198,17 @@
 </div>
 <!-- Center / Desktop Navigation Cluster -->
 <nav class="hidden xl:flex items-center gap-1">
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">Dashboard</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">Dishes &amp; Recipes</a>
+<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/index.html">Dashboard</a>
+<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_dishes_recipes/code.html">Dishes &amp; Recipes</a>
 <!-- ACTIVE PILL -->
-<a class="px-3.5 py-1.5 rounded-lg text-label-sm font-label-sm bg-primary-container text-on-primary font-semibold flex items-center gap-1.5 shadow-sm" href="#">
+<a class="px-3.5 py-1.5 rounded-lg text-label-sm font-label-sm bg-primary-container text-on-primary font-semibold flex items-center gap-1.5 shadow-sm" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
 <span class="material-symbols-outlined text-sm fill-icon" data-icon="add_circle">add_circle</span>
 <span>Add Recipe</span>
 </a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">Menu Layout</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">Price Alerts</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">What-If Simulator</a>
-<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">Reports</a>
+<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_printed_menu_layout_heatmap/code.html">Menu Layout</a>
+<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_price_alerts_volatility_radar/code.html">Price Alerts</a>
+<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/menumitra_what_if_simulator/code.html">What-If Simulator</a>
+<a class="px-3 py-1.5 rounded-lg text-label-sm font-label-sm text-on-surface-variant hover:bg-surface-container-high transition-colors" href="/index.html">Reports</a>
 </nav>
 <!-- Right: Language Toggle, Notifications, Chef Vikram Anand Avatar -->
 <div class="flex items-center gap-3">
@@ -710,6 +710,8 @@
 </nav>
 <!-- Interactive Demo Script for Recording Toggle Feel -->
 <script>
+    const API_BASE = 'http://127.0.0.1:8000';
+
     document.addEventListener('DOMContentLoaded', () => {
       const micBtn = document.querySelector('button[title="Click to Pause/Stop recording"]');
       if (micBtn) {
@@ -723,6 +725,59 @@
             statusText.classList.toggle('text-outline', !isRecording);
           }
         });
+      }
+
+      // Add AI interactive parsing input
+      const transcriptCard = document.querySelector('.mt-2.bg-\\[\\#fdfbf7\\]');
+      if (transcriptCard) {
+        const box = document.createElement('div');
+        box.className = 'mt-3 pt-3 border-t border-[#e8dfcf] space-y-2';
+        box.innerHTML = `
+          <div class="flex items-center justify-between text-xs font-bold text-primary">
+            <span>✨ AI Recipe Interpreter (Gemini Enabled)</span>
+            <span class="text-[10px] text-outline">Type informal recipe ingredients</span>
+          </div>
+          <div class="flex gap-2">
+            <input id="ai-recipe-input" type="text" class="flex-1 px-3 py-1.5 text-xs rounded-lg border border-outline-variant bg-surface text-on-surface" placeholder="e.g. 200ml milk, 15g espresso, 20g sugar" value="200ml milk, 15g espresso beans, 20g sugar" />
+            <button id="ai-parse-trigger" type="button" class="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-bold shadow-xs hover:bg-primary-container">Parse AI</button>
+          </div>
+          <div id="ai-status" class="text-[11px] text-on-surface-variant hidden"></div>
+        `;
+        transcriptCard.appendChild(box);
+
+        const trigger = document.getElementById('ai-parse-trigger');
+        const input = document.getElementById('ai-recipe-input');
+        const statusEl = document.getElementById('ai-status');
+
+        if (trigger && input) {
+          trigger.addEventListener('click', async () => {
+            const txt = input.value.trim();
+            if (!txt) return;
+            trigger.disabled = true;
+            statusEl.classList.remove('hidden');
+            statusEl.textContent = 'Parsing with AI...';
+
+            try {
+              const res = await fetch(`${API_BASE}/api/recipes/interpret`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ source_text: txt })
+              });
+              if (res.ok) {
+                const draft = await res.json();
+                statusEl.innerHTML = `<span class="text-emerald-700 font-bold">✓ Parsed: ${draft.name} (${draft.ingredients ? draft.ingredients.length : 0} items)</span>`;
+                const titleEl = document.querySelector('.font-headline-md.text-headline-md.font-bold.text-on-surface.leading-tight');
+                if (titleEl) titleEl.textContent = draft.name;
+              } else {
+                statusEl.textContent = 'Could not parse recipe.';
+              }
+            } catch (e) {
+              statusEl.textContent = 'Connection error.';
+            } finally {
+              trigger.disabled = false;
+            }
+          });
+        }
       }
     });
   </script>

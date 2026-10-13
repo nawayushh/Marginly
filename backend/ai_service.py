@@ -60,52 +60,71 @@ def clean_llm_json(raw_text: str) -> str:
 
 async def check_lm_studio_health() -> Dict[str, Any]:
     """
-    Checks if LM Studio endpoint is reachable and reports loaded models.
+    Checks if LM Studio endpoint is reachable and reports loaded models, plus Gemini status.
     """
     endpoint = f"{settings.LM_STUDIO_BASE_URL.rstrip('/')}/models"
+    lm_online = False
+    available_models = []
     try:
         async with httpx.AsyncClient(timeout=3.0) as client:
             resp = await client.get(endpoint)
             if resp.status_code == 200:
                 data = resp.json()
-                models = [m.get("id") for m in data.get("data", [])]
-                return {
-                    "online": True,
-                    "available_models": models,
-                    "configured_model": settings.LM_STUDIO_MODEL,
-                }
+                available_models = [m.get("id") for m in data.get("data", [])]
+                lm_online = True
     except Exception as e:
         logger.debug(f"LM Studio health check failed: {e}")
+
     return {
-        "online": False,
-        "available_models": [],
+        "online": lm_online,
+        "available_models": available_models,
         "configured_model": settings.LM_STUDIO_MODEL,
+        "gemini_configured": bool(settings.GEMINI_API_KEY),
+        "gemini_model": settings.GEMINI_MODEL if settings.GEMINI_API_KEY else None
     }
 
+async def call_gemini_chat(system_prompt: str, user_prompt: str) -> Optional[str]:
+    """
+    Direct Google Gemini API integration (REST JSON via httpx).
+    Used as an AI provider alongside or when Gemini API key is configured.
+    """
+    if not settings.GEMINI_API_KEY:
+        return None
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/{settings.GEMINI_MODEL}:generateContent?key={settings.GEMINI_API_KEY}"
+    payload = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": f"{system_prompt}\n\nTask:\n{user_prompt}"}
+                ]
+            }
+        ],
+        "generationConfig": {
+            "responseMimeType": "application/json",
+            "temperature": 0.2
+        }
+    }
+    try:
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            resp = await client.post(url, json=payload)
+            if resp.status_code == 200:
+                data = resp.json()
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                return text
+            else:
+                logger.warning(f"Gemini API returned status {resp.status_code}: {resp.text}")
+    except Exception as e:
+        logger.info(f"Gemini API call failed or timed out: {e}")
+    return None
+
 async def call_qwen_chat(system_prompt: str, user_prompt: str, temperature: float = 0.2) -> Optional[str]:
-    """
-    Executes standard OpenAI chat completion JSON payload against LM Studio.
-    """
     endpoint = f"{settings.LM_STUDIO_BASE_URL.rstrip('/')}/chat/completions"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {settings.LM_STUDIO_API_KEY}"
     }
-
-    # Discover actual loaded model from LM Studio if available
-    target_model = settings.LM_STUDIO_MODEL
-    try:
-        async with httpx.AsyncClient(timeout=2.0) as client:
-            m_resp = await client.get(f"{settings.LM_STUDIO_BASE_URL.rstrip('/')}/models")
-            if m_resp.status_code == 200:
-                m_data = m_resp.json().get("data", [])
-                if m_data and len(m_data) > 0:
-                    target_model = m_data[0].get("id", settings.LM_STUDIO_MODEL)
-    except Exception:
-        pass
-
     payload = {
-        "model": target_model,
+        "model": settings.LM_STUDIO_MODEL,
         "messages": [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_prompt}
@@ -113,17 +132,34 @@ async def call_qwen_chat(system_prompt: str, user_prompt: str, temperature: floa
         "temperature": temperature,
         "response_format": {"type": "json_object"}
     }
-
     try:
         async with httpx.AsyncClient(timeout=settings.LM_STUDIO_TIMEOUT_SECONDS) as client:
             resp = await client.post(endpoint, headers=headers, json=payload)
             if resp.status_code == 200:
                 result = resp.json()
                 return result["choices"][0]["message"]["content"]
-            else:
-                logger.warning(f"LM Studio returned status {resp.status_code}: {resp.text}")
     except Exception as e:
-        logger.info(f"Local AI request to LM Studio offline or timed out: {e}")
+        logger.debug(f"LM Studio call failed: {e}")
+    return None
+
+async def call_ai_chat(system_prompt: str, user_prompt: str, temperature: float = 0.2) -> Optional[str]:
+    """
+    Unified AI dispatcher:
+    1. Tries Local Qwen in LM Studio first.
+    2. If offline or unavailable, tries Google Gemini API if key is present.
+    3. If both offline, returns None so deterministic fallback takes over smoothly.
+    """
+    # 1. Local LM Studio (Qwen)
+    local_resp = await call_qwen_chat(system_prompt, user_prompt, temperature)
+    if local_resp:
+        return local_resp
+
+    # 2. Gemini API
+    if settings.GEMINI_API_KEY:
+        gemini_resp = await call_gemini_chat(system_prompt, user_prompt)
+        if gemini_resp:
+            return gemini_resp
+
     return None
 
 def fallback_recipe_interpretation(source_text: str) -> RecipeDraftResponse:
@@ -176,7 +212,7 @@ def fallback_recipe_interpretation(source_text: str) -> RecipeDraftResponse:
 
 async def interpret_recipe_text(source_text: str, catalog_ingredient_names: List[str]) -> RecipeDraftResponse:
     user_prompt = build_recipe_interpretation_prompt(source_text, catalog_ingredient_names)
-    ai_raw = await call_qwen_chat(
+    ai_raw = await call_ai_chat(
         system_prompt=RECIPE_INTERPRETATION_SYSTEM_PROMPT,
         user_prompt=user_prompt,
         temperature=0.1
@@ -190,7 +226,7 @@ async def interpret_recipe_text(source_text: str, catalog_ingredient_names: List
             draft.ai_status = "generated"
             return draft
         except Exception as err:
-            logger.warning(f"Failed to parse Qwen JSON response: {err}. Using fallback.")
+            logger.warning(f"Failed to parse AI JSON response: {err}. Using fallback.")
 
     return fallback_recipe_interpretation(source_text)
 
@@ -241,7 +277,7 @@ def fallback_menu_recommendations(summary_dict: dict) -> MenuRecommendationsResp
 
 async def generate_menu_recommendations(summary_dict: dict, currency_symbol: str = "₹") -> MenuRecommendationsResponse:
     user_prompt = build_menu_recommendations_prompt(summary_dict, currency_symbol)
-    ai_raw = await call_qwen_chat(
+    ai_raw = await call_ai_chat(
         system_prompt=MENU_RECOMMENDATION_SYSTEM_PROMPT,
         user_prompt=user_prompt,
         temperature=0.3
@@ -255,6 +291,6 @@ async def generate_menu_recommendations(summary_dict: dict, currency_symbol: str
             recs.ai_status = "generated"
             return recs
         except Exception as e:
-            logger.warning(f"Error parsing recommendations from Qwen: {e}. Using fallback.")
+            logger.warning(f"Error parsing recommendations from AI: {e}. Using fallback.")
 
     return fallback_menu_recommendations(summary_dict)

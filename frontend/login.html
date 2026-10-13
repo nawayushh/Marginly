@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marginly — Know Which Dishes Make You Money</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Google Material Symbols Outlined -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind Configuration with Material Design 3 Palette -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#004343',
+            'primary-container': '#0f5c5c',
+            'primary-fixed': '#aceeee',
+            'primary-fixed-dim': '#8fd2d2',
+            'on-primary': '#ffffff',
+            'on-primary-container': '#aceeee',
+            secondary: '#825500',
+            'secondary-container': '#fdab12',
+            'secondary-fixed': '#ffddb2',
+            'on-secondary': '#ffffff',
+            'on-secondary-container': '#2b1700',
+            tertiary: '#006972',
+            'tertiary-container': '#1a828c',
+            surface: '#fbf9f6',
+            'surface-container': '#efeeeb',
+            'surface-container-low': '#f5f3f0',
+            'surface-container-high': '#e9e8e5',
+            'surface-container-highest': '#e3e2df',
+            'surface-bright': '#fbf9f6',
+            'surface-dim': '#dbdad7',
+            'on-surface': '#1b1c1a',
+            'on-surface-variant': '#3f4948',
+            outline: '#6f7978',
+            'outline-variant': '#bec8c7',
+            error: '#ba1a1a',
+            'error-container': '#ffdad6',
+            'on-error': '#ffffff',
+            'on-error-container': '#410002',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-14px) rotate(4deg)' },
+            },
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-22px) rotate(-5deg)' },
+            },
+            floatReverse: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(16px) rotate(6deg)' },
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+              '50%': { opacity: '0.7', transform: 'scale(1.08)' },
+            },
+            shimmer: {
+              '0%': { backgroundPosition: '-200% 0' },
+              '100%': { backgroundPosition: '200% 0' },
+            }
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'float-slow': 'floatSlow 9s ease-in-out infinite',
+            'float-reverse': 'floatReverse 7.5s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 6s ease-in-out infinite',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-filled {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    /* Subtle custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #fbf9f6;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #bec8c7;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #6f7978;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-sans min-h-screen flex flex-col antialiased selection:bg-primary-fixed selection:text-primary">
+
+  <div class="min-h-screen flex flex-col lg:flex-row w-full">
+    
+    <!-- ========================================== -->
+    <!-- LEFT SIDE: ENGAGING ANIMATED HERO & BRAND  -->
+    <!-- ========================================== -->
+    <div class="relative hidden lg:flex lg:w-1/2 xl:w-7/12 bg-gradient-to-br from-[#003838] via-primary to-[#062c2c] text-white p-10 xl:p-14 flex-col justify-between overflow-hidden select-none">
+      
+      <!-- Background Ambient Glow & Mesh Elements -->
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary-fixed/15 blur-3xl pointer-events-none animate-pulse-glow"></div>
+      <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-secondary-container/20 blur-3xl pointer-events-none animate-pulse-glow" style="animation-delay: 2.5s;"></div>
+      <div class="absolute top-1/2 left-1/3 w-80 h-80 rounded-full bg-tertiary-container/10 blur-3xl pointer-events-none"></div>
+
+      <!-- Floating Decorative Food & Analytics Icons in Background -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <span class="material-symbols-outlined absolute top-20 right-28 text-primary-fixed/20 text-6xl animate-float" style="animation-delay: 0.5s;">local_pizza</span>
+        <span class="material-symbols-outlined absolute bottom-28 left-20 text-secondary-container/20 text-5xl animate-float-slow" style="animation-delay: 1.2s;">ramen_dining</span>
+        <span class="material-symbols-outlined absolute top-1/3 left-14 text-white/10 text-5xl animate-float-reverse" style="animation-delay: 2s;">lunch_dining</span>
+        <span class="material-symbols-outlined absolute top-2/3 right-16 text-primary-fixed/20 text-6xl animate-float" style="animation-delay: 3s;">tapas</span>
+        <span class="material-symbols-outlined absolute bottom-44 right-1/3 text-secondary-container/20 text-5xl animate-float-slow" style="animation-delay: 1.8s;">wine_bar</span>
+        <span class="material-symbols-outlined absolute top-16 left-1/2 text-white/10 text-4xl animate-float-reverse" style="animation-delay: 2.6s;">bakery_dining</span>
+      </div>
+
+      <!-- Top Header: Logo + Pro Badge -->
+      <div class="relative z-10 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-primary-fixed via-primary-fixed-dim to-white flex items-center justify-center text-primary shadow-lg shadow-black/20 ring-2 ring-primary-fixed/30">
+            <span class="material-symbols-filled text-2xl">eco</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-2xl font-extrabold tracking-tight text-white">Marginly</span>
+            <span class="bg-secondary-container text-on-secondary-container font-bold text-xs uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-sm">
+              PRO
+            </span>
+          </div>
+        </div>
+
+        <div class="text-xs text-primary-fixed/80 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-white/15 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>AI Engine v2.4 Active</span>
+        </div>
+      </div>
+
+      <!-- Center Hero: Value Proposition + Floating Live Cards -->
+      <div class="relative z-10 my-auto py-10 max-w-xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-primary-fixed text-xs font-semibold uppercase tracking-wider mb-5">
+          <span class="material-symbols-outlined text-sm">insights</span>
+          <span>Next-Gen Menu Engineering</span>
+        </div>
+
+        <h1 class="text-4xl xl:text-5xl font-black tracking-tight leading-tight mb-4 text-white">
+          Know which dishes <br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-fixed via-[#c6f7f7] to-secondary-container">
+            make you money.
+          </span>
+        </h1>
+
+        <p class="text-base xl:text-lg text-primary-fixed-dim/90 font-normal leading-relaxed mb-10 max-w-lg">
+          Transform food costs, item popularity, and menu margins into high-yield decisions with automated Boston Matrix analysis.
+        </p>
+
+        <!-- Dynamic Floating Feature Cards -->
+        <div class="relative w-full h-64 sm:h-72">
+          
+          <!-- Card 1: Star Dish Spotlight (Floating) -->
+          <div class="absolute top-0 left-2 w-72 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-4 shadow-2xl text-white animate-float">
+            <div class="flex items-start justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-amber-400/20 text-secondary-container flex items-center justify-center">
+                  <span class="material-symbols-filled text-2xl">star</span>
+                </div>
+                <div>
+                  <h4 class="font-bold text-sm text-white">Truffle Ribeye Steak</h4>
+                  <p class="text-xs text-white/70">Category: Mains</p>
+                </div>
+              </div>
+              <span class="bg-emerald-500/20 text-emerald-300 font-semibold text-[11px] px-2 py-0.5 rounded-md border border-emerald-400/30">
+                STAR ★
+              </span>
+            </div>
+            <div class="flex items-center justify-between text-xs pt-2 border-t border-white/10">
+              <span class="text-white/70">Profit Margin</span>
+              <span class="text-emerald-300 font-bold text-sm">+74.8%</span>
+            </div>
+          </div>
+
+          <!-- Card 2: AI Pricing Recommendation (Floating Slow) -->
+          <div class="absolute bottom-4 right-0 sm:right-6 w-80 bg-white/15 backdrop-blur-xl border border-white/20 rounded-2xl p-4 shadow-2xl text-white animate-float-slow" style="animation-delay: 1.5s;">
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-fixed text-lg">auto_awesome</span>
+                <span class="text-xs font-semibold text-primary-fixed uppercase tracking-wider">AI Profit Optimizer</span>
+              </div>
+              <span class="text-[11px] bg-white/10 px-2 py-0.5 rounded-full text-white/80">Active</span>
+            </div>
+            <p class="text-xs text-white/90 mb-3 font-medium">
+              Bump <span class="text-primary-fixed font-bold">House Mezcalita</span> by +$1.50 — elasticity risk: <strong class="text-emerald-300">0.03 (Very Low)</strong>
+            </p>
+            <div class="bg-black/20 rounded-xl p-2.5 flex items-center justify-between text-xs">
+              <span class="text-white/70">Projected Uplift:</span>
+              <span class="text-secondary-container font-extrabold text-sm">+$2,840 / mo</span>
+            </div>
+          </div>
+
+          <!-- Card 3: Mini Status Badge (Floating Reverse) -->
+          <div class="absolute -top-3 right-6 bg-gradient-to-r from-secondary-container to-amber-500 text-on-secondary-container px-3.5 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-1.5 animate-float-reverse">
+            <span class="material-symbols-outlined text-sm">trending_up</span>
+            <span>+18.4% Average Margin Lift</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Hero: Proof Points & Social Proof -->
+      <div class="relative z-10 pt-6 border-t border-white/10 flex items-center justify-between text-xs text-white/75">
+        <div class="flex items-center gap-3">
+          <div class="flex -space-x-2 overflow-hidden">
+            <span class="inline-block h-8 w-8 rounded-full ring-2 ring-primary bg-emerald-700 flex items-center justify-center font-bold text-xs text-white">JD</span>
+            <span class="inline-block h-8 w-8 rounded-full ring-2 ring-primary bg-amber-700 flex items-center justify-center font-bold text-xs text-white">MK</span>
+            <span class="inline-block h-8 w-8 rounded-full ring-2 ring-primary bg-teal-800 flex items-center justify-center font-bold text-xs text-white">SR</span>
+          </div>
+          <div>
+            <div class="flex items-center text-amber-400">
+              <span class="material-symbols-filled text-sm">star</span>
+              <span class="material-symbols-filled text-sm">star</span>
+              <span class="material-symbols-filled text-sm">star</span>
+              <span class="material-symbols-filled text-sm">star</span>
+              <span class="material-symbols-filled text-sm">star</span>
+            </div>
+            <p class="text-white/80 text-[11px]">Loved by 500+ kitchen operators & CFOs</p>
+          </div>
+        </div>
+
+        <div class="hidden xl:flex items-center gap-4 text-white/60">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">verified</span> Real-Time POS Sync</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">shield</span> ISO 27001</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- RIGHT SIDE: CLEAN MODERN LOGIN FORM        -->
+    <!-- ========================================== -->
+    <div class="w-full lg:w-1/2 xl:w-5/12 min-h-screen flex flex-col justify-between items-center p-6 sm:p-10 lg:p-12 bg-surface relative overflow-hidden">
+      
+      <!-- Subtle Decorative Background Circles on Form Side -->
+      <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-primary-fixed/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-secondary-container/10 blur-3xl pointer-events-none"></div>
+
+      <!-- Subtle background food icon watermarks -->
+      <div class="absolute inset-0 pointer-events-none overflow-hidden select-none opacity-5">
+        <span class="material-symbols-outlined absolute top-12 left-10 text-8xl text-on-surface">restaurant</span>
+        <span class="material-symbols-outlined absolute bottom-16 right-10 text-8xl text-on-surface">insights</span>
+        <span class="material-symbols-outlined absolute top-1/2 right-6 text-7xl text-on-surface">savings</span>
+      </div>
+
+      <!-- Mobile Top Brand Bar (Visible only on small screens) -->
+      <div class="w-full max-w-md lg:hidden flex items-center justify-between pb-6 mb-4 border-b border-surface-container">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-primary text-primary-fixed flex items-center justify-center shadow-md">
+            <span class="material-symbols-filled text-2xl">eco</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xl font-bold tracking-tight text-on-surface">Marginly</span>
+            <span class="bg-secondary-container text-on-secondary-container font-bold text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full">
+              PRO
+            </span>
+          </div>
+        </div>
+        <span class="text-xs font-semibold text-primary">Sign In</span>
+      </div>
+
+      <!-- Main Form Container -->
+      <div class="w-full max-w-md my-auto relative z-10 py-6">
+        
+        <!-- Header text -->
+        <div class="mb-8">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary text-xs font-medium mb-3">
+            <span class="material-symbols-filled text-sm text-secondary">workspace_premium</span>
+            <span>Restaurant Intelligence Platform</span>
+          </div>
+          <h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">
+            Welcome back
+          </h2>
+          <p class="text-sm text-on-surface-variant">
+            Sign in to analyze recipe margins, track food costs, and maximize menu profit.
+          </p>
+        </div>
+
+        <!-- Dynamic Error Banner (hidden by default) -->
+        <div id="errorMessage" class="hidden mb-6 p-4 rounded-xl bg-error-container text-on-error-container border border-error/20 flex items-start gap-3 transition-all duration-200">
+          <span class="material-symbols-outlined text-error text-xl shrink-0 mt-0.5">error</span>
+          <div class="text-sm">
+            <p class="font-semibold" id="errorTitle">Authentication Failed</p>
+            <p id="errorText" class="text-xs text-on-error-container/90 mt-0.5">Please check your username and password.</p>
+          </div>
+          <button type="button" onclick="hideError()" class="ml-auto text-on-error-container hover:text-on-surface p-0.5">
+            <span class="material-symbols-outlined text-base">close</span>
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="space-y-5" novalidate>
+          
+          <!-- Username / Email Field -->
+          <div>
+            <label for="username" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-2">
+              Username or Email
+            </label>
+            <div class="relative rounded-xl shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                <span class="material-symbols-outlined text-xl">person</span>
+              </div>
+              <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                autocomplete="username"
+                placeholder="e.g. chef_mario or admin"
+                class="block w-full pl-11 pr-4 py-3 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm placeholder:text-on-surface-variant/40 focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition duration-150 ease-in-out"
+              />
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <label for="password" class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
+                Password
+              </label>
+              <a href="#" class="text-xs font-medium text-primary hover:text-primary-container transition hover:underline" tabindex="-1">
+                Forgot password?
+              </a>
+            </div>
+            <div class="relative rounded-xl shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-on-surface-variant/70">
+                <span class="material-symbols-outlined text-xl">lock</span>
+              </div>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+                placeholder="••••••••••••"
+                class="block w-full pl-11 pr-11 py-3 bg-surface-container-low hover:bg-surface-container/70 border border-outline-variant/60 rounded-xl text-on-surface text-sm placeholder:text-on-surface-variant/40 focus:outline-none focus:ring-2 focus:ring-primary-container focus:border-primary transition duration-150 ease-in-out"
+              />
+              <button
+                type="button"
+                id="togglePassword"
+                class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-on-surface-variant/60 hover:text-on-surface focus:outline-none transition"
+                aria-label="Toggle password visibility"
+              >
+                <span id="passwordIcon" class="material-symbols-outlined text-xl">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div class="flex items-center justify-between text-sm py-1">
+            <label class="flex items-center cursor-pointer select-none">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                class="w-4 h-4 text-primary-container border-outline rounded focus:ring-primary focus:ring-offset-surface cursor-pointer accent-primary-container"
+              />
+              <span class="ml-2 text-xs text-on-surface-variant font-medium">Keep me signed in for 30 days</span>
+            </label>
+          </div>
+
+          <!-- Sign In Submit Button -->
+          <div class="pt-2">
+            <button
+              type="submit"
+              id="submitBtn"
+              class="w-full flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl text-white font-semibold text-sm bg-primary-container hover:bg-primary active:scale-[0.99] shadow-md hover:shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-container"
+            >
+              <!-- Loading Spinner SVG (hidden by default) -->
+              <svg id="btnSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              
+              <span id="btnText">Sign In</span>
+              <span id="btnIcon" class="material-symbols-outlined text-base">arrow_forward</span>
+            </button>
+          </div>
+
+        </form>
+
+        <!-- Divider -->
+        <div class="relative my-7">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-outline-variant/40"></div>
+          </div>
+          <div class="relative flex justify-center text-xs uppercase">
+            <span class="bg-surface px-3 text-on-surface-variant/70 font-semibold tracking-wider">
+              New to Marginly?
+            </span>
+          </div>
+        </div>
+
+        <!-- Register Link CTA -->
+        <div class="text-center">
+          <a
+            href="register.html"
+            class="inline-flex items-center justify-center w-full py-3 px-4 rounded-xl text-sm font-semibold text-primary bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 transition duration-150 ease-in-out gap-1.5"
+          >
+            <span>Don't have an account?</span>
+            <span class="text-primary-container underline font-bold">Register here</span>
+          </a>
+        </div>
+
+        <!-- Demo Credentials / Test Tip Box -->
+        <div class="mt-6 p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface-variant flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-secondary text-base shrink-0 mt-0.5">lightbulb</span>
+          <div class="leading-relaxed">
+            <span class="font-semibold text-on-surface">Demo Login:</span> Try username <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono font-semibold">abc123</code> and password <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono font-semibold">abc123</code>.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Trust / Footer -->
+      <div class="w-full max-w-md pt-6 border-t border-surface-container text-center text-xs text-on-surface-variant/70 relative z-10 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-emerald-600">lock</span>
+          <span>Bank-level 256-bit encryption</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <a href="#" class="hover:text-on-surface transition">Privacy</a>
+          <span>•</span>
+          <a href="#" class="hover:text-on-surface transition">Terms</a>
+          <span>•</span>
+          <a href="#" class="hover:text-on-surface transition">Support</a>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================== -->
+  <!-- JAVASCRIPT LOGIC                           -->
+  <!-- ========================================== -->
+  <script>
+    // 1. Immediately check if already authenticated
+    (function checkAuth() {
+      try {
+        const token = localStorage.getItem('marginly_token');
+        if (token) {
+          // User already logged in, redirect to dashboard immediately
+          window.location.href = '/index.html';
+        }
+      } catch (err) {
+        console.warn('LocalStorage error on auth check:', err);
+      }
+    })();
+
+    // DOM Elements
+    const loginForm = document.getElementById('loginForm');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const passwordIcon = document.getElementById('passwordIcon');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const btnSpinner = document.getElementById('btnSpinner');
+    const errorMessage = document.getElementById('errorMessage');
+    const errorTitle = document.getElementById('errorTitle');
+    const errorText = document.getElementById('errorText');
+
+    // 2. Password show/hide toggle
+    togglePasswordBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.getAttribute('type') === 'password';
+      if (isPassword) {
+        passwordInput.setAttribute('type', 'text');
+        passwordIcon.textContent = 'visibility_off';
+      } else {
+        passwordInput.setAttribute('type', 'password');
+        passwordIcon.textContent = 'visibility';
+      }
+    });
+
+    // 3. Hide error function
+    function hideError() {
+      errorMessage.classList.add('hidden');
+    }
+
+    // 4. Show error helper
+    function showError(message, title = 'Authentication Failed') {
+      errorTitle.textContent = title;
+      errorText.textContent = message;
+      errorMessage.classList.remove('hidden');
+      errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // 5. Button loading state helper
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      if (isLoading) {
+        btnSpinner.classList.remove('hidden');
+        btnIcon.classList.add('hidden');
+        btnText.textContent = 'Signing in...';
+        submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+      } else {
+        btnSpinner.classList.add('hidden');
+        btnIcon.classList.remove('hidden');
+        btnText.textContent = 'Sign In';
+        submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+      }
+    }
+
+    // 6. Form Submission Handler
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError();
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!username) {
+        showError('Please enter your username or email address.', 'Missing Field');
+        usernameInput.focus();
+        return;
+      }
+
+      if (!password) {
+        showError('Please enter your password.', 'Missing Field');
+        passwordInput.focus();
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password
+          })
+        });
+
+        let data = {};
+        try {
+          data = await response.json();
+        } catch (jsonErr) {
+          console.warn('Could not parse JSON response:', jsonErr);
+        }
+
+        if (!response.ok) {
+          const detailMessage = data.detail || data.message || `Login failed with status ${response.status}. Please check your credentials.`;
+          showError(detailMessage, 'Login Failed');
+          setLoading(false);
+          return;
+        }
+
+        // Check if token exists in response
+        const token = data.token || data.access_token;
+        if (token) {
+          // Store token and user
+          localStorage.setItem('marginly_token', token);
+          const userPayload = data.user || { username: username };
+          localStorage.setItem('marginly_user', JSON.stringify(userPayload));
+
+          // Success feedback
+          btnText.textContent = 'Success! Redirecting...';
+          btnSpinner.classList.add('hidden');
+          btnIcon.textContent = 'check';
+          btnIcon.classList.remove('hidden');
+          submitBtn.classList.remove('bg-primary-container');
+          submitBtn.classList.add('bg-emerald-600');
+
+          // Redirect to main app
+          setTimeout(() => {
+            window.location.href = '/index.html';
+          }, 400);
+        } else {
+          showError('Unexpected server response: No authentication token was received.', 'Authentication Error');
+          setLoading(false);
+        }
+
+      } catch (networkError) {
+        console.error('Network / Fetch Error:', networkError);
+        showError(
+          'Could not connect to the Marginly backend at http://127.0.0.1:8000. Please ensure the backend server is running.',
+          'Connection Error'
+        );
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>
