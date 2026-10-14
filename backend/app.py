@@ -379,9 +379,17 @@ class SalesImportLine(BaseModel):
     period: str = "Current Month"
     quantity_sold: int = Field(..., ge=0)
     channel: Optional[str] = "Dine-in"
+    selling_price: Optional[float] = None
+    cost_per_serving: Optional[float] = None
+    category: Optional[str] = "General"
 
 class SalesImportRequest(BaseModel):
     records: List[SalesImportLine]
+
+class SalesCSVUploadRequest(BaseModel):
+    csv_text: str
+    period: Optional[str] = "Current Month"
+    channel: Optional[str] = "Dine-in"
 
 class AnalysisRequest(BaseModel):
     period: str = "Current Month"
@@ -1031,7 +1039,27 @@ def create_menu_item(m: MenuItemCreate):
     conn.close()
     return {"id": new_id, "name": m.name, "selling_price": m.selling_price}
 
-# --- Sales Import ---
+# --- Sales Import & CSV Upload Engine ---
+@app.get("/api/sales/template-csv")
+def get_sales_template_csv():
+    template = (
+        "Dish Name,Quantity Sold,Selling Price,Cost Per Serving,Category,Channel\n"
+        "Cold Coffee,410,140,96,Beverages,Dine-in\n"
+        "Masala Maggi,620,90,28,Snacks,Dine-in\n"
+        "Chicken Momos,540,180,78,Starters,Dine-in\n"
+        "Paneer Tikka Pizza,85,320,152,Mains,Dine-in\n"
+        "Signature Himalayan Thali,38,280,265,Mains,Dine-in\n"
+        "Mango Smoothie,300,120,88,Beverages,Dine-in\n"
+        "Cheese Garlic Bread,120,160,51,Starters,Dine-in\n"
+        "Seasonal Fruit Tart,22,110,92,Desserts,Dine-in\n"
+    )
+    from fastapi.responses import Response
+    return Response(
+        content=template,
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=marginly_sales_template.csv"}
+    )
+
 @app.post("/api/sales/import")
 def import_sales(req: SalesImportRequest):
     conn = get_db_connection()
@@ -1041,13 +1069,39 @@ def import_sales(req: SalesImportRequest):
     errors = []
 
     for line in req.records:
-        cursor.execute("SELECT id FROM menu_items WHERE LOWER(name) = LOWER(?);", (line.menu_item_name.strip(),))
+        name = line.menu_item_name.strip()
+        cursor.execute("SELECT id, recipe_id, selling_price, category FROM menu_items WHERE LOWER(name) = LOWER(?);", (name,))
         row = cursor.fetchone()
-        if not row:
-            errors.append(f"Menu item '{line.menu_item_name}' not found.")
-            continue
 
-        item_id = row["id"]
+        if not row:
+            category = line.category or "General"
+            price = line.selling_price or 0.0
+            cost = line.cost_per_serving or 0.0
+            cursor.execute("""
+            INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
+            VALUES (?, ?, 1.0, ?, 'confirmed', ?, ?);
+            """, (name, "Created from Sales Import", cost, now, now))
+            recipe_id = cursor.lastrowid
+
+            cursor.execute("""
+            INSERT INTO menu_items (name, category, recipe_id, selling_price, currency, is_active, created_at)
+            VALUES (?, ?, ?, ?, 'INR', 1, ?);
+            """, (name, category, recipe_id, price, now))
+            item_id = cursor.lastrowid
+        else:
+            item_id = row["id"]
+            if line.selling_price and line.selling_price > 0:
+                cursor.execute("UPDATE menu_items SET selling_price = ? WHERE id = ?;", (line.selling_price, item_id))
+            if line.cost_per_serving and line.cost_per_serving > 0:
+                if row["recipe_id"]:
+                    cursor.execute("UPDATE recipes SET batch_overhead_cost = ?, updated_at = ? WHERE id = ?;", (line.cost_per_serving, now, row["recipe_id"]))
+                else:
+                    cursor.execute("""
+                    INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
+                    VALUES (?, ?, 1.0, ?, 'confirmed', ?, ?);
+                    """, (name, "Created from Sales Import", line.cost_per_serving, now, now))
+                    cursor.execute("UPDATE menu_items SET recipe_id = ? WHERE id = ?;", (cursor.lastrowid, item_id))
+
         cursor.execute("""
         INSERT INTO sales_records (menu_item_id, period, quantity_sold, channel, created_at)
         VALUES (?, ?, ?, ?, ?)
@@ -1060,6 +1114,226 @@ def import_sales(req: SalesImportRequest):
     conn.commit()
     conn.close()
     return {"imported": imported_count, "errors": errors}
+
+@app.post("/api/sales/upload-csv")
+def upload_sales_csv(req: SalesCSVUploadRequest):
+    import csv
+    import io
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    now = datetime.now(timezone.utc).isoformat()
+    period = req.period or "Current Month"
+    channel = req.channel or "Dine-in"
+
+    csv_data = req.csv_text.strip()
+    if not csv_data:
+        conn.close()
+        raise HTTPException(status_code=400, detail="CSV data cannot be empty.")
+
+    try:
+        sample = csv_data[:2048]
+        sniffer = csv.Sniffer()
+        dialect = sniffer.sniff(sample, delimiters=",\t;|")
+        delimiter = dialect.delimiter
+    except Exception:
+        delimiter = ","
+
+    f = io.StringIO(csv_data)
+    reader = csv.DictReader(f, delimiter=delimiter)
+
+    items_processed = []
+    errors = []
+    imported_count = 0
+
+    for idx, raw_row in enumerate(reader, 1):
+        if not raw_row:
+            continue
+        row = {k.strip().lower(): (v.strip() if v else "") for k, v in raw_row.items() if k}
+
+        name = (
+            row.get("dish name") or row.get("dish") or row.get("item name") or
+            row.get("item") or row.get("name") or row.get("menu item") or row.get("menu_item")
+        )
+        if not name:
+            continue
+
+        name = name.strip()
+
+        qty_str = (
+            row.get("quantity sold") or row.get("quantity") or row.get("units sold") or
+            row.get("units") or row.get("orders") or row.get("sales") or row.get("qty") or "0"
+        )
+        try:
+            qty = max(0, int(float(qty_str.replace(",", ""))))
+        except Exception:
+            qty = 0
+
+        price_str = (
+            row.get("selling price") or row.get("price") or row.get("selling_price") or
+            row.get("rate") or row.get("mrp") or "0"
+        )
+        try:
+            price = max(0.0, float(price_str.replace("₹", "").replace(",", "")))
+        except Exception:
+            price = 0.0
+
+        cost_str = (
+            row.get("cost per serving") or row.get("cost") or row.get("cost_per_serving") or
+            row.get("food cost") or row.get("cogs") or row.get("plate cost") or "0"
+        )
+        try:
+            cost = max(0.0, float(cost_str.replace("₹", "").replace(",", "")))
+        except Exception:
+            cost = 0.0
+
+        category = row.get("category") or row.get("section") or "General"
+        row_channel = row.get("channel") or channel
+
+        cursor.execute("SELECT id, recipe_id, selling_price, category FROM menu_items WHERE LOWER(name) = LOWER(?);", (name,))
+        existing_item = cursor.fetchone()
+
+        if existing_item:
+            item_id = existing_item["id"]
+            recipe_id = existing_item["recipe_id"]
+            if price > 0:
+                cursor.execute("UPDATE menu_items SET selling_price = ? WHERE id = ?;", (price, item_id))
+            else:
+                price = existing_item["selling_price"] or 0.0
+
+            if recipe_id and cost > 0:
+                cursor.execute("SELECT COUNT(*) as count FROM recipe_lines WHERE recipe_id = ?;", (recipe_id,))
+                if cursor.fetchone()["count"] == 0:
+                    cursor.execute("UPDATE recipes SET batch_overhead_cost = ? WHERE id = ?;", (cost, recipe_id))
+                else:
+                    try:
+                        c_resp = compute_recipe_cost_for_id(recipe_id, conn)
+                        cost = c_resp.cost_per_serving
+                    except Exception:
+                        pass
+            elif not recipe_id and cost > 0:
+                cursor.execute("""
+                INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
+                VALUES (?, ?, 1.0, ?, 'confirmed', ?, ?);
+                """, (name, "Auto-linked via Sales CSV", cost, now, now))
+                recipe_id = cursor.lastrowid
+                cursor.execute("UPDATE menu_items SET recipe_id = ? WHERE id = ?;", (recipe_id, item_id))
+            elif recipe_id:
+                try:
+                    c_resp = compute_recipe_cost_for_id(recipe_id, conn)
+                    cost = c_resp.cost_per_serving
+                except Exception:
+                    pass
+        else:
+            cursor.execute("""
+            INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
+            VALUES (?, ?, 1.0, ?, 'confirmed', ?, ?);
+            """, (name, "Created from Sales CSV Import", cost, now, now))
+            recipe_id = cursor.lastrowid
+
+            cursor.execute("""
+            INSERT INTO menu_items (name, category, recipe_id, selling_price, currency, is_active, created_at)
+            VALUES (?, ?, ?, ?, 'INR', 1, ?);
+            """, (name, category, recipe_id, price, now))
+            item_id = cursor.lastrowid
+
+        cursor.execute("""
+        INSERT INTO sales_records (menu_item_id, period, quantity_sold, channel, created_at)
+        VALUES (?, ?, ?, ?, ?)
+        ON CONFLICT(menu_item_id, period, channel) DO UPDATE SET
+            quantity_sold = excluded.quantity_sold,
+            created_at = excluded.created_at;
+        """, (item_id, period, qty, row_channel, now))
+
+        revenue = qty * price
+        total_cost = qty * cost
+        gain_loss = revenue - total_cost
+        margin_pct = ((price - cost) / price * 100.0) if price > 0 else 0.0
+
+        is_loss = gain_loss < 0 or (price > 0 and cost > price)
+
+        if is_loss:
+            loss_per_plate = round(cost - price, 2)
+            cursor.execute("""
+            INSERT INTO alerts (alert_type, severity, message, item_id, created_at)
+            VALUES (?, ?, ?, ?, ?);
+            """, (
+                "NEGATIVE_MARGIN",
+                "critical",
+                f"Negative Margin Alert: '{name}' costs ₹{cost:.2f} per plate but sells for ₹{price:.2f} (Loss of ₹{loss_per_plate} per dish).",
+                item_id,
+                now
+            ))
+
+        items_processed.append({
+            "id": item_id,
+            "name": name,
+            "category": category,
+            "quantity_sold": qty,
+            "selling_price": round(price, 2),
+            "cost_per_serving": round(cost, 2),
+            "revenue": round(revenue, 2),
+            "total_cost": round(total_cost, 2),
+            "gain_loss": round(gain_loss, 2),
+            "margin_percentage": round(margin_pct, 1),
+            "is_loss": is_loss,
+            "channel": row_channel
+        })
+        imported_count += 1
+
+    conn.commit()
+    conn.close()
+
+    total_qty = sum(i["quantity_sold"] for i in items_processed)
+    total_revenue = sum(i["revenue"] for i in items_processed)
+    total_cost = sum(i["total_cost"] for i in items_processed)
+    net_profit = total_revenue - total_cost
+    avg_qty = (total_qty / len(items_processed)) if items_processed else 0
+
+    loss_items = []
+    star_items = []
+
+    for item in items_processed:
+        if item["is_loss"]:
+            item["classification"] = "Dog"
+            item["status"] = "Loss-Making"
+            loss_items.append(item)
+        else:
+            is_high_volume = item["quantity_sold"] >= avg_qty
+            is_high_margin = item["margin_percentage"] >= 60.0
+
+            if is_high_volume and is_high_margin:
+                item["classification"] = "Star"
+                item["status"] = "High Gain (Star)"
+                star_items.append(item)
+            elif is_high_volume and not is_high_margin:
+                item["classification"] = "Plowhorse"
+                item["status"] = "High Volume, Thin Margin"
+            elif not is_high_volume and is_high_margin:
+                item["classification"] = "Puzzle"
+                item["status"] = "High Margin, Low Volume"
+            else:
+                item["classification"] = "Dog"
+                item["status"] = "Low Margin & Low Volume"
+
+    food_cost_pct = (total_cost / total_revenue * 100.0) if total_revenue > 0 else 0.0
+    margin_pct = (net_profit / total_revenue * 100.0) if total_revenue > 0 else 0.0
+
+    return {
+        "success": True,
+        "imported_count": imported_count,
+        "period": period,
+        "total_quantity": total_qty,
+        "total_revenue": round(total_revenue, 2),
+        "total_cost": round(total_cost, 2),
+        "net_profit": round(net_profit, 2),
+        "food_cost_percentage": round(food_cost_pct, 1),
+        "margin_percentage": round(margin_pct, 1),
+        "loss_making_count": len(loss_items),
+        "stars_count": len(star_items),
+        "items": items_processed,
+        "errors": errors
+    }
 
 # --- Menu Engineering Analysis ---
 @app.post("/api/analysis", response_model=MenuAnalysisSummary)
