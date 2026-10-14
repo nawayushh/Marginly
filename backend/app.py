@@ -1320,58 +1320,136 @@ def upload_sales_csv(req: SalesCSVUploadRequest):
         dialect = sniffer.sniff(sample, delimiters=",\t;|")
         delimiter = dialect.delimiter
     except Exception:
-        delimiter = ","
+        delimiter = "\t" if "\t" in csv_data.split("\n")[0] else ","
 
     f = io.StringIO(csv_data)
     reader = csv.DictReader(f, delimiter=delimiter)
 
-    items_processed = []
-    errors = []
-    imported_count = 0
+    field_map = {}
+    if reader.fieldnames:
+        for fn in reader.fieldnames:
+            if fn:
+                field_map[fn.strip().lower()] = fn
 
-    for idx, raw_row in enumerate(reader, 1):
+    def get_val(row, candidates):
+        for c in candidates:
+            if c in field_map:
+                v = row.get(field_map[c])
+                if v is not None and str(v).strip():
+                    return str(v).strip()
+        return None
+
+    name_candidates = [
+        "menu_item", "menu item", "dish name", "dish", "item name", "item", "name",
+        "product", "product_name", "item_name", "dish_name", "item description", "description"
+    ]
+    qty_candidates = [
+        "quantity", "qty", "quantity sold", "units sold", "units", "orders", "sales",
+        "count", "quantity_sold", "units_sold", "volume", "qty sold"
+    ]
+    price_candidates = [
+        "unit_price", "unit price", "selling price", "selling_price", "price",
+        "rate", "mrp", "item_price", "item price", "price_per_unit"
+    ]
+    amount_candidates = [
+        "total_amount", "total amount", "total", "amount", "gross_sales",
+        "net_sales", "line_total", "total_price", "sales_amount"
+    ]
+    cost_candidates = [
+        "cost per serving", "cost", "cost_per_serving", "food cost", "food_cost",
+        "cogs", "plate cost", "plate_cost", "item_cost", "unit_cost"
+    ]
+    cat_candidates = [
+        "category", "daypart", "section", "service_mode", "department", "menu_category"
+    ]
+
+    aggregated = {}
+
+    for raw_row in reader:
         if not raw_row:
             continue
-        row = {k.strip().lower(): (v.strip() if v else "") for k, v in raw_row.items() if k}
-
-        name = (
-            row.get("dish name") or row.get("dish") or row.get("item name") or
-            row.get("item") or row.get("name") or row.get("menu item") or row.get("menu_item")
-        )
-        if not name:
+        name = get_val(raw_row, name_candidates)
+        if not name or name.lower() in ("total", "subtotal", "sum"):
             continue
 
         name = name.strip()
 
-        qty_str = (
-            row.get("quantity sold") or row.get("quantity") or row.get("units sold") or
-            row.get("units") or row.get("orders") or row.get("sales") or row.get("qty") or "0"
-        )
+        qty_str = get_val(raw_row, qty_candidates) or "1"
         try:
-            qty = max(0, int(float(qty_str.replace(",", ""))))
+            qty = max(1, int(float(qty_str.replace(",", ""))))
         except Exception:
-            qty = 0
+            qty = 1
 
-        price_str = (
-            row.get("selling price") or row.get("price") or row.get("selling_price") or
-            row.get("rate") or row.get("mrp") or "0"
-        )
-        try:
-            price = max(0.0, float(price_str.replace("₹", "").replace(",", "")))
-        except Exception:
+        price_str = get_val(raw_row, price_candidates)
+        unit_price = 0.0
+        if price_str:
+            try:
+                unit_price = max(0.0, float(price_str.replace("₹", "").replace("$", "").replace(",", "")))
+            except Exception:
+                unit_price = 0.0
+
+        amount_str = get_val(raw_row, amount_candidates)
+        line_amount = 0.0
+        if amount_str:
+            try:
+                line_amount = max(0.0, float(amount_str.replace("₹", "").replace("$", "").replace(",", "")))
+            except Exception:
+                line_amount = 0.0
+
+        if unit_price == 0.0 and line_amount > 0 and qty > 0:
+            unit_price = line_amount / qty
+        elif line_amount == 0.0 and unit_price > 0:
+            line_amount = unit_price * qty
+
+        cost_str = get_val(raw_row, cost_candidates)
+        unit_cost = 0.0
+        if cost_str:
+            try:
+                unit_cost = max(0.0, float(cost_str.replace("₹", "").replace("$", "").replace(",", "")))
+            except Exception:
+                unit_cost = 0.0
+
+        category = get_val(raw_row, cat_candidates) or "Mains"
+
+        if name not in aggregated:
+            aggregated[name] = {
+                "name": name,
+                "category": category,
+                "qty": 0,
+                "total_revenue": 0.0,
+                "unit_prices": [],
+                "unit_cost": unit_cost
+            }
+
+        item = aggregated[name]
+        item["qty"] += qty
+        item["total_revenue"] += (line_amount if line_amount > 0 else (qty * unit_price))
+        if unit_price > 0:
+            item["unit_prices"].append(unit_price)
+        if unit_cost > 0 and item["unit_cost"] == 0.0:
+            item["unit_cost"] = unit_cost
+
+    items_processed = []
+
+    for name, item_data in aggregated.items():
+        qty = item_data["qty"]
+        if qty <= 0:
+            continue
+
+        tot_rev = item_data["total_revenue"]
+        if item_data["unit_prices"]:
+            price = round(sum(item_data["unit_prices"]) / len(item_data["unit_prices"]), 2)
+        elif tot_rev > 0:
+            price = round(tot_rev / qty, 2)
+        else:
             price = 0.0
 
-        cost_str = (
-            row.get("cost per serving") or row.get("cost") or row.get("cost_per_serving") or
-            row.get("food cost") or row.get("cogs") or row.get("plate cost") or "0"
-        )
-        try:
-            cost = max(0.0, float(cost_str.replace("₹", "").replace(",", "")))
-        except Exception:
-            cost = 0.0
+        cost = item_data["unit_cost"]
+        if cost == 0.0:
+            # Standard restaurant food cost benchmark (32% food cost)
+            cost = round(price * 0.32, 2)
 
-        category = row.get("category") or row.get("section") or "General"
-        row_channel = row.get("channel") or channel
+        category = item_data["category"]
 
         cursor.execute("SELECT id, recipe_id, selling_price, category FROM menu_items WHERE LOWER(name) = LOWER(?);", (name,))
         existing_item = cursor.fetchone()
@@ -1381,19 +1459,11 @@ def upload_sales_csv(req: SalesCSVUploadRequest):
             recipe_id = existing_item["recipe_id"]
             if price > 0:
                 cursor.execute("UPDATE menu_items SET selling_price = ? WHERE id = ?;", (price, item_id))
-            else:
-                price = existing_item["selling_price"] or 0.0
 
             if recipe_id and cost > 0:
                 cursor.execute("SELECT COUNT(*) as count FROM recipe_lines WHERE recipe_id = ?;", (recipe_id,))
                 if cursor.fetchone()["count"] == 0:
-                    cursor.execute("UPDATE recipes SET batch_overhead_cost = ? WHERE id = ?;", (cost, recipe_id))
-                else:
-                    try:
-                        c_resp = compute_recipe_cost_for_id(recipe_id, conn)
-                        cost = c_resp.cost_per_serving
-                    except Exception:
-                        pass
+                    cursor.execute("UPDATE recipes SET batch_overhead_cost = ?, updated_at = ? WHERE id = ?;", (cost, now, recipe_id))
             elif not recipe_id and cost > 0:
                 cursor.execute("""
                 INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
@@ -1401,12 +1471,6 @@ def upload_sales_csv(req: SalesCSVUploadRequest):
                 """, (name, "Auto-linked via Sales CSV", cost, now, now))
                 recipe_id = cursor.lastrowid
                 cursor.execute("UPDATE menu_items SET recipe_id = ? WHERE id = ?;", (recipe_id, item_id))
-            elif recipe_id:
-                try:
-                    c_resp = compute_recipe_cost_for_id(recipe_id, conn)
-                    cost = c_resp.cost_per_serving
-                except Exception:
-                    pass
         else:
             cursor.execute("""
             INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
@@ -1426,51 +1490,35 @@ def upload_sales_csv(req: SalesCSVUploadRequest):
         ON CONFLICT(menu_item_id, period, channel) DO UPDATE SET
             quantity_sold = excluded.quantity_sold,
             created_at = excluded.created_at;
-        """, (item_id, period, qty, row_channel, now))
+        """, (item_id, period, qty, channel, now))
 
-        revenue = qty * price
-        total_cost = qty * cost
-        gain_loss = revenue - total_cost
-        margin_pct = ((price - cost) / price * 100.0) if price > 0 else 0.0
-
-        is_loss = gain_loss < 0 or (price > 0 and cost > price)
-
-        if is_loss:
-            loss_per_plate = round(cost - price, 2)
-            cursor.execute("""
-            INSERT INTO alerts (alert_type, severity, message, item_id, created_at)
-            VALUES (?, ?, ?, ?, ?);
-            """, (
-                "NEGATIVE_MARGIN",
-                "critical",
-                f"Negative Margin Alert: '{name}' costs ₹{cost:.2f} per plate but sells for ₹{price:.2f} (Loss of ₹{loss_per_plate} per dish).",
-                item_id,
-                now
-            ))
+        revenue = round(qty * price, 2)
+        total_cost = round(qty * cost, 2)
+        gain_loss = round(revenue - total_cost, 2)
+        margin_pct = round(((price - cost) / price * 100.0), 1) if price > 0 else 0.0
 
         items_processed.append({
             "id": item_id,
             "name": name,
             "category": category,
             "quantity_sold": qty,
-            "selling_price": round(price, 2),
-            "cost_per_serving": round(cost, 2),
-            "revenue": round(revenue, 2),
-            "total_cost": round(total_cost, 2),
-            "gain_loss": round(gain_loss, 2),
-            "margin_percentage": round(margin_pct, 1),
-            "is_loss": is_loss,
-            "channel": row_channel
+            "selling_price": price,
+            "cost_per_serving": cost,
+            "revenue": revenue,
+            "total_cost": total_cost,
+            "gain_loss": gain_loss,
+            "margin_percentage": margin_pct,
+            "is_loss": gain_loss < 0 or (price > 0 and cost > price),
+            "channel": channel
         })
-        imported_count += 1
 
     conn.commit()
     conn.close()
 
     total_qty = sum(i["quantity_sold"] for i in items_processed)
-    total_revenue = sum(i["revenue"] for i in items_processed)
-    total_cost = sum(i["total_cost"] for i in items_processed)
-    net_profit = total_revenue - total_cost
+    total_rev = round(sum(i["revenue"] for i in items_processed), 2)
+    total_cost_all = round(sum(i["total_cost"] for i in items_processed), 2)
+    net_profit = round(total_rev - total_cost_all, 2)
     avg_qty = (total_qty / len(items_processed)) if items_processed else 0
 
     loss_items = []
@@ -1499,23 +1547,23 @@ def upload_sales_csv(req: SalesCSVUploadRequest):
                 item["classification"] = "Dog"
                 item["status"] = "Low Margin & Low Volume"
 
-    food_cost_pct = (total_cost / total_revenue * 100.0) if total_revenue > 0 else 0.0
-    margin_pct = (net_profit / total_revenue * 100.0) if total_revenue > 0 else 0.0
+    food_cost_pct = round((total_cost_all / total_rev * 100.0), 1) if total_rev > 0 else 0.0
+    margin_pct = round((net_profit / total_rev * 100.0), 1) if total_rev > 0 else 0.0
 
     return {
         "success": True,
-        "imported_count": imported_count,
+        "imported_count": len(items_processed),
         "period": period,
         "total_quantity": total_qty,
-        "total_revenue": round(total_revenue, 2),
-        "total_cost": round(total_cost, 2),
-        "net_profit": round(net_profit, 2),
-        "food_cost_percentage": round(food_cost_pct, 1),
-        "margin_percentage": round(margin_pct, 1),
+        "total_revenue": total_rev,
+        "total_cost": total_cost_all,
+        "net_profit": net_profit,
+        "food_cost_percentage": food_cost_pct,
+        "margin_percentage": margin_pct,
         "loss_making_count": len(loss_items),
         "stars_count": len(star_items),
         "items": items_processed,
-        "errors": errors
+        "errors": []
     }
 
 # --- Menu Engineering Analysis ---
