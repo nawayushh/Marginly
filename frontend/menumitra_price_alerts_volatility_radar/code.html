@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <html class="h-full" lang="en"><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>MenuMitra - Price Alerts &amp; Volatility Radar</title>
+<title>Marginly - Price Alerts &amp; Volatility Radar</title>
 <!-- Material Symbols Outlined Font -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -138,13 +142,11 @@
 <body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary selection:text-white">
 <!-- ================= TOP APP BAR ================= -->
 <header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
-<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-space-sm h-16 flex justify-between items-center">
 <!-- Brand & Tagline -->
 <div class="flex items-center space-x-4">
 <a href="/index.html" class="flex items-center space-x-2.5">
-<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
-<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
-</div>
+<img src="/logo-mark.png" alt="Marginly" class="w-9 h-9 object-contain shrink-0" />
 <div>
 <div class="flex items-baseline space-x-1.5">
 <span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
@@ -201,7 +203,7 @@ RO
 </div>
 </div>
 <!-- Secondary Desktop Menu Bar -->
-<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-4 sm:px-6 lg:px-8 xl:px-10 w-full">
 <div class="flex space-x-1 py-1.5">
 <a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
 <span class="material-symbols-outlined text-[18px]">dashboard</span>
@@ -231,8 +233,8 @@ RO
 </nav>
 </header>
 <!-- ================= BREADCRUMB STRIP ================= -->
-<section class="bg-surface-container-low border-b border-outline-variant/20 px-margin py-2">
-<div class="max-w-7xl mx-auto flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
+<section class="bg-surface-container-low border-b border-outline-variant/20 px-4 sm:px-6 lg:px-8 xl:px-10 py-2">
+<div class="w-full max-w-[1780px] mx-auto flex items-center justify-between text-body-sm font-body-sm text-on-surface-variant">
 <div class="flex items-center gap-1.5">
 <span class="material-symbols-outlined text-[16px]" data-icon="home">home</span>
 <span>Home</span>
@@ -250,7 +252,7 @@ RO
 </div>
 </section>
 <!-- ================= MAIN CONTENT WORKSPACE ================= -->
-<main class="flex-1 max-w-7xl w-full mx-auto px-margin py-space-lg space-y-space-lg">
+<main class="flex-1 max-w-[1780px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-space-lg space-y-space-lg">
 <!-- URGENT ALERT BANNER -->
 <div id="urgent-alert-banner" class="w-full bg-[#fdf2f2] border-l-4 border-error rounded-xl p-space-md shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md transition-all">
 <div class="flex items-start gap-space-sm">
@@ -816,8 +818,8 @@ RO
 </div>
 </main>
 <!-- ================= FOOTER & SYSTEM REASSURANCE ================= -->
-<footer class="bg-surface-container-lowest border-t border-outline-variant/30 py-4 px-margin mt-auto text-body-sm font-body-sm">
-<div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-on-surface-variant">
+<footer class="bg-surface-container-lowest border-t border-outline-variant/30 py-4 px-4 sm:px-6 lg:px-8 xl:px-10 mt-auto text-body-sm font-body-sm">
+<div class="w-full max-w-[1780px] mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-on-surface-variant">
 <div class="flex items-center gap-3">
 <span class="inline-flex items-center gap-1.5 text-xs text-emerald-800 font-semibold bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>

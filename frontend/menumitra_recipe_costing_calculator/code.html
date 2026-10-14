@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Add Recipe &amp; Costing - MenuMitra</title>
+<title>Add Recipe &amp; Costing - Marginly</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
@@ -138,11 +142,14 @@
 <body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
 <!-- Top App Bar (Shared Component Contract) -->
 <header class="bg-surface sticky top-0 z-40 shadow-sm">
-<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm h-16 max-w-7xl mx-auto">
+<div class="flex justify-between items-center w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-space-sm h-16">
 <div class="flex items-center gap-space-sm">
-<button aria-label="Go back" class="p-space-xs rounded hover:bg-surface-container-high transition-colors active:scale-95 text-on-surface" type="button">
+<a href="/index.html" class="flex items-center gap-2 mr-1">
+<img src="/logo-mark.png" alt="Marginly" class="w-8 h-8 object-contain shrink-0" />
+</a>
+<a href="/index.html" aria-label="Go back" class="p-space-xs rounded hover:bg-surface-container-high transition-colors active:scale-95 text-on-surface">
 <span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
-</button>
+</a>
 <div>
 <h1 class="text-label-lg font-label-lg text-primary font-bold">Add Recipe &amp; Costing</h1>
 <p class="text-label-sm font-label-sm text-on-surface-variant leading-none">Café Doon Brew, Rajpur Rd</p>
@@ -156,16 +163,16 @@
 </div>
 </header>
 <!-- Atmospheric Helper Prompt Strip -->
-<section class="bg-surface-container-low px-margin-mobile py-space-md">
-<div class="max-w-md mx-auto flex items-start gap-space-sm">
+<section class="bg-surface-container-low px-4 sm:px-6 lg:px-8 xl:px-10 py-space-md">
+<div class="max-w-5xl mx-auto flex items-start gap-space-sm">
 <span class="material-symbols-outlined text-primary-container text-body-lg mt-0.5" data-icon="info" data-weight="fill" style="font-variation-settings: 'FILL' 1;">info</span>
 <p class="text-body-sm font-body-sm text-on-surface-variant">
-        Enter ingredients the way you buy and prep them. MenuMitra calculates your cost per plate.
+        Enter ingredients the way you buy and prep them. Marginly calculates your cost per plate.
       </p>
 </div>
 </section>
 <!-- Main Scrollable Flow -->
-<main class="flex-1 max-w-md w-full mx-auto px-margin-mobile pt-space-md pb-32 space-y-space-lg">
+<main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-space-md pb-32 space-y-space-lg">
 <!-- STEP 1: Dish Basics -->
 <section class="bg-surface-container-lowest rounded-xl p-space-md shadow-[0_2px_8px_-2px_rgba(15,92,92,0.05),0_1px_3px_0_rgba(0,0,0,0.03)] border border-surface-variant">
 <div class="flex items-center justify-between pb-space-sm border-b border-surface-variant/60 mb-space-md">
@@ -456,27 +463,27 @@
 <!-- Bottom Navigation Bar (Shared Components JSON Anchor) -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] md:hidden">
 <!-- Dashboard -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="/index.html">
 <span class="material-symbols-outlined text-body-lg" data-icon="dashboard">dashboard</span>
 <span class="text-label-sm font-label-sm">Dashboard</span>
 </a>
 <!-- Dishes -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="/menumitra_dishes_recipes/code.html">
 <span class="material-symbols-outlined text-body-lg" data-icon="restaurant_menu">restaurant_menu</span>
 <span class="text-label-sm font-label-sm">Dishes</span>
 </a>
 <!-- Add (Active Destination for 'Add Recipe' screen) -->
-<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-150" href="#">
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 duration-150" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
 <span class="material-symbols-outlined text-body-lg" data-icon="add_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">add_circle</span>
 <span class="text-label-sm font-label-sm">Add</span>
 </a>
 <!-- Simulator -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="/menumitra_what_if_simulator/code.html">
 <span class="material-symbols-outlined text-body-lg" data-icon="calculate">calculate</span>
 <span class="text-label-sm font-label-sm">Simulator</span>
 </a>
 <!-- Menu Layout -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="/menumitra_printed_menu_layout_heatmap/code.html">
 <span class="material-symbols-outlined text-body-lg" data-icon="tune">tune</span>
 <span class="text-label-sm font-label-sm">Menu Layout</span>
 </a>

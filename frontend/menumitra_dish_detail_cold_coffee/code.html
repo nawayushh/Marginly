@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Dish Detail • Cold Coffee (Signature Blend) | MenuMitra</title>
+<title>Dish Detail • Cold Coffee (Signature Blend) | Marginly</title>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Inter Font Family -->
@@ -172,14 +176,12 @@
 <body class="bg-surface text-on-surface min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white">
 <!-- Top Navigation Bar (Shared Component Anchored) -->
 <header class="bg-surface border-b border-outline-variant/30 sticky top-0 z-40 bg-surface/90 backdrop-blur-md">
-<div class="flex justify-between items-center w-full px-6 lg:px-8 py-3.5 max-w-7xl mx-auto">
+<div class="flex justify-between items-center w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-3.5">
 <!-- Left: Logo & Outlet Selector -->
 <div class="flex items-center gap-6">
 <div class="flex items-center gap-2">
-<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-white font-bold text-lg shadow-sm">
-            M
-          </div>
-<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">MenuMitra</span>
+<img src="/logo-mark.png" alt="Marginly" class="w-8 h-8 object-contain shrink-0" />
+<span class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Marginly</span>
 </div>
 <div class="h-6 w-px bg-outline-variant/40 hidden md:block"></div>
 <!-- Outlet Switcher with Location Pin -->
@@ -191,19 +193,19 @@
 </div>
 <!-- Center Desktop Nav items -->
 <nav class="hidden lg:flex items-center gap-7">
-<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1.5" href="#">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1.5" href="/index.html">
 <span class="material-symbols-outlined text-[18px]" data-icon="dashboard">dashboard</span>
           Dashboard
         </a>
-<a class="font-label-lg text-label-lg text-primary font-semibold flex items-center gap-1.5 border-b-2 border-primary pb-0.5" href="#">
+<a class="font-label-lg text-label-lg text-primary font-semibold flex items-center gap-1.5 border-b-2 border-primary pb-0.5" href="/menumitra_dishes_recipes/code.html">
 <span class="material-symbols-outlined text-[18px]" data-icon="restaurant_menu">restaurant_menu</span>
           Dishes &amp; Recipes
         </a>
-<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1.5" href="#">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1.5" href="/menumitra_what_if_simulator/code.html">
 <span class="material-symbols-outlined text-[18px]" data-icon="calculate">calculate</span>
           Simulator
         </a>
-<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1.5" href="#">
+<a class="font-label-lg text-label-lg text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1.5" href="/menumitra_printed_menu_layout_heatmap/code.html">
 <span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
           Menu Layout
         </a>
@@ -230,11 +232,11 @@
 </div>
 </header>
 <!-- Main Canvas Container -->
-<main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+<main class="flex-1 max-w-[1780px] w-full mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 space-y-6">
 <!-- Breadcrumb Pathway & Operational Status -->
 <div class="flex flex-wrap items-center justify-between gap-3 pb-1">
 <nav class="flex items-center gap-2 font-label-md text-label-md text-on-surface-variant">
-<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="/menumitra_dishes_recipes/code.html">
 <span class="material-symbols-outlined text-[16px]" data-icon="restaurant_menu">restaurant_menu</span>
           Dishes &amp; Recipes
         </a>
@@ -276,10 +278,10 @@
 </div>
 <!-- Quick Action Buttons -->
 <div class="flex flex-wrap items-center gap-2.5 self-start lg:self-center">
-<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container text-primary hover:bg-surface-container-high transition-colors font-label-lg text-label-lg border border-outline-variant/50">
+<a href="/menumitra_review_standardised_recipe_cold_coffee/code.html" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container text-primary hover:bg-surface-container-high transition-colors font-label-lg text-label-lg border border-outline-variant/50">
 <span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
             Edit Recipe Ingredients
-          </button>
+          </a>
 <button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-lg text-label-lg border border-outline-variant/50">
 <span class="material-symbols-outlined text-[18px]" data-icon="print">print</span>
             Print Kitchen Standard
@@ -429,10 +431,10 @@
 </div>
 </div>
 <div class="pt-5 mt-4 border-t border-[#ECE8E1]/80">
-<button class="w-full py-2.5 px-4 rounded-lg bg-primary-container text-white font-label-lg text-label-lg font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2 shadow-sm">
+<a href="/menumitra_what_if_simulator/code.html" class="w-full py-2.5 px-4 rounded-lg bg-primary-container text-white font-label-lg text-label-lg font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2 shadow-sm">
 <span class="material-symbols-outlined text-[18px]" data-icon="calculate">calculate</span>
               Simulate Price Hike
-            </button>
+            </a>
 </div>
 </div>
 <!-- Strategy 2: Re-engineer Recipe -->
@@ -460,10 +462,10 @@
 </div>
 </div>
 <div class="pt-5 mt-4 border-t border-[#ECE8E1]/80">
-<button class="w-full py-2.5 px-4 rounded-lg bg-primary-container text-white font-label-lg text-label-lg font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2 shadow-sm">
+<a href="/menumitra_review_standardised_recipe_cold_coffee/code.html" class="w-full py-2.5 px-4 rounded-lg bg-primary-container text-white font-label-lg text-label-lg font-semibold hover:bg-primary transition-colors flex items-center justify-center gap-2 shadow-sm">
 <span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
               Review Ingredient Tweaks
-            </button>
+            </a>
 </div>
 </div>
 <!-- Strategy 3: Reposition & Combo -->
@@ -678,7 +680,7 @@
 </section>
 <!-- Bottom Contextual Metric Notes -->
 <footer class="pt-2 pb-12 flex flex-col sm:flex-row items-center justify-between text-xs text-outline border-t border-outline-variant/30">
-<div>MenuMitra Operational Engine • Rajpur Rd Café Cluster Data • INR (₹) Currency Standard</div>
+<div>Marginly Operational Engine • Rajpur Rd Café Cluster Data • INR (₹) Currency Standard</div>
 <div class="mt-2 sm:mt-0 flex gap-4">
 <a class="hover:text-primary transition-colors" href="#">Yield Calculation Formulae</a>
 <a class="hover:text-primary transition-colors" href="#">POS Integration Status: Active</a>

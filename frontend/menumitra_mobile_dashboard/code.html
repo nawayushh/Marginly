@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <html class="h-full bg-background text-on-background" lang="en"><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>MenuMitra - Mobile Dashboard</title>
+<title>Marginly - Mobile Dashboard</title>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Inter Google Font -->
@@ -141,9 +145,12 @@
 <body class="h-full bg-background text-on-surface antialiased flex flex-col font-body-md text-body-md select-none pb-24">
 <!-- TOP BRAND & OUTLET APP BAR (Shared Components JSON execution) -->
 <header class="sticky top-0 z-40 bg-surface shadow-sm">
-<div class="flex justify-between items-center w-full px-margin-mobile py-space-sm h-16 max-w-7xl mx-auto">
+<div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-space-sm h-16 flex justify-between items-center">
 <!-- Left: Logo & Tagline / Outlet -->
 <div class="flex items-center gap-space-sm">
+<a href="/index.html" class="flex items-center gap-2">
+<img src="/logo-mark.png" alt="Marginly" class="w-9 h-9 object-contain shrink-0" />
+</a>
 <div class="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary/20 shrink-0 bg-surface-container">
 <img class="w-full h-full object-cover" data-alt="Close-up portrait of an authentic Indian café owner in Dehradun wearing a warm linen apron with a confident friendly smile inside a bright modern rustic coffee shop. The lighting is soft morning daylight reflecting stone and warm teak finishes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjtipQF_7HRdxnHzVeYCGg-K9Nl5SHcrAGZxlv7qcKin8rdYyEqvkyHW1-evgZtygwWKf2K9S3lcBnqN2SHqYc_L8ErbMuMl5Fdeyek2DshFL638dxMgWKFP1xYl__B_Vl264Dp9gXA7uu0_f9c53aiWgww9oTFVmK20edfsgbycgLZce_t9UAl6novm5_iqJ6KLPdDjqQd1-PPmNwwt3xL4xs1qVyl4am2jLEZ66suzW1LburEc4"/>
 </div>
@@ -168,14 +175,14 @@
 </div>
 </header>
 <!-- MAIN SCROLLABLE CONTENT CANVAS -->
-<main class="flex-1 w-full max-w-lg mx-auto px-margin-mobile pt-space-md space-y-space-lg">
+<main class="flex-1 w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-space-md space-y-space-lg">
 <!-- HERO METRICS: Operational glanceability for non-accountants -->
 <section aria-labelledby="overview-heading">
 <div class="flex justify-between items-baseline mb-space-xs">
 <h2 class="text-label-lg font-label-lg text-primary tracking-tight" id="overview-heading">This Month's Profit Health</h2>
 <span class="text-body-sm font-body-sm text-on-surface-variant">Last 30 Days</span>
 </div>
-<div class="grid grid-cols-2 gap-space-sm">
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
 <!-- Metric 1: Monthly Net Food Profit (Key Highlight) -->
 <div class="tactile-card bg-surface-container-lowest p-space-md rounded-xl border border-outline-variant/30 flex flex-col justify-between">
 <div class="flex items-center justify-between">
@@ -303,7 +310,7 @@
 <span class="material-symbols-outlined text-[14px]" data-icon="help">help</span>
 </button>
 </div>
-<div class="grid grid-cols-2 gap-space-sm mt-space-sm">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-sm mt-space-sm">
 <!-- 1. STARS (Emerald) -->
 <div class="bg-surface-container-lowest rounded-xl p-space-sm border-2 border-[#15803D]/25 bg-gradient-to-b from-[#DCFCE7]/20 to-surface-container-lowest tactile-card tactile-hover">
 <div class="flex items-center justify-between">
@@ -509,43 +516,43 @@
 <p class="text-body-sm font-body-sm text-on-surface-variant">See how a ₹10 change impacts your net bank balance</p>
 </div>
 </div>
-<button class="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-label-sm font-label-sm active:scale-95 transition-transform shrink-0">
+<a href="/menumitra_what_if_simulator/code.html" class="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-label-sm font-label-sm active:scale-95 transition-transform shrink-0 inline-flex items-center">
         Simulate
-      </button>
+      </a>
 </section>
 </main>
 <!-- FLOATING CONTEXTUAL FAB (Recipe Costing / Add Dish) -->
 <aside class="fixed right-4 bottom-20 z-40">
-<button aria-label="Cost New Dish" class="flex items-center gap-2 bg-[#F4A300] text-[#1C2626] font-bold px-4 py-3 rounded-full shadow-lg hover:brightness-105 active:scale-95 transition-transform">
+<a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" aria-label="Cost New Dish" class="flex items-center gap-2 bg-[#F4A300] text-[#1C2626] font-bold px-4 py-3 rounded-full shadow-lg hover:brightness-105 active:scale-95 transition-transform">
 <span class="material-symbols-outlined text-[22px]" data-icon="add">add</span>
 <span class="text-label-lg font-label-lg">Cost Dish</span>
-</button>
+</a>
 </aside>
 <!-- FIXED BOTTOM NAVIGATION BAR (Strict mapping of Shared Components JSON) -->
 <!-- Active Destination: "Dashboard" is highlighted, using style_active_navigation -->
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs h-16 bg-surface shadow-[0_-2px_8px_-2px_rgba(15,92,92,0.05)] border-t border-outline-variant/20">
 <!-- Item 1: Dashboard (ACTIVE MATCH) -->
-<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-transform duration-150 flex-1 py-1" href="#dashboard">
+<a class="flex flex-col items-center justify-center text-primary font-bold active:scale-90 transition-transform duration-150 flex-1 py-1" href="/index.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="dashboard" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
 <span class="text-label-sm font-label-sm mt-0.5">Dashboard</span>
 </a>
 <!-- Item 2: Dishes -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#dishes">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="/menumitra_dishes_recipes/code.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="restaurant_menu">restaurant_menu</span>
 <span class="text-label-sm font-label-sm mt-0.5">Dishes</span>
 </a>
 <!-- Item 3: Add -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#add">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="/menumitra_add_recipe_smart_voice_photo_capture/code.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="add_circle">add_circle</span>
 <span class="text-label-sm font-label-sm mt-0.5">Add</span>
 </a>
 <!-- Item 4: Simulator -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#simulator">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="/menumitra_what_if_simulator/code.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="calculate">calculate</span>
 <span class="text-label-sm font-label-sm mt-0.5">Simulator</span>
 </a>
 <!-- Item 5: Menu Layout -->
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="#menu-layout">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150 flex-1 py-1" href="/menumitra_printed_menu_layout_heatmap/code.html">
 <span class="material-symbols-outlined text-[24px]" data-icon="tune">tune</span>
 <span class="text-label-sm font-label-sm mt-0.5">Menu Layout</span>
 </a>

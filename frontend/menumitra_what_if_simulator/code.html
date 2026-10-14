@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <html class="light" lang="en"><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>What-If Simulator - MenuMitra</title>
+<title>What-If Simulator - Marginly</title>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Google Fonts: Inter -->
@@ -163,13 +167,11 @@
 <body class="bg-background text-on-surface antialiased font-body-md min-h-screen pb-24">
 <!-- ================= TOP APP BAR ================= -->
 <header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
-<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-space-sm h-16 flex justify-between items-center">
 <!-- Brand & Tagline -->
 <div class="flex items-center space-x-4">
 <a href="/index.html" class="flex items-center space-x-2.5">
-<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
-<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
-</div>
+<img src="/logo-mark.png" alt="Marginly" class="w-9 h-9 object-contain shrink-0" />
 <div>
 <div class="flex items-baseline space-x-1.5">
 <span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
@@ -226,7 +228,7 @@ RO
 </div>
 </div>
 <!-- Secondary Desktop Menu Bar -->
-<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-4 sm:px-6 lg:px-8 xl:px-10 w-full">
 <div class="flex space-x-1 py-1.5">
 <a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
 <span class="material-symbols-outlined text-[18px]">dashboard</span>
@@ -256,7 +258,7 @@ RO
 </nav>
 </header>
 <!-- MAIN SIMULATOR CANVAS -->
-<main class="w-full max-w-xl mx-auto px-margin-mobile pt-space-md space-y-space-md">
+<main class="w-full max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-space-md space-y-space-md flex-1">
 <!-- Page Header Intro -->
 <div class="space-y-1">
 <div class="flex items-center gap-2">
@@ -269,6 +271,8 @@ RO
         See how small price or ingredient tweaks impact your monthly pocket without guesswork.
       </p>
 </div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<div class="lg:col-span-7 space-y-space-md">
 <!-- TARGET DISH SELECTOR & STATUS -->
 <section class="level-1-card rounded-xl p-space-md space-y-space-md">
 <div class="flex items-center justify-between">
@@ -411,6 +415,9 @@ RO
 </label>
 </div>
 </section>
+</div>
+<!-- RIGHT 5-COLUMN: LIVE FINANCIAL IMPACT RESULT & ACTIONS -->
+<div class="lg:col-span-5 space-y-space-md lg:sticky lg:top-24">
 <!-- INSTANT FINANCIAL IMPACT RESULT CARD -->
 <section class="rounded-2xl p-space-lg text-on-surface relative overflow-hidden border border-outline-variant/40" style="background: linear-gradient(145deg, #FFFFFF 0%, #F4F8F8 60%, #FEF9EE 100%); box-shadow: 0 10px 24px -4px rgba(15, 92, 92, 0.10);">
 <!-- Subtle ambient glow decoration -->
@@ -492,8 +499,10 @@ RO
 <!-- Helpful Back-Office Tip Footer -->
 <div class="pt-2 text-center text-body-sm font-body-sm text-on-surface-variant flex items-center justify-center gap-1.5 pb-6">
 <span class="material-symbols-outlined text-sm text-outline" data-icon="shield">shield</span>
-      MenuMitra auto-saves your simulation drafts safely on device.
+      Marginly auto-saves your simulation drafts safely on device.
     </div>
+</div>
+</div>
 </main>
 <!-- BOTTOM NAVIGATION DOCK (Shared Components JSON execution) -->
 <!-- Destination intent is "Simulator", which is the 4th item (index 3) -->

@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 
 <html class="h-full bg-background text-on-background" lang="en"><head>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="shortcut icon" href="/favicon.ico">
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
-<title>Dishes &amp; Recipes | MenuMitra</title>
+<title>Dishes &amp; Recipes | Marginly</title>
 <!-- Material Symbols Outlined -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <!-- Inter Font Family -->
@@ -139,13 +143,11 @@
 <body class="min-h-full bg-background text-on-background antialiased flex flex-col pb-28">
 <!-- ================= TOP APP BAR ================= -->
 <header class="bg-surface text-primary shadow-sm sticky top-0 z-40 border-b border-outline-variant/30">
-<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-sm h-16 flex justify-between items-center w-full">
+<div class="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-space-sm h-16 flex justify-between items-center">
 <!-- Brand & Tagline -->
 <div class="flex items-center space-x-4">
 <a href="/index.html" class="flex items-center space-x-2.5">
-<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-surface-bright shadow-sm">
-<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
-</div>
+<img src="/logo-mark.png" alt="Marginly" class="w-9 h-9 object-contain shrink-0" />
 <div>
 <div class="flex items-baseline space-x-1.5">
 <span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">Marginly</span>
@@ -201,8 +203,7 @@ RO
 </div>
 </div>
 </div>
-<!-- Secondary Desktop Menu Bar -->
-<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-margin max-w-7xl mx-auto">
+<nav class="hidden md:flex border-t border-outline-variant/20 bg-surface-bright px-4 sm:px-6 lg:px-8 xl:px-10 w-full">
 <div class="flex space-x-1 py-1.5">
 <a class="px-3 py-1.5 rounded-lg text-label-md font-label-md text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors flex items-center space-x-1.5" href="/index.html">
 <span class="material-symbols-outlined text-[18px]">dashboard</span>
@@ -232,7 +233,7 @@ RO
 </nav>
 </header>
 <!-- MAIN VIEWPORT CONTAINER -->
-<main class="w-full max-w-lg mx-auto px-margin-mobile pt-space-md flex flex-col gap-space-md">
+<main class="w-full max-w-[1780px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 pt-space-md flex flex-col gap-space-md flex-1">
 <!-- BACK TO DASHBOARD -->
 <a href="/index.html" class="inline-flex items-center gap-1 text-label-sm font-label-sm text-primary font-semibold hover:underline -mb-2">
   <span class="material-symbols-outlined text-[16px]">arrow_back</span>
@@ -259,7 +260,7 @@ RO
 </button>
 </div>
 <!-- CATEGORY PILLS (Horizontal Scroll) -->
-<div id="category-pills-container" class="flex items-center gap-2 overflow-x-auto custom-scroll-hidden -mx-margin-mobile px-margin-mobile pb-1">
+<div id="category-pills-container" class="flex items-center gap-2 overflow-x-auto custom-scroll-hidden w-full px-1 pb-1">
 <button class="px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-primary-container text-on-primary font-semibold shadow-sm transition-transform active:scale-95">
         All (0)
       </button>
@@ -301,8 +302,8 @@ RO
 </div>
 </div>
 <!-- RICH DISH CARDS LIST -->
-<div id="dish-cards-container" class="flex flex-col gap-space-md">
-<div class="bg-surface-container-lowest rounded-2xl p-6 border-2 border-dashed border-outline-variant/60 text-center space-y-4 shadow-sm">
+<div id="dish-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+<div class="bg-surface-container-lowest rounded-2xl p-6 border-2 border-dashed border-outline-variant/60 text-center space-y-4 shadow-sm col-span-full">
   <div class="w-14 h-14 rounded-2xl bg-primary-container/10 text-primary flex items-center justify-center mx-auto shadow-xs">
     <span class="material-symbols-outlined text-[32px]">menu_book</span>
   </div>
@@ -323,10 +324,10 @@ RO
 </main>
 <!-- FLOATING ACTION BUTTON (Primary Task) -->
 <aside class="fixed bottom-20 right-4 z-40 max-w-lg mx-auto">
-<button class="flex items-center gap-2 px-4 py-3 rounded-full bg-primary-container text-on-primary shadow-lg hover:brightness-110 active:scale-95 transition-all text-label-lg font-label-lg cursor-pointer">
+<a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" class="flex items-center gap-2 px-4 py-3 rounded-full bg-primary-container text-on-primary shadow-lg hover:brightness-110 active:scale-95 transition-all text-label-lg font-label-lg cursor-pointer">
 <span class="material-symbols-outlined text-[20px]">add</span>
 <span>Add New Dish &amp; Recipe Cost</span>
-</button>
+</a>
 </aside>
 
 <!-- BOTTOM NAVIGATION DOCK -->
@@ -391,7 +392,7 @@ RO
 
         if (cardsContainer) {
           cardsContainer.innerHTML = `
-            <div class="bg-surface-container-lowest rounded-2xl p-8 border-2 border-dashed border-outline-variant/60 text-center space-y-4 shadow-sm">
+            <div class="bg-surface-container-lowest rounded-2xl p-8 border-2 border-dashed border-outline-variant/60 text-center space-y-4 shadow-sm col-span-full">
               <div class="w-16 h-16 rounded-2xl bg-primary-container/10 text-primary flex items-center justify-center mx-auto shadow-xs">
                 <span class="material-symbols-outlined text-[36px]">menu_book</span>
               </div>
@@ -508,7 +509,7 @@ RO
 
           if (list.length === 0) {
             cardsContainer.innerHTML = `
-              <div class="p-8 text-center bg-surface-container-low rounded-xl text-outline border border-outline-variant/30">
+              <div class="p-8 text-center bg-surface-container-low rounded-xl text-outline border border-outline-variant/30 col-span-full">
                 <span class="material-symbols-outlined text-3xl mb-1">filter_list_off</span>
                 <p class="text-sm font-semibold">No dishes matching your current filter.</p>
               </div>
