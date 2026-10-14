@@ -243,7 +243,13 @@ RO
 <div class="flex flex-col gap-1">
 <div class="flex items-center justify-between">
 <h1 class="text-headline-md font-headline-md text-primary font-bold">Dishes &amp; Recipes</h1>
+<div class="flex items-center gap-2">
+<button id="ai-categorize-btn" onclick="triggerAICategorize()" class="px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed text-label-sm font-semibold flex items-center gap-1 shadow-xs hover:bg-secondary-fixed-dim transition active:scale-95">
+  <span class="material-symbols-outlined text-[15px]">auto_awesome</span>
+  <span>Auto-Categorize with AI</span>
+</button>
 <span id="dishes-count-badge" class="text-label-sm font-label-sm px-2.5 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-semibold">0 Items</span>
+</div>
 </div>
 <p id="dishes-subtitle" class="text-body-sm font-body-sm text-on-surface-variant">
         Track selling price, food cost, and profit per plate across your menu.
@@ -358,26 +364,203 @@ RO
 <script>
   const API_BASE = 'http://127.0.0.1:8000';
 
-  document.addEventListener('DOMContentLoaded', async () => {
-    // Floating action button click handler
-    const fabBtn = document.querySelector('aside.fixed button');
-    if (fabBtn) {
-      fabBtn.onclick = () => {
-        window.location.href = '/menumitra_add_recipe_smart_voice_photo_capture/code.html';
-      };
+  // Cart State (Dish ID -> Quantity)
+  const cart = {};
+  let allProcessedDishes = [];
+  let renderFilteredCardsGlobal = () => {};
+
+  function logout() {
+    localStorage.removeItem('marginly_token');
+    localStorage.removeItem('marginly_user');
+    window.location.href = '/login.html';
+  }
+
+  // Add / Remove from Cart
+  function updateCart(dishId, delta) {
+    if (!cart[dishId]) cart[dishId] = 0;
+    cart[dishId] = Math.max(0, cart[dishId] + delta);
+    if (cart[dishId] === 0) delete cart[dishId];
+    renderFilteredCardsGlobal();
+    renderCart();
+  }
+
+  function clearCart() {
+    Object.keys(cart).forEach(k => delete cart[k]);
+    renderFilteredCardsGlobal();
+    renderCart();
+  }
+
+  function toggleCartModal() {
+    const modal = document.getElementById('cart-modal');
+    if (modal) modal.classList.toggle('hidden');
+  }
+
+  function renderCart() {
+    const bottomBar = document.getElementById('cart-bottom-bar');
+    const badge = document.getElementById('cart-badge');
+    const totalItems = Object.values(cart).reduce((s, q) => s + q, 0);
+
+    if (badge) badge.textContent = totalItems;
+
+    let grandRevenue = 0;
+    let grandCost = 0;
+
+    const cartIds = Object.keys(cart).map(Number);
+    cartIds.forEach(id => {
+      const dish = allProcessedDishes.find(d => d.id === id);
+      if (dish) {
+        const qty = cart[id];
+        grandRevenue += qty * dish.selling_price;
+        grandCost += qty * dish.cost;
+      }
+    });
+
+    const netProfit = grandRevenue - grandCost;
+    const marginPct = grandRevenue > 0 ? ((netProfit / grandRevenue) * 100).toFixed(1) : 0;
+
+    // Determine Price Effectiveness
+    let effectivenessLabel = '';
+    let effectivenessClass = '';
+    let effectivenessIcon = '';
+    if (marginPct >= 65) {
+      effectivenessLabel = `Highly Price-Effective (${marginPct}% Margin)`;
+      effectivenessClass = 'bg-[#DCFCE7] text-[#15803D] border-[#15803D]/40';
+      effectivenessIcon = 'trending_up';
+    } else if (marginPct >= 45) {
+      effectivenessLabel = `Moderately Price-Effective (${marginPct}% Margin)`;
+      effectivenessClass = 'bg-[#FEF3C7] text-[#D97706] border-[#D97706]/40';
+      effectivenessIcon = 'balance';
+    } else {
+      effectivenessLabel = `Low Margin / Cost-Heavy (${marginPct}% Margin)`;
+      effectivenessClass = 'bg-[#FEE2E2] text-[#DC2626] border-[#DC2626]/40';
+      effectivenessIcon = 'warning';
     }
 
-    const cardsContainer = document.getElementById('dish-cards-container') || document.querySelector('.flex.flex-col.gap-space-md:last-of-type');
-    const itemsCountBadge = document.getElementById('dishes-count-badge') || document.querySelector('h1.text-headline-md + span');
-    const subtitleEl = document.getElementById('dishes-subtitle') || document.querySelector('h1.text-headline-md ~ p');
+    if (totalItems === 0) {
+      if (bottomBar) bottomBar.classList.add('hidden');
+      const modal = document.getElementById('cart-modal');
+      if (modal) modal.classList.add('hidden');
+      return;
+    }
 
-    let activeUser = null;
+    // Show floating bottom bar
+    if (bottomBar) {
+      bottomBar.classList.remove('hidden');
+      const barCount = document.getElementById('cart-bar-count');
+      const barTotal = document.getElementById('cart-bar-total');
+      const barProfit = document.getElementById('cart-bar-profit');
+      const barEffectiveness = document.getElementById('cart-bar-effectiveness');
+
+      if (barCount) barCount.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
+      if (barTotal) barTotal.textContent = `\u20B9${Math.round(grandRevenue).toLocaleString('en-IN')}`;
+      if (barProfit) barProfit.textContent = `+\u20B9${Math.round(netProfit).toLocaleString('en-IN')}`;
+      if (barEffectiveness) {
+        barEffectiveness.className = `text-[11px] font-bold px-2 py-0.5 rounded-full border inline-flex items-center gap-1 ${effectivenessClass}`;
+        barEffectiveness.innerHTML = `<span class="material-symbols-outlined text-[13px]">${effectivenessIcon}</span><span>${effectivenessLabel}</span>`;
+      }
+    }
+
+    // Modal contents
+    const modalItems = document.getElementById('cart-modal-items');
+    if (modalItems) {
+      modalItems.innerHTML = cartIds.map(id => {
+        const dish = allProcessedDishes.find(d => d.id === id);
+        if (!dish) return '';
+        const qty = cart[id];
+        const lineRevenue = qty * dish.selling_price;
+        const lineCost = qty * dish.cost;
+        const lineProfit = lineRevenue - lineCost;
+        const lineMargin = lineRevenue > 0 ? ((lineProfit / lineRevenue) * 100).toFixed(0) : 0;
+
+        return `
+          <div class="flex items-center justify-between py-3 border-b border-outline-variant/20 last:border-0">
+            <div class="flex-1 min-w-0 pr-2">
+              <div class="font-bold text-on-surface text-label-md truncate">${dish.name}</div>
+              <div class="text-[11px] text-on-surface-variant flex items-center gap-1.5 mt-0.5">
+                <span class="px-1.5 py-0.2 rounded bg-surface-container font-medium">${dish.category || 'General'}</span>
+                <span>\u20B9${Math.round(dish.selling_price)} / plate</span>
+                <span class="text-primary font-semibold">(${lineMargin}% margin)</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <div class="flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant/40">
+                <button onclick="updateCart(${id}, -1)" class="w-7 h-7 rounded bg-surface-container-lowest hover:bg-error/15 text-error flex items-center justify-center transition active:scale-90">
+                  <span class="material-symbols-outlined text-[16px]">remove</span>
+                </button>
+                <span class="w-7 text-center font-bold text-on-surface text-label-md">${qty}</span>
+                <button onclick="updateCart(${id}, 1)" class="w-7 h-7 rounded bg-primary-container text-on-primary flex items-center justify-center transition active:scale-90">
+                  <span class="material-symbols-outlined text-[16px]">add</span>
+                </button>
+              </div>
+              <span class="w-16 text-right font-bold text-on-surface font-mono text-label-md">\u20B9${lineRevenue.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    const modalTotal = document.getElementById('cart-modal-total');
+    const modalCost = document.getElementById('cart-modal-cost');
+    const modalProfit = document.getElementById('cart-modal-profit');
+    const modalEfficiency = document.getElementById('cart-modal-efficiency');
+
+    if (modalTotal) modalTotal.textContent = `\u20B9${Math.round(grandRevenue).toLocaleString('en-IN')}`;
+    if (modalCost) modalCost.textContent = `\u20B9${Math.round(grandCost).toLocaleString('en-IN')}`;
+    if (modalProfit) modalProfit.textContent = `+\u20B9${Math.round(netProfit).toLocaleString('en-IN')}`;
+    if (modalEfficiency) {
+      modalEfficiency.className = `p-3 rounded-xl border flex items-center justify-between ${effectivenessClass}`;
+      modalEfficiency.innerHTML = `
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[20px]">${effectivenessIcon}</span>
+          <div>
+            <div class="text-label-sm font-bold uppercase tracking-wider">Price Effectiveness Rating</div>
+            <div class="text-label-md font-bold">${effectivenessLabel}</div>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-[11px]">Gross Margin</div>
+          <div class="text-headline-md font-bold">${marginPct}%</div>
+        </div>
+      `;
+    }
+  }
+
+  // Trigger Gemini AI Auto-Categorization
+  async function triggerAICategorize() {
+    const btn = document.getElementById('ai-categorize-btn');
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[15px] animate-spin">sync</span><span>Categorizing with AI...</span>';
+    }
+
     try {
-      activeUser = JSON.parse(localStorage.getItem('marginly_user'));
-    } catch (e) {}
+      const res = await fetch(`${API_BASE}/api/menu/auto-categorize`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({})
+      });
+      const data = await res.json();
+      if (btn) {
+        btn.innerHTML = `<span class="material-symbols-outlined text-[15px]">check</span><span>${data.categorized_count} dishes categorized!</span>`;
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">auto_awesome</span><span>Auto-Categorize with AI</span>';
+        }, 2000);
+      }
+      // Reload dishes to show refreshed category pills
+      loadDishesData();
+    } catch (e) {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<span class="material-symbols-outlined text-[15px]">auto_awesome</span><span>Auto-Categorize with AI</span>';
+      }
+    }
+  }
 
-    const userCuisine = activeUser?.cuisine_type || 'Multi-Cuisine';
-    const userCity = activeUser?.location?.split(',')[0] || 'Dehradun';
+  async function loadDishesData() {
+    const cardsContainer = document.getElementById('dish-cards-container');
+    const itemsCountBadge = document.getElementById('dishes-count-badge');
+    const subtitleEl = document.getElementById('dishes-subtitle');
 
     try {
       const res = await fetch(`${API_BASE}/api/menu-items`);
@@ -386,10 +569,8 @@ RO
       const dishes = await res.json();
 
       if (!dishes || dishes.length === 0) {
-        // Blank state: User hasn't imported or added any dishes yet
         if (itemsCountBadge) itemsCountBadge.textContent = '0 Items';
         if (subtitleEl) subtitleEl.textContent = `Your menu is currently blank. Start by adding recipes or recording daily sales.`;
-
         if (cardsContainer) {
           cardsContainer.innerHTML = `
             <div class="bg-surface-container-lowest rounded-2xl p-8 border-2 border-dashed border-outline-variant/60 text-center space-y-4 shadow-sm col-span-full">
@@ -402,195 +583,297 @@ RO
                   Marginly calculates exact plate costs, food cost percentage, and popularity matrices once you enter your recipes and sales.
                 </p>
               </div>
-
               <div class="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a href="/menumitra_add_recipe_smart_voice_photo_capture/code.html" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary-container text-on-primary font-bold text-xs flex items-center justify-center gap-1.5 shadow-md hover:bg-primary transition">
                   <span class="material-symbols-outlined text-base">add_circle</span>
-                  <span>+ Add Your First Dish & Recipe</span>
+                  <span>+ Add Your First Dish &amp; Recipe</span>
                 </a>
               </div>
             </div>
           `;
         }
-      } else {
-        // Dishes exist! Compute metrics & classifications
-        const processedDishes = dishes.map(dish => {
-          const cost = dish.cost_per_serving || dish.calculated_cost || (dish.selling_price * 0.35);
-          const profit = dish.contribution_margin || (dish.selling_price - cost);
-          const margin = dish.selling_price > 0 ? ((profit / dish.selling_price) * 100).toFixed(1) : 0;
-          const quadrant = dish.quadrant || (margin > 65 ? 'STAR' : margin > 35 ? 'PLOWHORSE' : margin > 20 ? 'PUZZLE' : 'DOG');
-          return { ...dish, cost, profit, margin, quadrant };
-        });
+        return;
+      }
 
-        // Update counts on filter tabs
-        const counts = {
-          ALL: processedDishes.length,
-          STAR: processedDishes.filter(d => d.quadrant === 'STAR').length,
-          PLOWHORSE: processedDishes.filter(d => d.quadrant === 'PLOWHORSE').length,
-          PUZZLE: processedDishes.filter(d => d.quadrant === 'PUZZLE').length,
-          DOG: processedDishes.filter(d => d.quadrant === 'DOG').length
-        };
+      // Process dishes
+      const processedDishes = dishes.map(dish => {
+        const cost = dish.cost_per_serving || dish.calculated_cost || (dish.selling_price * 0.35);
+        const profit = dish.contribution_margin || (dish.selling_price - cost);
+        const margin = dish.selling_price > 0 ? ((profit / dish.selling_price) * 100).toFixed(1) : 0;
+        const quadrant = dish.quadrant || (margin > 65 ? 'STAR' : margin > 35 ? 'PLOWHORSE' : margin > 20 ? 'PUZZLE' : 'DOG');
+        return { ...dish, cost, profit, margin, quadrant };
+      });
 
-        const allTab = document.querySelector('button[data-filter="ALL"] span');
-        if (allTab) allTab.textContent = `All (${counts.ALL})`;
-        const starTab = document.querySelector('button[data-filter="STAR"] span:last-child');
-        if (starTab) starTab.textContent = `★ Stars (${counts.STAR})`;
-        const plowTab = document.querySelector('button[data-filter="PLOWHORSE"] span:last-child');
-        if (plowTab) plowTab.textContent = `♞ Plowhorses (${counts.PLOWHORSE})`;
-        const puzzleTab = document.querySelector('button[data-filter="PUZZLE"] span:last-child');
-        if (puzzleTab) puzzleTab.textContent = `🧩 Puzzles (${counts.PUZZLE})`;
-        const dogTab = document.querySelector('button[data-filter="DOG"] span:last-child');
-        if (dogTab) dogTab.textContent = `⚠ Dogs (${counts.DOG})`;
+      allProcessedDishes = processedDishes;
 
-        if (itemsCountBadge) itemsCountBadge.textContent = `${processedDishes.length} Items`;
-        if (subtitleEl) subtitleEl.textContent = `Track selling price, food cost, and profit per plate across ${processedDishes.length} items.`;
+      // Update counts on filter tabs
+      const counts = {
+        ALL: processedDishes.length,
+        STAR: processedDishes.filter(d => d.quadrant === 'STAR').length,
+        PLOWHORSE: processedDishes.filter(d => d.quadrant === 'PLOWHORSE').length,
+        PUZZLE: processedDishes.filter(d => d.quadrant === 'PUZZLE').length,
+        DOG: processedDishes.filter(d => d.quadrant === 'DOG').length
+      };
 
-        let currentFilter = 'ALL';
-        let currentCategory = 'ALL';
-        let searchQuery = '';
+      const allTab = document.querySelector('button[data-filter="ALL"] span');
+      if (allTab) allTab.textContent = `All (${counts.ALL})`;
+      const starTab = document.querySelector('button[data-filter="STAR"] span:last-child');
+      if (starTab) starTab.textContent = `\u2605 Stars (${counts.STAR})`;
+      const plowTab = document.querySelector('button[data-filter="PLOWHORSE"] span:last-child');
+      if (plowTab) plowTab.textContent = `\u265E Plowhorses (${counts.PLOWHORSE})`;
+      const puzzleTab = document.querySelector('button[data-filter="PUZZLE"] span:last-child');
+      if (puzzleTab) puzzleTab.textContent = `\uD83E\uDDE9 Puzzles (${counts.PUZZLE})`;
+      const dogTab = document.querySelector('button[data-filter="DOG"] span:last-child');
+      if (dogTab) dogTab.textContent = `\u26A0 Dogs (${counts.DOG})`;
 
-        // Dynamic category pills
-        const catContainer = document.getElementById('category-pills-container');
-        if (catContainer) {
-          const uniqueCats = Array.from(new Set(processedDishes.map(d => d.category || 'General').filter(Boolean)));
-          const allPills = [
-            { id: 'ALL', name: `All (${processedDishes.length})` },
-            ...uniqueCats.map(cat => ({
-              id: cat,
-              name: `${cat} (${processedDishes.filter(d => (d.category || 'General') === cat).length})`
-            }))
-          ];
+      if (itemsCountBadge) itemsCountBadge.textContent = `${processedDishes.length} Items`;
+      if (subtitleEl) subtitleEl.textContent = `Track selling price, food cost, and profit per plate across ${processedDishes.length} items.`;
 
-          catContainer.innerHTML = allPills.map((pill, idx) => `
-            <button data-cat="${pill.id}" class="category-filter-pill px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap ${idx === 0 ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container'} transition-all active:scale-95">
-              ${pill.name}
-            </button>
-          `).join('');
+      let currentFilter = 'ALL';
+      let currentCategory = 'ALL';
+      let searchQuery = '';
 
-          catContainer.querySelectorAll('.category-filter-pill').forEach(pillBtn => {
-            pillBtn.onclick = () => {
-              currentCategory = pillBtn.getAttribute('data-cat') || 'ALL';
-              catContainer.querySelectorAll('.category-filter-pill').forEach(b => {
-                if (b === pillBtn) {
-                  b.className = 'category-filter-pill px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-primary-container text-on-primary font-semibold shadow-sm transition-all active:scale-95';
-                } else {
-                  b.className = 'category-filter-pill px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container transition-all active:scale-95';
-                }
-              });
-              renderFilteredCards();
-            };
-          });
-        }
+      // Dynamic category pills
+      const catContainer = document.getElementById('category-pills-container');
+      if (catContainer) {
+        const uniqueCats = Array.from(new Set(processedDishes.map(d => d.category || 'General').filter(Boolean))).sort();
+        const allPills = [
+          { id: 'ALL', name: `All (${processedDishes.length})` },
+          ...uniqueCats.map(cat => ({
+            id: cat,
+            name: `${cat} (${processedDishes.filter(d => (d.category || 'General') === cat).length})`
+          }))
+        ];
 
-        // Live Search Handler
-        const searchInput = document.getElementById('dish-search-input');
-        if (searchInput) {
-          searchInput.addEventListener('input', (e) => {
-            searchQuery = e.target.value.toLowerCase().trim();
-            renderFilteredCards();
-          });
-        }
+        catContainer.innerHTML = allPills.map((pill, idx) => `
+          <button data-cat="${pill.id}" class="category-filter-pill px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap ${idx === 0 ? 'bg-primary-container text-on-primary font-semibold shadow-sm' : 'bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container'} transition-all active:scale-95">
+            ${pill.name}
+          </button>
+        `).join('');
 
-        function renderFilteredCards() {
-          if (!cardsContainer) return;
-          let list = processedDishes;
-
-          if (currentFilter !== 'ALL') {
-            list = list.filter(d => d.quadrant === currentFilter);
-          }
-
-          if (currentCategory !== 'ALL') {
-            list = list.filter(d => (d.category || 'General') === currentCategory);
-          }
-
-          if (searchQuery) {
-            list = list.filter(d => (d.name || '').toLowerCase().includes(searchQuery) || (d.category || '').toLowerCase().includes(searchQuery));
-          }
-
-          if (list.length === 0) {
-            cardsContainer.innerHTML = `
-              <div class="p-8 text-center bg-surface-container-low rounded-xl text-outline border border-outline-variant/30 col-span-full">
-                <span class="material-symbols-outlined text-3xl mb-1">filter_list_off</span>
-                <p class="text-sm font-semibold">No dishes matching your current filter.</p>
-              </div>
-            `;
-            return;
-          }
-
-          cardsContainer.innerHTML = list.map((dish) => {
-            const badgeColor = dish.quadrant === 'STAR' ? 'bg-[#DCFCE7] text-[#15803D] border-[#15803D]' :
-                               dish.quadrant === 'PLOWHORSE' ? 'bg-[#FEF3C7] text-[#D97706] border-[#D97706]' :
-                               dish.quadrant === 'PUZZLE' ? 'bg-[#DBEAFE] text-[#2563EB] border-[#2563EB]' :
-                               'bg-[#FEE2E2] text-[#DC2626] border-[#DC2626]';
-
-            return `
-              <article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3 transition hover:shadow-md">
-                <div class="flex items-start justify-between gap-2">
-                  <div class="flex flex-col">
-                    <span class="text-headline-md font-headline-md text-on-surface font-bold">${dish.name}</span>
-                    <span class="text-body-sm font-body-sm text-on-surface-variant">${dish.category || 'General'}</span>
-                  </div>
-                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-bold border ${badgeColor}">
-                    <span>${dish.quadrant}</span>
-                  </span>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2 bg-surface-container-low p-2.5 rounded-lg text-center">
-                  <div>
-                    <span class="text-[11px] text-outline block">Price</span>
-                    <span class="text-label-lg font-bold text-on-surface font-mono">₹${Math.round(dish.selling_price)}</span>
-                  </div>
-                  <div>
-                    <span class="text-[11px] text-outline block">Food Cost</span>
-                    <span class="text-label-lg font-bold text-on-surface font-mono">₹${Math.round(dish.cost)}</span>
-                  </div>
-                  <div>
-                    <span class="text-[11px] text-outline block">Margin</span>
-                    <span class="text-label-lg font-bold text-primary font-mono">${dish.margin}%</span>
-                  </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
-                  <div class="text-body-sm font-body-sm text-on-surface">
-                    Profit / plate: <span class="font-bold text-primary">₹${Math.round(dish.profit)}</span>
-                  </div>
-                  <div class="flex items-center gap-3">
-                    <a href="/menumitra_dish_detail_cold_coffee/code.html" class="text-label-sm font-label-sm text-on-surface-variant hover:text-primary transition flex items-center gap-0.5">
-                      <span>Recipe Costing</span>
-                      <span class="material-symbols-outlined text-[14px]">open_in_new</span>
-                    </a>
-                    <a href="/menumitra_what_if_simulator/code.html" class="text-label-md font-label-md text-primary font-semibold hover:underline flex items-center gap-1">
-                      <span>Simulate Price</span>
-                      <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-                    </a>
-                  </div>
-                </div>
-              </article>
-            `;
-          }).join('');
-        }
-
-        // Wire quadrant tabs
-        document.querySelectorAll('.quadrant-tab').forEach(tab => {
-          tab.onclick = () => {
-            currentFilter = tab.getAttribute('data-filter') || 'ALL';
-            document.querySelectorAll('.quadrant-tab').forEach(t => {
-              if (t === tab) {
-                t.classList.add('border-2', 'shadow-sm', 'font-bold');
+        catContainer.querySelectorAll('.category-filter-pill').forEach(pillBtn => {
+          pillBtn.onclick = () => {
+            currentCategory = pillBtn.getAttribute('data-cat') || 'ALL';
+            catContainer.querySelectorAll('.category-filter-pill').forEach(b => {
+              if (b === pillBtn) {
+                b.className = 'category-filter-pill px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-primary-container text-on-primary font-semibold shadow-sm transition-all active:scale-95';
               } else {
-                t.classList.remove('border-2', 'shadow-sm');
+                b.className = 'category-filter-pill px-3.5 py-1.5 rounded-full text-label-md font-label-md whitespace-nowrap bg-surface-container-lowest border border-outline-variant/60 text-on-surface-variant hover:bg-surface-container transition-all active:scale-95';
               }
             });
             renderFilteredCards();
           };
         });
-
-        renderFilteredCards();
       }
+
+      // Live Search
+      const searchInput = document.getElementById('dish-search-input');
+      if (searchInput) {
+        searchInput.oninput = (e) => {
+          searchQuery = e.target.value.toLowerCase().trim();
+          renderFilteredCards();
+        };
+      }
+
+      function renderFilteredCards() {
+        if (!cardsContainer) return;
+        let list = processedDishes;
+
+        if (currentFilter !== 'ALL') {
+          list = list.filter(d => d.quadrant === currentFilter);
+        }
+
+        if (currentCategory !== 'ALL') {
+          list = list.filter(d => (d.category || 'General') === currentCategory);
+        }
+
+        if (searchQuery) {
+          list = list.filter(d => (d.name || '').toLowerCase().includes(searchQuery) || (d.category || '').toLowerCase().includes(searchQuery));
+        }
+
+        if (list.length === 0) {
+          cardsContainer.innerHTML = `
+            <div class="p-8 text-center bg-surface-container-low rounded-xl text-outline border border-outline-variant/30 col-span-full">
+              <span class="material-symbols-outlined text-3xl mb-1">filter_list_off</span>
+              <p class="text-sm font-semibold">No dishes matching your current filter.</p>
+            </div>
+          `;
+          return;
+        }
+
+        cardsContainer.innerHTML = list.map((dish) => {
+          const badgeColor = dish.quadrant === 'STAR' ? 'bg-[#DCFCE7] text-[#15803D] border-[#15803D]' :
+                             dish.quadrant === 'PLOWHORSE' ? 'bg-[#FEF3C7] text-[#D97706] border-[#D97706]' :
+                             dish.quadrant === 'PUZZLE' ? 'bg-[#DBEAFE] text-[#2563EB] border-[#2563EB]' :
+                             'bg-[#FEE2E2] text-[#DC2626] border-[#DC2626]';
+
+          const inCart = cart[dish.id] || 0;
+
+          return `
+            <article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/40 shadow-sm flex flex-col gap-3 transition hover:shadow-md">
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex flex-col">
+                  <span class="text-headline-md font-headline-md text-on-surface font-bold">${dish.name}</span>
+                  <span class="text-body-sm font-body-sm text-on-surface-variant">${dish.category || 'General'}</span>
+                </div>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-bold border ${badgeColor}">
+                  <span>${dish.quadrant}</span>
+                </span>
+              </div>
+
+              <div class="grid grid-cols-3 gap-2 bg-surface-container-low p-2.5 rounded-lg text-center">
+                <div>
+                  <span class="text-[11px] text-outline block">Price</span>
+                  <span class="text-label-lg font-bold text-on-surface font-mono">\u20B9${Math.round(dish.selling_price)}</span>
+                </div>
+                <div>
+                  <span class="text-[11px] text-outline block">Food Cost</span>
+                  <span class="text-label-lg font-bold text-on-surface font-mono">\u20B9${Math.round(dish.cost)}</span>
+                </div>
+                <div>
+                  <span class="text-[11px] text-outline block">Margin</span>
+                  <span class="text-label-lg font-bold text-primary font-mono">${dish.margin}%</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between pt-1 border-t border-outline-variant/20">
+                <div class="text-body-sm font-body-sm text-on-surface">
+                  Profit: <span class="font-bold text-primary">\u20B9${Math.round(dish.profit)}</span>
+                </div>
+                <!-- Food Ordering User-Friendly +/- Cart Controls -->
+                <div class="flex items-center gap-1 bg-surface-container p-1 rounded-xl border border-outline-variant/30">
+                  ${inCart > 0 ? `
+                    <button onclick="updateCart(${dish.id}, -1)" class="w-8 h-8 rounded-lg bg-surface-container-lowest hover:bg-error/15 text-error flex items-center justify-center transition active:scale-90 shadow-xs" title="Remove one">
+                      <span class="material-symbols-outlined text-[18px]">remove</span>
+                    </button>
+                    <span class="w-7 text-center font-bold text-on-surface text-label-md">${inCart}</span>
+                  ` : ''}
+                  <button onclick="updateCart(${dish.id}, 1)" class="h-8 px-2.5 rounded-lg ${inCart > 0 ? 'bg-primary-container text-on-primary' : 'bg-primary-container hover:bg-primary text-on-primary'} flex items-center gap-1 transition active:scale-95 shadow-xs font-semibold text-label-sm" title="Add to order">
+                    <span class="material-symbols-outlined text-[18px]">add</span>
+                    ${inCart === 0 ? '<span>Add</span>' : ''}
+                  </button>
+                </div>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      renderFilteredCardsGlobal = renderFilteredCards;
+
+      // Wire quadrant tabs
+      document.querySelectorAll('.quadrant-tab').forEach(tab => {
+        tab.onclick = () => {
+          currentFilter = tab.getAttribute('data-filter') || 'ALL';
+          document.querySelectorAll('.quadrant-tab').forEach(t => {
+            if (t === tab) {
+              t.classList.add('border-2', 'shadow-sm', 'font-bold');
+            } else {
+              t.classList.remove('border-2', 'shadow-sm');
+            }
+          });
+          renderFilteredCards();
+        };
+      });
+
+      renderFilteredCards();
     } catch (err) {
-      console.warn('Dishes page sync note:', err);
+      console.warn('Dishes load error:', err);
     }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadDishesData();
   });
 </script>
+
+<!-- ================= FLOATING FOOD ORDERING CART BAR & EXPANDABLE DRAWER ================= -->
+<!-- 1. Floating Bottom Quick Strip -->
+<div id="cart-bottom-bar" class="hidden fixed bottom-16 sm:bottom-20 left-1/2 -translate-x-1/2 z-[60] w-full max-w-2xl px-4 pointer-events-none">
+  <div class="bg-primary text-on-primary rounded-2xl shadow-2xl p-3 sm:p-4 flex items-center justify-between pointer-events-auto border border-primary-fixed/30 backdrop-blur-md">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="cart-bar-count" class="font-bold text-label-lg">0 items</span>
+          <span id="cart-bar-effectiveness" class="text-[11px] font-bold px-2 py-0.5 rounded-full border"></span>
+        </div>
+        <div class="text-[11px] text-primary-fixed/80 flex items-center gap-2 mt-0.5">
+          <span>Total: <strong id="cart-bar-total" class="text-on-primary text-body-md font-mono">\u20B90</strong></span>
+          <span>\u2022</span>
+          <span>Net Profit: <strong id="cart-bar-profit" class="text-[#DCFCE7] text-body-md font-mono">+\u20B90</strong></span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button onclick="clearCart()" class="p-2 rounded-xl text-primary-fixed/80 hover:text-on-primary hover:bg-primary-container/40 transition active:scale-95" title="Clear Order">
+        <span class="material-symbols-outlined text-[20px]">delete_outline</span>
+      </button>
+      <button onclick="toggleCartModal()" class="px-4 py-2 rounded-xl bg-primary-fixed text-on-primary-fixed font-bold text-label-md flex items-center gap-1 shadow-md hover:bg-primary-fixed-dim transition active:scale-95">
+        <span>View Order &amp; Margin</span>
+        <span class="material-symbols-outlined text-[18px]">expand_less</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Detailed Price-Effectiveness Cart Modal -->
+<div id="cart-modal" class="hidden fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleCartModal()"></div>
+  <div class="relative bg-surface-container-lowest w-full max-w-xl rounded-t-3xl sm:rounded-2xl shadow-2xl border border-outline-variant/40 flex flex-col max-h-[85vh] overflow-hidden z-10">
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-outline-variant/30 flex items-center justify-between bg-surface">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center">
+          <span class="material-symbols-outlined text-[20px]">shopping_bag</span>
+        </div>
+        <div>
+          <h3 class="text-headline-md font-headline-md font-bold text-on-surface">Order Price-Effectiveness</h3>
+          <p class="text-body-sm font-body-sm text-on-surface-variant">Live breakdown of revenue, ingredient cost &amp; gross margin</p>
+        </div>
+      </div>
+      <button onclick="toggleCartModal()" class="w-8 h-8 rounded-lg bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+        <span class="material-symbols-outlined text-[18px]">close</span>
+      </button>
+    </div>
+
+    <!-- Items List -->
+    <div class="flex-1 overflow-y-auto px-6 py-3 divide-y divide-outline-variant/20" id="cart-modal-items"></div>
+
+    <!-- Price Effectiveness & Totals Strip -->
+    <div class="p-6 bg-surface-container border-t border-outline-variant/30 space-y-4">
+      <div id="cart-modal-efficiency"></div>
+
+      <div class="grid grid-cols-3 gap-3 bg-surface-container-lowest p-3.5 rounded-xl border border-outline-variant/40 text-center">
+        <div>
+          <span class="text-[11px] text-on-surface-variant font-medium block">Order Revenue</span>
+          <span id="cart-modal-total" class="text-headline-md font-bold text-on-surface font-mono">\u20B90</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-on-surface-variant font-medium block">Food Cost (COGS)</span>
+          <span id="cart-modal-cost" class="text-headline-md font-bold text-outline font-mono">\u20B90</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-on-surface-variant font-medium block">Net Margin</span>
+          <span id="cart-modal-profit" class="text-headline-md font-bold text-[#15803D] font-mono">+\u20B90</span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="clearCart()" class="flex-1 py-2.5 rounded-xl bg-surface-container-highest hover:bg-error/20 hover:text-error text-on-surface-variant font-bold text-label-md transition flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-[18px]">delete</span>
+          <span>Clear Order</span>
+        </button>
+        <a href="/menumitra_what_if_simulator/code.html" class="flex-1 py-2.5 rounded-xl bg-primary-container hover:bg-primary text-on-primary font-bold text-label-md transition flex items-center justify-center gap-1.5 shadow-sm">
+          <span class="material-symbols-outlined text-[18px]">calculate</span>
+          <span>Simulate in What-If</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="/marginly-core.js"></script>
 </body></html>

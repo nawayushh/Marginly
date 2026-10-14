@@ -259,8 +259,98 @@ def seed_default_user():
     conn.close()
 
 def seed_demo_data_if_empty():
-    # Keep database at clean slate with 0 dishes, 0 recipes, 0 sales until user enters them
-    pass
+    """Seed a rich demo menu with properly categorized dishes when DB is empty."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) as count FROM menu_items;")
+    if cursor.fetchone()["count"] > 0:
+        conn.close()
+        return
+
+    now = datetime.now(timezone.utc).isoformat()
+
+    # Comprehensive Indian restaurant menu — categorized
+    demo_dishes = [
+        # ─── Breads ───
+        {"name": "Butter Naan", "category": "Breads", "price": 60, "cost": 15, "qty": 450},
+        {"name": "Garlic Naan", "category": "Breads", "price": 70, "cost": 18, "qty": 380},
+        {"name": "Tandoori Roti", "category": "Breads", "price": 35, "cost": 8, "qty": 520},
+        {"name": "Laccha Paratha", "category": "Breads", "price": 55, "cost": 14, "qty": 210},
+        {"name": "Cheese Naan", "category": "Breads", "price": 90, "cost": 28, "qty": 160},
+        {"name": "Missi Roti", "category": "Breads", "price": 45, "cost": 10, "qty": 130},
+
+        # ─── Curries ───
+        {"name": "Shahi Paneer", "category": "Curries", "price": 280, "cost": 85, "qty": 180},
+        {"name": "Butter Chicken", "category": "Curries", "price": 340, "cost": 110, "qty": 250},
+        {"name": "Dal Makhani", "category": "Curries", "price": 240, "cost": 55, "qty": 300},
+        {"name": "Kadhai Paneer", "category": "Curries", "price": 260, "cost": 80, "qty": 190},
+        {"name": "Palak Paneer", "category": "Curries", "price": 250, "cost": 75, "qty": 140},
+        {"name": "Chicken Tikka Masala", "category": "Curries", "price": 320, "cost": 120, "qty": 200},
+        {"name": "Chole Bhature", "category": "Curries", "price": 180, "cost": 50, "qty": 280},
+        {"name": "Malai Kofta", "category": "Curries", "price": 270, "cost": 95, "qty": 110},
+
+        # ─── Starters ───
+        {"name": "Paneer Tikka", "category": "Starters", "price": 280, "cost": 85, "qty": 170},
+        {"name": "Chicken Momos", "category": "Starters", "price": 160, "cost": 45, "qty": 420},
+        {"name": "Veg Spring Roll", "category": "Starters", "price": 150, "cost": 40, "qty": 200},
+        {"name": "Aloo Tikki Chaat", "category": "Starters", "price": 120, "cost": 30, "qty": 260},
+        {"name": "Hara Bhara Kebab", "category": "Starters", "price": 200, "cost": 55, "qty": 130},
+        {"name": "Cheese Garlic Bread", "category": "Starters", "price": 160, "cost": 42, "qty": 190},
+
+        # ─── Rice & Biryani ───
+        {"name": "Veg Biryani", "category": "Rice & Biryani", "price": 220, "cost": 65, "qty": 230},
+        {"name": "Chicken Biryani", "category": "Rice & Biryani", "price": 300, "cost": 105, "qty": 310},
+        {"name": "Jeera Rice", "category": "Rice & Biryani", "price": 120, "cost": 25, "qty": 350},
+        {"name": "Egg Fried Rice", "category": "Rice & Biryani", "price": 180, "cost": 50, "qty": 180},
+
+        # ─── Chinese ───
+        {"name": "Veg Manchurian", "category": "Chinese", "price": 200, "cost": 55, "qty": 210},
+        {"name": "Chilli Paneer", "category": "Chinese", "price": 240, "cost": 75, "qty": 190},
+        {"name": "Hakka Noodles", "category": "Chinese", "price": 180, "cost": 45, "qty": 280},
+        {"name": "Schezwan Fried Rice", "category": "Chinese", "price": 190, "cost": 50, "qty": 200},
+
+        # ─── Beverages ───
+        {"name": "Cold Coffee", "category": "Beverages", "price": 140, "cost": 35, "qty": 380},
+        {"name": "Mango Lassi", "category": "Beverages", "price": 100, "cost": 25, "qty": 300},
+        {"name": "Fresh Lime Soda", "category": "Beverages", "price": 80, "cost": 12, "qty": 400},
+        {"name": "Masala Chai", "category": "Beverages", "price": 40, "cost": 8, "qty": 550},
+        {"name": "Mango Smoothie", "category": "Beverages", "price": 150, "cost": 45, "qty": 180},
+        {"name": "Oreo Shake", "category": "Beverages", "price": 180, "cost": 55, "qty": 160},
+
+        # ─── Desserts ───
+        {"name": "Gulab Jamun", "category": "Desserts", "price": 90, "cost": 22, "qty": 250},
+        {"name": "Ras Malai", "category": "Desserts", "price": 120, "cost": 35, "qty": 180},
+        {"name": "Brownie with Ice Cream", "category": "Desserts", "price": 180, "cost": 60, "qty": 140},
+        {"name": "Kulfi Falooda", "category": "Desserts", "price": 130, "cost": 38, "qty": 160},
+
+        # ─── Combos / Thalis ───
+        {"name": "Veg Thali", "category": "Combos", "price": 250, "cost": 80, "qty": 200},
+        {"name": "Non-Veg Thali", "category": "Combos", "price": 350, "cost": 130, "qty": 150},
+        {"name": "Himalayan Special Thali", "category": "Combos", "price": 400, "cost": 380, "qty": 35},
+    ]
+
+    for d in demo_dishes:
+        cursor.execute("""
+        INSERT INTO recipes (name, description, servings_per_batch, batch_overhead_cost, status, created_at, updated_at)
+        VALUES (?, ?, 1.0, ?, 'confirmed', ?, ?);
+        """, (d["name"], f"Standard recipe for {d['name']}", d["cost"], now, now))
+        recipe_id = cursor.lastrowid
+
+        cursor.execute("""
+        INSERT INTO menu_items (name, category, recipe_id, selling_price, currency, is_active, created_at)
+        VALUES (?, ?, ?, ?, 'INR', 1, ?);
+        """, (d["name"], d["category"], recipe_id, d["price"], now))
+        menu_id = cursor.lastrowid
+
+        cursor.execute("""
+        INSERT INTO sales_records (menu_item_id, period, quantity_sold, channel, created_at)
+        VALUES (?, 'Current Month', ?, 'Dine-in', ?)
+        ON CONFLICT(menu_item_id, period, channel) DO NOTHING;
+        """, (menu_id, d["qty"], now))
+
+    conn.commit()
+    conn.close()
+    logger.info(f"Seeded {len(demo_dishes)} demo dishes across categories")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -1038,6 +1128,99 @@ def create_menu_item(m: MenuItemCreate):
     new_id = cursor.lastrowid
     conn.close()
     return {"id": new_id, "name": m.name, "selling_price": m.selling_price}
+
+# --- Gemini AI Auto-Categorize & Rich Demo Seeding ---
+def classify_dish_category_rule(name: str) -> str:
+    n = name.lower()
+    if any(k in n for k in ["naan", "roti", "paratha", "kulcha", "bhature", "puri", "chapati", "bread"]):
+        return "Breads"
+    if any(k in n for k in ["shahi", "paneer butter", "butter chicken", "dal makhani", "kadhai", "korma", "masala", "palak", "kofta", "curry", "gravy", "rogan", "chole"]):
+        return "Curries"
+    if any(k in n for k in ["tikka", "kebab", "momo", "spring roll", "chaat", "pakora", "garlic bread", "starter", "finger", "crispy"]):
+        return "Starters"
+    if any(k in n for k in ["biryani", "pulao", "jeera rice", "fried rice", "khichdi", "steamed rice"]) and not any(k in n for k in ["schezwan", "manchurian"]):
+        return "Rice & Biryani"
+    if any(k in n for k in ["manchurian", "noodles", "hakka", "chilli", "schezwan", "chowmein", "chinese"]):
+        return "Chinese"
+    if any(k in n for k in ["coffee", "tea", "chai", "lassi", "shake", "smoothie", "soda", "drink", "juice", "beverage", "cooler"]):
+        return "Beverages"
+    if any(k in n for k in ["gulab jamun", "ras malai", "kulfi", "halwa", "ice cream", "brownie", "tart", "pastry", "dessert", "sweet"]):
+        return "Desserts"
+    if any(k in n for k in ["thali", "combo", "platter", "meal"]):
+        return "Combos"
+    return "Main Course"
+
+@app.post("/api/menu/auto-categorize")
+async def auto_categorize_menu(payload: Optional[Dict[str, Any]] = None):
+    """
+    Categorizes dishes using Google Gemini API with fallback to culinary categorization rules.
+    Updates the database and returns updated mappings.
+    """
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id, name, category FROM menu_items;")
+    items = cursor.fetchall()
+
+    if not items:
+        conn.close()
+        return {"status": "success", "categorized_count": 0, "items": []}
+
+    dish_names = [row["name"] for row in items]
+    categorization_map = {}
+
+    # Try Gemini API if key is available
+    if settings.GEMINI_API_KEY:
+        try:
+            from ai_service import call_gemini_chat
+            sys_prompt = (
+                "You are an expert restaurant chef and menu taxonomist. "
+                "Classify each dish into exactly one category: 'Breads', 'Curries', 'Starters', "
+                "'Rice & Biryani', 'Chinese', 'Beverages', 'Desserts', or 'Combos'. "
+                "Return JSON: {\"categories\": {\"Dish Name\": \"Category\"}}"
+            )
+            user_prompt = f"Categorize these restaurant dishes:\n" + "\n".join(dish_names[:30])
+            ai_text = await call_gemini_chat(sys_prompt, user_prompt, max_tokens=600)
+            if ai_text:
+                parsed = json.loads(clean_llm_json(ai_text))
+                categorization_map = parsed.get("categories", {})
+        except Exception as e:
+            logger.info(f"Gemini auto-categorization note: {e}")
+
+    # Fallback & merge with deterministic culinary rules
+    updated_items = []
+    for item in items:
+        dish_id = item["id"]
+        dish_name = item["name"]
+        assigned_cat = categorization_map.get(dish_name) or classify_dish_category_rule(dish_name)
+
+        cursor.execute("UPDATE menu_items SET category = ? WHERE id = ?;", (assigned_cat, dish_id))
+        updated_items.append({"id": dish_id, "name": dish_name, "category": assigned_cat})
+
+    conn.commit()
+    conn.close()
+
+    return {
+        "status": "success",
+        "method": "Gemini AI" if (settings.GEMINI_API_KEY and categorization_map) else "Culinary AI Engine",
+        "categorized_count": len(updated_items),
+        "items": updated_items
+    }
+
+@app.post("/api/demo/seed-comprehensive")
+def seed_comprehensive_demo():
+    """Forces seeding of the full 41-dish categorized demo dataset."""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM sales_records;")
+    cursor.execute("DELETE FROM menu_items;")
+    cursor.execute("DELETE FROM recipe_lines;")
+    cursor.execute("DELETE FROM recipes;")
+    conn.commit()
+    conn.close()
+
+    seed_demo_data_if_empty()
+
+    return {"status": "success", "message": "Demo database re-seeded with 40+ categorized dishes!"}
 
 # --- Sales Import & CSV Upload Engine ---
 @app.get("/api/sales/template-csv")
