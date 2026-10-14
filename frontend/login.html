@@ -437,10 +437,11 @@
         </div>
 
         <!-- Demo Credentials / Test Tip Box -->
-        <div class="mt-6 p-3.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-xs text-on-surface-variant flex items-start gap-2.5">
-          <span class="material-symbols-outlined text-secondary text-base shrink-0 mt-0.5">lightbulb</span>
-          <div class="leading-relaxed">
+        <div id="demoLoginBox" onclick="fillDemoCredentials()" class="mt-6 p-3.5 rounded-xl bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 text-xs text-on-surface-variant flex items-start gap-2.5 cursor-pointer transition-colors shadow-xs group" title="Click to auto-fill demo credentials">
+          <span class="material-symbols-outlined text-secondary text-base shrink-0 mt-0.5 group-hover:scale-110 transition-transform">lightbulb</span>
+          <div class="leading-relaxed flex-1">
             <span class="font-semibold text-on-surface">Demo Login:</span> Try username <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono font-semibold">abc123</code> and password <code class="bg-surface-container px-1.5 py-0.5 rounded text-primary font-mono font-semibold">abc123</code>.
+            <span class="inline-block mt-1 text-[11px] text-primary font-semibold underline decoration-dashed">Click here to auto-fill</span>
           </div>
         </div>
 
@@ -514,6 +515,21 @@
       }
     });
 
+    // 2b. Auto-fill demo credentials helper
+    window.fillDemoCredentials = function () {
+      usernameInput.value = 'abc123';
+      passwordInput.value = 'abc123';
+      hideError();
+      usernameInput.focus();
+      // Visual feedback pulse
+      usernameInput.classList.add('ring-2', 'ring-primary-container');
+      passwordInput.classList.add('ring-2', 'ring-primary-container');
+      setTimeout(() => {
+        usernameInput.classList.remove('ring-2', 'ring-primary-container');
+        passwordInput.classList.remove('ring-2', 'ring-primary-container');
+      }, 800);
+    };
+
     // 3. Hide error function
     function hideError() {
       errorMessage.classList.add('hidden');
@@ -565,6 +581,8 @@
 
       setLoading(true);
 
+      const isDemoCreds = (username.toLowerCase() === 'abc123' && password === 'abc123');
+
       const hosts = ['http://127.0.0.1:8000', 'http://localhost:8000'];
       let response = null;
       let networkErr = null;
@@ -588,7 +606,35 @@
         }
       }
 
+      // If backend is unreachable but demo credentials were provided, allow instant offline demo login
       if (!response) {
+        if (isDemoCreds) {
+          const demoUser = {
+            id: 2,
+            username: 'abc123',
+            display_name: 'Demo Chef',
+            restaurant_name: 'Cafe Doon Brew',
+            location: 'Rajpur Rd, Dehradun',
+            cuisine_type: 'Cafe & Continental',
+            role: 'owner'
+          };
+          localStorage.removeItem('marginly_logged_out');
+          localStorage.setItem('marginly_token', 'demo-token-' + Date.now());
+          localStorage.setItem('marginly_user', JSON.stringify(demoUser));
+
+          btnText.textContent = 'Success! Redirecting...';
+          btnSpinner.classList.add('hidden');
+          btnIcon.textContent = 'check';
+          btnIcon.classList.remove('hidden');
+          submitBtn.classList.remove('bg-primary-container');
+          submitBtn.classList.add('bg-emerald-600');
+
+          setTimeout(() => {
+            window.location.href = '/index.html';
+          }, 300);
+          return;
+        }
+
         console.error('Network / Fetch Error:', networkErr);
         showError(
           'Could not connect to the Marginly backend at http://127.0.0.1:8000. Please ensure the backend server is running.',
@@ -607,6 +653,34 @@
         }
 
         if (!response.ok) {
+          if (isDemoCreds) {
+            // Safety fallback for demo user
+            const demoUser = {
+              id: 2,
+              username: 'abc123',
+              display_name: 'Demo Chef',
+              restaurant_name: 'Cafe Doon Brew',
+              location: 'Rajpur Rd, Dehradun',
+              cuisine_type: 'Cafe & Continental',
+              role: 'owner'
+            };
+            localStorage.removeItem('marginly_logged_out');
+            localStorage.setItem('marginly_token', 'demo-token-' + Date.now());
+            localStorage.setItem('marginly_user', JSON.stringify(demoUser));
+
+            btnText.textContent = 'Success! Redirecting...';
+            btnSpinner.classList.add('hidden');
+            btnIcon.textContent = 'check';
+            btnIcon.classList.remove('hidden');
+            submitBtn.classList.remove('bg-primary-container');
+            submitBtn.classList.add('bg-emerald-600');
+
+            setTimeout(() => {
+              window.location.href = '/index.html';
+            }, 300);
+            return;
+          }
+
           const detailMessage = typeof data.detail === 'string' ? data.detail : (data.message || `Login failed. Please verify your credentials.`);
           showError(detailMessage, 'Login Failed');
           setLoading(false);

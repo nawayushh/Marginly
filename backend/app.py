@@ -228,8 +228,35 @@ def init_db():
     conn.close()
 
 def seed_default_user():
-    # Do not auto-seed demo users; require explicit registration
-    pass
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM users WHERE LOWER(username) = ?;", ("abc123",))
+    if not cursor.fetchone():
+        pw_hash = hashlib.sha256("abc123".encode()).hexdigest()
+        now = datetime.now(timezone.utc).isoformat()
+        cursor.execute("""
+        INSERT INTO users (
+            username, password_hash, display_name, restaurant_name, location,
+            cuisine_type, phone, restaurant_type, daily_covers, sourcing_model,
+            signature_dish, role, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        """, (
+            "abc123",
+            pw_hash,
+            "Demo Chef",
+            "Café Doon Brew",
+            "Rajpur Rd, Dehradun",
+            "Café & Continental",
+            "+91 98765 43210",
+            "Café & Bistro",
+            120,
+            "Local Mandi",
+            "Signature Cold Coffee",
+            "owner",
+            now
+        ))
+        conn.commit()
+    conn.close()
 
 def seed_demo_data_if_empty():
     # Keep database at clean slate with 0 dishes, 0 recipes, 0 sales until user enters them
@@ -238,6 +265,7 @@ def seed_demo_data_if_empty():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
+    seed_default_user()
     seed_demo_data_if_empty()
     yield
 
